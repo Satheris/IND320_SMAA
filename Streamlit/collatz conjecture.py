@@ -11,8 +11,10 @@ def stoprun(count):
         del st.session_state.value
         del st.session_state.started
         del st.session_state.count
+        del st.session_state.startingvalue
         st.rerun()
     elif st.button('Yes, I want to keep going!'):
+        st.session_state.count += 1
         st.rerun()
 
 
@@ -21,6 +23,7 @@ if 'value' not in st.session_state:
     st.session_state.value = None
     st.session_state.started = False 
     st.session_state.count = 0
+    st.session_state.startingvalue = None
     button_label = 'Start'
 else: 
     if st.session_state.value % 2 == 0:
@@ -33,8 +36,9 @@ else:
 
 # Button varies by state 
 st.button(button_label, disabled=(st.session_state.value == 1))
-if st.session_state.value == 1: 
+if st.session_state.value == 1:
     st.balloons()
+    st.write(f'It took {st.session_state.count} clicks to reach 1 from {st.session_state.startingvalue}!')
 
 # Output 
 if not st.session_state.started: 
@@ -46,7 +50,9 @@ else:
 if not st.session_state.started:
     # First press: sample random integer and cache it
     st.session_state.started = True 
-    st.session_state.value = np.random.randint(1, 101)
+    st.session_state.value = st.session_state.startingvalue = np.random.randint(1, 101)
+elif st.session_state.count == 20:
+    stoprun(st.session_state.count)
 else:
     st.session_state.count += 1
     # Subsequent presses: update the value according to the rules
@@ -55,5 +61,4 @@ else:
     else:
         st.session_state.value = int((st.session_state.value * 3) + 1)
 
-if st.session_state.count == 5:
-    stoprun(st.session_state.count)
+
