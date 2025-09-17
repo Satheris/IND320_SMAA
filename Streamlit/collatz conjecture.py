@@ -20,6 +20,8 @@ else:
 
 # Button varies by state 
 st.button(button_label, disabled=(st.session_state.value == 1))
+if st.session_state.value == 1: 
+    st.balloons()
 
 # Output 
 if not st.session_state.started: 
