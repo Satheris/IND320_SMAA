@@ -8,4 +8,5 @@ def read_data():
     data = pd.read_csv('project/data/open-meteo-subset.csv')
     return data
 
-st.session_state.data = read_data()
+if 'data' not in st.session_state:
+    st.session_state.data = read_data()
