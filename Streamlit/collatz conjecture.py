@@ -26,10 +26,10 @@ if 'value' not in st.session_state:
     st.session_state.startingvalue = None
     button_label = 'Start'
 else: 
-    if st.session_state.value % 2 == 0:
-        button_label = 'Half it'
-    elif st.session_state.value == 1: 
+    if st.session_state.value == 1: 
         button_label = 'Success!'
+    elif st.session_state.value % 2 == 0:
+        button_label = 'Half it'
     else: 
         button_label = 'Triple and add one'
 
