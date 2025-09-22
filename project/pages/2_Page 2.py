@@ -13,9 +13,7 @@ st.header('Page 2')
 
 st.dataframe(st.session_state.data)
 
-st.data_editor(data=st.session_state.data, 
-                column_config={'temperature':st.column_config.LineChartColumn()}, 
-                hide_index=False)
+st.dataframe(data=st.session_state.data, column_config=st.column_config.LineChartColumn())
 
 
 # st.line_chart()
