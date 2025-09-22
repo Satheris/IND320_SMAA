@@ -9,11 +9,13 @@ def read_data():
 if 'data' not in st.session_state:
     st.session_state.data = read_data()
 
+df = st.session_state.data
+
 st.header('Page 2')
 
-st.dataframe(st.session_state.data)
+st.dataframe(df)
 
-st.dataframe(data=st.session_state.data, column_config=st.column_config.LineChartColumn())
+st.dataframe(data=df.transpose(), column_config=st.column_config.LineChartColumn())
 
 
 # st.line_chart()
