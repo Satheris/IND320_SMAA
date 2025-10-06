@@ -12,20 +12,19 @@ if 'data' not in st.session_state:
 
 st.header('Page 3')
 
+
 df = st.session_state.data
 
 
-st.pyplot(df.plot())
 
+fig, ax = plt.subplots()
+ax.set_title('Plot')
+ax.set_ylabel('')
+ax.set_xlabel('Time')
 
+st.pyplot(fig)
 
-# fig, ax = plt.subplots()
 # ax.plot(df)
-# ax.set_title('Plot')
-# ax.set_ylabel('')
-# ax.set_xlabel('Time')
-
-# plt.show()
 
 
 
