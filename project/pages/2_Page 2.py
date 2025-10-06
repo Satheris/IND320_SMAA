@@ -15,7 +15,20 @@ st.header('Page 2')
 
 st.dataframe(df)
 
-st.dataframe(data=df.transpose(), column_config=st.column_config.LineChartColumn())
+st.data_editor(data=df.transpose(), 
+               column_config=st.column_config.LineChartColumn())
+
+
+st.dataframe(
+    df,
+    column_config={
+        "precipitation (mm)": st.column_config.LineChartColumn(
+            "Utvikling"
+        )
+    },
+    hide_index=True
+)
+
 
 
 # st.line_chart()
