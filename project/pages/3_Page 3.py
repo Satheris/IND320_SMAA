@@ -29,4 +29,6 @@ startMonth, endMonth = st.select_slider('Select months',
                                                  'October',
                                                  'November',
                                                  'December'
-                                                 ])
+                                                 ],
+                                                 value=('January', 'January'))
+                                                 
