@@ -10,3 +10,8 @@ if 'data' not in st.session_state:
     st.session_state.data = read_data()
 
 st.header('Page 3')
+
+column = st.selectbox('Select column', 
+                      ("temperature_2m (°C)", "precipitation (mm)", 
+                       "wind_speed_10m (m/s)", "wind_gusts_10m (m/s)", 
+                       "wind_direction_10m (°)", 'All'))
