@@ -14,7 +14,8 @@ st.header('Page 3')
 
 df = st.session_state.data
 
-df.plot()
+st.write(df.plot())
+
 
 
 # fig, ax = plt.subplots()
