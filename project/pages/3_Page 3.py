@@ -24,6 +24,7 @@ ax.set_ylabel('')
 ax.set_xlabel('Time')
 
 ax.plot(df['temperature_2m (°C)'])
+ax.legend()
 
 st.pyplot(fig)
 
