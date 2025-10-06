@@ -14,13 +14,16 @@ st.header('Page 3')
 
 df = st.session_state.data
 
-fig, ax = plt.subplots()
-ax.plot(df)
-ax.set_title('Plot')
-ax.set_ylabel('')
-ax.set_xlabel('Time')
+df.plot()
 
-plt.show()
+
+# fig, ax = plt.subplots()
+# ax.plot(df)
+# ax.set_title('Plot')
+# ax.set_ylabel('')
+# ax.set_xlabel('Time')
+
+# plt.show()
 
 
 
