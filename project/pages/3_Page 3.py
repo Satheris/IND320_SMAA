@@ -22,6 +22,8 @@ ax.set_title('Plot')
 ax.set_ylabel('')
 ax.set_xlabel('Time')
 
+ax.plot(df[0])
+
 st.pyplot(fig)
 
 # ax.plot(df)
