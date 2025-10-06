@@ -22,7 +22,7 @@ ax.set_title('Plot')
 ax.set_ylabel('')
 ax.set_xlabel('Time')
 
-ax.plot(df[0])
+ax.plot(df['temperature_2m (°C)'])
 
 st.pyplot(fig)
 
