@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import matplotlib.pyplot as plt
 
 @st.cache_data
 def read_data():
@@ -10,6 +11,18 @@ if 'data' not in st.session_state:
     st.session_state.data = read_data()
 
 st.header('Page 3')
+
+df = st.session_state.data
+
+fig, ax = plt.subplots()
+ax.plot(df)
+ax.set_title('Plot')
+ax.set_ylabel('')
+ax.set_xlabel('Time')
+
+plt.show()
+
+
 
 column = st.selectbox('Select column', 
                       ("temperature_2m (°C)", "precipitation (mm)", 
@@ -31,4 +44,4 @@ startMonth, endMonth = st.select_slider('Select months',
                                                  'December'
                                                  ],
                                                  value=('January', 'January'))
-                                                 
+
