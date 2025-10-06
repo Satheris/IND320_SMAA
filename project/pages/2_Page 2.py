@@ -17,33 +17,31 @@ st.dataframe(df)
 
 
 
-df_1month = pd.DataFrame({
-    "column": df.columns[1:],
-    "values": [df[column] for column in df.columns[1:] if '2020-01-01T00:00' <= df['time'] < '2020-02-01T00:00'
-            #    df['temperature_2m (°C)'] if '2020-01-01T00:00' <= df['time'] < '2020-02-01T00:00',
-            #    df['precipitation (mm)'] if '2020-01-01T00:00' <= df['time'] < '2020-02-01T00:00',
-            #    df['wind_speed_10m (m/s)'] if '2020-01-01T00:00' <= df['time'] < '2020-02-01T00:00',
-            #    df['wind_gusts_10m (m/s)'] if '2020-01-01T00:00' <= df['time'] < '2020-02-01T00:00',
-            #    df['wind_direction_10m (°)'] if '2020-01-01T00:00' <= df['time'] < '2020-02-01T00:00'
-               ]
+month_df = df[(df['time'] >= '2020-01-01T00:00') & (df['time'] < '2020-02-01T00:00')]
+
+chart_df = pd.DataFrame({
+    "Variable": [
+        "temperature (°C)",
+        "precipitation (mm)",
+        "wind speed 10m (m/s)",
+        "wind gusts 10m (m/s)",
+        "wind direction 10m (°)"
+    ],
+    "Values": [
+        month_df["temperature_2m (°C)"].tolist(),
+        month_df["precipitation (mm)"].tolist(),
+        month_df["wind_speed_10m (m/s)"].tolist(),
+        month_df["wind_gusts_10m (m/s)"].tolist(),
+        month_df["wind_direction_10m (°)"].tolist()
+    ]
 })
 
-st.data_editor(data=df_1month, 
+
+st.data_editor(data=chart_df, 
                column_config={
-                   'column': st.column_config.LineChartColumn(
-                       'Utvikling'
+                   'Values': st.column_config.LineChartColumn(
+                       'Progression'
                    )
                 },
                 hide_index=True
 )
-
-# st.dataframe(
-#     df,
-#     column_config={
-#         "precipitation (mm)": st.column_config.LineChartColumn(
-#             "Utvikling"
-#         )
-#     },
-#     hide_index=True
-# )
-
