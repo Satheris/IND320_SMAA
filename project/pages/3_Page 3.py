@@ -19,20 +19,6 @@ df = st.session_state.data
 
 
 
-fig = px.line(df, x='time', y=['precipitation (mm)', 'temperature_2m (°C)'], title='Weather parameters over time')
-st.plotly_chart(fig)
-
-# fig, ax = plt.subplots()
-# ax.set_title('Plot')
-# ax.set_ylabel('')
-# ax.set_xlabel('Time')
-
-# ax.plot(df['temperature_2m (°C)'])
-# ax.legend()
-
-# st.pyplot(fig)
-
-
 
 column = st.selectbox('Select column', 
                       ("temperature_2m (°C)", "precipitation (mm)", 
@@ -55,3 +41,11 @@ startMonth, endMonth = st.select_slider('Select months',
                                                  ],
                                                  value=('January', 'January'))
 
+
+if column == 'All':
+    fig = px.line(df, x='time', y=df.columns.drop('time'), title='All weather parameters over time')
+    st.plotly_chart(fig)
+
+else: 
+    fig = px.line(df, x='time', y=column, title=f'column over time')
+    st.plotly_chart(fig)
