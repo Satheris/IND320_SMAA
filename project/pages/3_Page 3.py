@@ -47,5 +47,5 @@ if column == 'All':
     st.plotly_chart(fig)
 
 else: 
-    fig = px.line(df, x='time', y=column, title=f'column over time')
+    fig = px.line(df, x='time', y=column, title=f'{column} over time')
     st.plotly_chart(fig)
