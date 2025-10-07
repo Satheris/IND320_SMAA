@@ -92,7 +92,6 @@ elif chart_type == '3D Scatter Plot':
 
 
 import plotly.graph_objects as go
-import pandas as pd
 
 # claculate a correlation matrix 
 corr = iris_df.iloc[:, :4].corr()
