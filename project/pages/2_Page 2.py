@@ -1,3 +1,4 @@
+# necessary imports for this page
 import streamlit as st
 import pandas as pd
 
@@ -10,16 +11,21 @@ def read_data():
 if 'data' not in st.session_state:
     st.session_state.data = read_data()
 
+# storing data on this page for further use
 df = st.session_state.data
+
 
 st.header('Page 2')
 
+
+# printing dataframe
 st.dataframe(df)
 
 
-
+# making a subset of the dataset with only the first month 
 month_df = df[(df['time'] >= '2020-01-01T00:00') & (df['time'] < '2020-02-01T00:00')]
 
+# making a dataframe on the necessary format, with arrays in single cells
 chart_df = pd.DataFrame({
     "Variable": [
         "temperature (°C)",
@@ -37,7 +43,7 @@ chart_df = pd.DataFrame({
     ]
 })
 
-
+# making table with LineChartColumn
 st.data_editor(data=chart_df, 
                column_config={
                    'Values': st.column_config.LineChartColumn(
