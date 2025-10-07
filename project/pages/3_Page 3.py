@@ -19,7 +19,7 @@ df = st.session_state.data
 
 
 
-fig = px.line(df, x='time', y='precipitation (mm)', title='Precipitation over time')
+fig = px.line(df, x='time', y=['precipitation (mm)', 'temperature_2m (°C)'], title='Weather parameters over time')
 st.plotly_chart(fig)
 
 # fig, ax = plt.subplots()
