@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+import plotly.express as px
 
 @st.cache_data
 def read_data():
@@ -18,17 +19,18 @@ df = st.session_state.data
 
 
 
-fig, ax = plt.subplots()
-ax.set_title('Plot')
-ax.set_ylabel('')
-ax.set_xlabel('Time')
+fig = px.line(df, x='time', y='precipitation (mm)', title='Precipitation over time')
+st.plotly_chart(fig)
 
-ax.plot(df['temperature_2m (°C)'])
-ax.legend()
+# fig, ax = plt.subplots()
+# ax.set_title('Plot')
+# ax.set_ylabel('')
+# ax.set_xlabel('Time')
 
-st.pyplot(fig)
+# ax.plot(df['temperature_2m (°C)'])
+# ax.legend()
 
-# ax.plot(df)
+# st.pyplot(fig)
 
 
 
