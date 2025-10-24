@@ -68,7 +68,7 @@ endConverter = {'January': '2020-02-01',
 
 
 # using values given above to make plots
-if column == 'All':
+if column == 'all':
     fig = px.line(df[(df['time'] >= startConverter[startMonth]) & (df['time'] < endConverter[endMonth])], 
                   x='time', y=df.columns.drop('time'), title='All weather parameters over time')
     st.plotly_chart(fig)
