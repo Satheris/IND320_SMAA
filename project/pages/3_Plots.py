@@ -17,9 +17,9 @@ st.header('Plots')
 
 # initiating selectbox for variable selection
 column = st.selectbox('Select column', 
-                      ("temperature_2m (°C)", "precipitation (mm)", 
-                       "wind_speed_10m (m/s)", "wind_gusts_10m (m/s)", 
-                       "wind_direction_10m (°)", 'All'))
+                      ('temperature_2m (°C)', 'precipitation (mm)', 
+                       'wind_speed_10m (m/s)', 'wind_gusts_10m (m/s)', 
+                       'wind_direction_10m (°)', 'all'))
 
 # initiating selectslider for month selection
 startMonth, endMonth = st.select_slider('Select months', 
@@ -34,8 +34,7 @@ startMonth, endMonth = st.select_slider('Select months',
                                                  'September',
                                                  'October',
                                                  'November',
-                                                 'December'
-                                                 ],
+                                                 'December'],
                                                  value=('January', 'January'))
 
 #making dictionaries to convert months into datetime values
