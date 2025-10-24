@@ -17,8 +17,8 @@ def init_connection():
 
 # Uses st.cache_data to only rerun when the query changes or after 10 min.
 @st.cache_data(ttl=600)
-def get_data(client):
-    db = client['example']
+def get_data(_client):
+    db = _client['example']
     collection = db['data']
     items = collection.find()
     items = list(items)
