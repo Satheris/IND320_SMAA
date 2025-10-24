@@ -12,7 +12,7 @@ if 'data' not in st.session_state:
 df = st.session_state.data
 
 
-st.header('Page 3')
+st.header('Plots')
 
 
 # initiating selectbox for variable selection
