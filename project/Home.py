@@ -6,6 +6,8 @@ import pandas as pd
 st.set_page_config(page_title='This is my app!', layout="wide")
 
 
+st.header('This is my app!')
+
 # # chaching to make experience smoother
 # @st.cache_data
 # def read_data():
