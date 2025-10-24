@@ -30,9 +30,9 @@ def get_data():
     return items
 
 
-# Pull data from the collection
-items = get_data()
+# # Pull data from the collection
+# items = get_data()
 
-# Print results.
-for item in items:
-    st.write(f"{item['name']} is {item['age']} years old")
+# # Print results.
+# for item in items:
+#     st.write(f"{item['name']} is {item['age']} years old")
