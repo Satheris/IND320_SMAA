@@ -18,10 +18,6 @@ df = st.session_state.data
 st.header('Page 2')
 
 
-# printing dataframe
-st.dataframe(df)
-
-
 # making a subset of the dataset with only the first month 
 month_df = df[(df['time'] >= '2020-01-01T00:00') & (df['time'] < '2020-02-01T00:00')]
 
