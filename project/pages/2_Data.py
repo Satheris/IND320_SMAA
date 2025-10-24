@@ -11,7 +11,7 @@ if 'data' not in st.session_state:
 df = st.session_state.data
 
 
-st.header('Page 2')
+st.header('Data')
 
 
 # making a subset of the dataset with only the first month 
