@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 
 
-st.set_page_config(page_title='This is my app!', layout="wide")
+st.set_page_config(layout="wide")
 
 
 st.header('This is my app!')
