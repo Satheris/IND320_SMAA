@@ -36,6 +36,7 @@ items = get_data()
 df = pd.DataFrame(items)
 df['startTime'] = pd.to_datetime(df['startTime'], errors='coerce', utc=True)
 df['quantityKwh'] = pd.to_numeric(df['quantityKwh'], errors='coerce')
+df["month"] = df["start_time"].dt.month
 
 
 # Initializing columns
@@ -85,9 +86,7 @@ with c2:
     months = generate_months()
     month = st.selectbox('Select month', months)
 
-    df_month = df[(df['priceArea'] == area) & \
-                  (df['startTime'] >= pd.to_datetime(month_start_converter(month))) & \
-                  (df['startTime'] < pd.to_datetime(month_end_converter(month)))]
+    df_month = df[(df['priceArea'] == area) & (df['month'] == month)]
     df_month = df_month.sort_values(by='productionGroup').sort_values(by='startTime').reset_index()
 
     try: 
