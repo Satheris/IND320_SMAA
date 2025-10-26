@@ -93,12 +93,11 @@ with c2:
     df_month = df_month.sort_values(by='productionGroup').sort_values(by='startTime').reset_index()
 
     try: 
-        for group in prodgroups:
-            fig = px.line(df_month[df_month['productionGroup'] == group], 
-                            x='startTime', 
-                            y='quantityKwh', 
-                            color='productionGroup',
-                            title=f'')
+        fig = px.line(df_month[df_month['productionGroup'] == prodgroups], 
+                        x='startTime', 
+                        y='quantityKwh', 
+                        color='productionGroup',
+                        title=f'')
 
         st.plotly_chart(fig)
 
