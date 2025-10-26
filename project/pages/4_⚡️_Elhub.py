@@ -36,7 +36,7 @@ items = get_data()
 df = pd.DataFrame(items)
 df['startTime'] = pd.to_datetime(df['startTime'], errors='coerce', utc=True)
 df['quantityKwh'] = pd.to_numeric(df['quantityKwh'], errors='coerce')
-df["month"] = df["start_time"].dt.month
+df['month'] = df['startTime'].dt.month
 
 
 # Initializing columns
