@@ -107,3 +107,15 @@ with c2:
     except Exception as e:
         st.error(f'Error creating chart: {str(e)}')
 
+
+
+
+expander = st.expander('Source of the data')
+expander.write('''
+    The plots are based on data collected from Elhub Energy Data API, \
+               regarding energy production in Norway across price areas NO1 through NO5. \
+               The data covers energy production from hydro, wind, thermal and solar production \
+               specifically, and other sources jointly. 
+    
+               
+    ''')
