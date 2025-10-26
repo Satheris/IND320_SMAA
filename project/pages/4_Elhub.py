@@ -38,4 +38,4 @@ items = get_data()
 
 for i, item in enumerate(items):
     if i < 10: 
-        print(item)
+        st.write(item)
