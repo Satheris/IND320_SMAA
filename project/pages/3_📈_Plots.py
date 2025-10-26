@@ -26,9 +26,10 @@ column = st.selectbox('Select column',
                        'wind_direction_10m (°)', 'all'))
 
 # initiating selectslider for month selection
+months = generate_months()
 startMonth, endMonth = st.select_slider('Select months', 
-                                        options=generate_months(),
-                                                 value=('January', 'January'))
+                                        options=months,
+                                                 value=(months[0], months[0]))
 
 #making dictionaries to convert months into datetime values
 
