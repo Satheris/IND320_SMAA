@@ -89,7 +89,8 @@ with c2:
     df_month['startTime'] = pd.to_datetime(df_month['startTime'])
 
     try: 
-        fig = px.line(df_month, 
+        for group in prodgroups: 
+            fig = px.line(df_month[df_month['productionGroup'] == group], 
                       x='startTime', 
                       y='quantityKwh', 
                       color='productionGroup',
