@@ -36,6 +36,11 @@ def get_data():
 
 items = get_data()
 
+
+c1, c2 = st.columns(2)
+
+
+
 for i, item in enumerate(items):
     if i < 10: 
-        st.write(item)
+        c1.write(item)
