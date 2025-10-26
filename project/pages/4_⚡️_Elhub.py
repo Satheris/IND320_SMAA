@@ -64,7 +64,7 @@ with c1:
             df_kwh_byArea, 
             values='quantityKwh', 
             names='productionGroup',
-            title=f'Total energy production in area {area} by production group',
+            title=f'Total energy production in area {area} in 2021',
             color='productionGroup')
         
         # Update hover info
@@ -81,7 +81,7 @@ with c1:
 
 # Filling column 2
 with c2:
-    st.subheader('Energy production progress')
+    st.subheader('Energy production by month')
     
     prods = sorted(df['productionGroup'].unique().tolist())
     prodgroups = st.pills('Select production group(s)', prods, selection_mode='multi', default=prods)
