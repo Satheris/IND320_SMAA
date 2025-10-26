@@ -35,10 +35,10 @@ items = get_data()
 
 df = pd.DataFrame(items)
 
-
+# Initializing columns
 c1, c2 = st.columns(2, gap='medium')
 
-
+# Filling column 1
 with c1:
     st.subheader('Total energy production in 2021 by price area')
 
@@ -72,6 +72,7 @@ with c1:
         st.error(f"Error creating chart: {str(e)}")
 
 
+# Filling column 2
 with c2:
     st.subheader('Energy production progress')
     
