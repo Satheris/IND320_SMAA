@@ -19,6 +19,7 @@ st.header('Elhub')
 def init_connection():
     return pymongo.MongoClient(st.secrets['mongo']['uri'])
 
+
 client = init_connection()
 
 
