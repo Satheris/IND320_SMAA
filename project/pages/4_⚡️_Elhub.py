@@ -6,7 +6,8 @@ import plotly.express as px
 
 from utils.common import (generate_months,
                           month_start_converter,
-                          month_end_converter)
+                          month_end_converter,
+                          month_number_converter)
 
 st.set_page_config(layout='wide')
 
@@ -88,7 +89,7 @@ with c2:
     months = generate_months()
     month = st.selectbox('Select month', months)
 
-    df_month = df[(df['priceArea'] == area) & (df['month'] == month)]
+    df_month = df[(df['priceArea'] == area) & (df['month'] == month_number_converter[month])]
     df_month = df_month.sort_values(by='productionGroup').sort_values(by='startTime').reset_index()
 
     try: 

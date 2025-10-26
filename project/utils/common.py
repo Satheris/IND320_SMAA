@@ -46,3 +46,18 @@ def month_end_converter(month_text: str) -> str:
                     'November': '2020-12-01',
                     'December': '2021-01-01'}
     return month_dict[month_text]
+
+def month_number_converter(month_text: str) -> int:
+    month_dict = {'January': 1,
+                    'February': 2,
+                    'March': 3,
+                    'April': 4,
+                    'May': 5,
+                    'June': 6,
+                    'July': 7,
+                    'August': 8,
+                    'September': 9,
+                    'October': 10,
+                    'November': 11,
+                    'December': 12}
+    return month_dict[month_text]
