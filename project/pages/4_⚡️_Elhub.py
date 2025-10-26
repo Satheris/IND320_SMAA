@@ -4,7 +4,9 @@ import pandas as pd
 import pymongo
 import plotly.express as px
 
-from utils.common import generate_months
+from utils.common import (generate_months,
+                          month_start_converter,
+                          month_end_converter)
 
 st.set_page_config(layout="wide")
 
@@ -50,7 +52,7 @@ with c1:
                     .reset_index()
         
     try:
-        # Simple version first
+        # Base figure
         fig = px.pie(
             df_kwh_byArea, 
             values='quantityKwh', 
@@ -79,3 +81,16 @@ with c2:
     months = generate_months()
     month = st.selectbox('Select month', months)
 
+    df_month = df[(df['priceArea'] == area) & 
+                  (df['startTime'] >= month_start_converter(month)) &
+                  (df['startTime'] < month_end_converter(month))]
+    df_month = df_month.sort_values(by='productionGroup').sort_values(by='startTime').reset_index()
+    df_month['startTime'] = pd.to_datetime(df_month['startTime'])
+
+    try: 
+        fig = px.line(df_month, x='startTime', y='quantityKwh', color='productionGroup')
+
+        st.plotly_chart(fig, use_container_width=True)
+
+    except Exception as e:
+        st.error(f"Error creating chart: {str(e)}")
