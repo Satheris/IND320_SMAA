@@ -63,15 +63,6 @@ with c1:
             textinfo='percent',
             hovertemplate='<b>%{label}</b><br>%{value} KWh<br>%{percent}')
 
-        # 
-        fig.update_layout(legend={'yanchor': "middle"})
-        #     margin=dict(t=80),
-        #     legend=dict(
-        #         orientation="v",
-        #         y=0.5,
-        #         xanchor="left",
-        #         x=1.05))
-        
         st.plotly_chart(fig, use_container_width=True)
         
     except Exception as e:
