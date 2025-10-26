@@ -10,16 +10,3 @@ def read_data() -> pd.DataFrame:
     data['time'] = pd.to_datetime(data['time'])
     return data
 
-# Uses st.cache_resource to only run once.
-@st.cache_resource
-def init_connection():
-    return pymongo.MongoClient(st.secrets["mongo"]["uri"])
-
-# Uses st.cache_data to only rerun when the query changes or after 10 min.
-@st.cache_data(ttl=600)
-def get_data(_client):
-    db = _client['example']
-    collection = db['data']
-    items = collection.find()
-    items = list(items)
-    return items
