@@ -34,7 +34,8 @@ def get_data():
 items = get_data()
 
 df = pd.DataFrame(items)
-df['startTime'] = pd.to_datetime(df['startTime'])
+df['startTime'] = pd.to_datetime(df['startTime'], errors='coerce', utc=True)
+df['quantityKwh'] = pd.to_numeric(df['quantityKwh'], errors='coerce')
 
 
 # Initializing columns
