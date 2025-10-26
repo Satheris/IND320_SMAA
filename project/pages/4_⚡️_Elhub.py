@@ -38,6 +38,8 @@ df['startTime'] = pd.to_datetime(df['startTime'], errors='coerce', utc=True)
 df['quantityKwh'] = pd.to_numeric(df['quantityKwh'], errors='coerce')
 df['month'] = df['startTime'].dt.month
 
+st.data_editor(df)
+
 
 # Initializing columns
 c1, c2 = st.columns(2, gap='medium')
