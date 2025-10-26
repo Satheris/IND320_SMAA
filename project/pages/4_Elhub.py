@@ -36,4 +36,6 @@ def get_data():
 
 items = get_data()
 
-print(items)
+for i, item in enumerate(items):
+    if i < 10: 
+        print(item)
