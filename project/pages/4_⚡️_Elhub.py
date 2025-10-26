@@ -73,7 +73,7 @@ with c2:
     st.subheader('Energy production progress')
     
     prods = sorted(df["productionGroup"].unique().tolist())
-    prodgroups = st.pills("Select production groups", prods, selection_mode="multi")
+    prodgroups = st.pills("Select production group(s)", prods, selection_mode="multi", default=prods)
 
-    
+    month = st.selectbox('Select month', ('January'))
 
