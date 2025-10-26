@@ -38,7 +38,7 @@ df['quantityKwh'] = pd.to_numeric(df['quantityKwh'], errors='coerce')
 df['month'] = df['startTime'].dt.month
 df['year'] = df['startTime'].dt.year
 
-df = df[df['year'] == '2021']
+df = df[df['year'] == 2021]
 
 # st.dataframe(df.head())
 
