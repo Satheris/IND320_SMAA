@@ -82,8 +82,8 @@ with c2:
     months = generate_months()
     month = st.selectbox('Select month', months)
 
-    df_month = df[(df['priceArea'] == area) & 
-                  (df['startTime'] >= month_start_converter(month)) &
+    df_month = df[(df['priceArea'] == area) & \
+                  (df['startTime'] >= month_start_converter(month)) & \
                   (df['startTime'] < month_end_converter(month))]
     df_month = df_month.sort_values(by='productionGroup').sort_values(by='startTime').reset_index()
     df_month['startTime'] = pd.to_datetime(df_month['startTime'])
