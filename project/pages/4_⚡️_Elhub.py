@@ -71,5 +71,9 @@ with c1:
 
 with c2:
     st.subheader('Energy production progress')
+    
+    prods = sorted(df["productionGroup"].unique().tolist())
+    prodgroups = st.pills("Select production groups", prods, selection_mode="multi")
 
+    
 
