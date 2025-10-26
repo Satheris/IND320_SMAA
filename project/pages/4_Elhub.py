@@ -37,7 +37,9 @@ c1, c2 = st.columns(2)
 
 c1.subheader('Total energy production in 2021 by price area')
 
-area = c1.radio('Choose a geographic area', ['NO1', 'NO2', 'NO3', 'NO4', 'NO5'], horizontal=True)
+areas = sorted(df["priceArea"].unique().tolist())
+
+area = c1.radio('Choose a geographic area', areas, horizontal=True)
 
 df_kwh_byArea = df[df['priceArea'] == area].groupby('productionGroup').agg({'quantityKwh': 'sum'}).sort_values('quantityKwh')
 
