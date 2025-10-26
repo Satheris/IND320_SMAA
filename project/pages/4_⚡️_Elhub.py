@@ -99,7 +99,7 @@ with c2:
                         x='startTime', 
                         y='quantityKwh', 
                         color='productionGroup',
-                        title=f'')
+                        title=f'Energy production in area {area} in {month}')
 
         st.plotly_chart(fig)
 
