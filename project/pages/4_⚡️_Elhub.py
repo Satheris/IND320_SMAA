@@ -58,7 +58,7 @@ with c1:
             color='productionGroup')
         
         # Optional: Improve layout
-        # fig.update_traces(textposition='inside', textinfo='percent+label')
+        fig.update_traces(textinfo='percent+label')
         # fig.update_layout(uniformtext_minsize=12, uniformtext_mode='hide')
         
         st.plotly_chart(fig, use_container_width=True)
