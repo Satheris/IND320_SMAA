@@ -64,7 +64,7 @@ with c1:
             hovertemplate='<b>%{label}</b><br>%{value} KWh<br>%{percent}')
 
         # 
-        fig.update_layout(yanchor="middle")
+        fig.update_layout(legend={'yanchor': "middle"})
         #     margin=dict(t=80),
         #     legend=dict(
         #         orientation="v",
