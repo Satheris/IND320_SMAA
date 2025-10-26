@@ -2,6 +2,7 @@
 import streamlit as st
 import pandas as pd
 
+# importing self defined functions
 from utils.common import read_data
 
 st.set_page_config(layout="wide")
