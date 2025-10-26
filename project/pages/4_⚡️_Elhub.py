@@ -89,7 +89,10 @@ with c2:
     df_month['startTime'] = pd.to_datetime(df_month['startTime'])
 
     try: 
-        fig = px.line(df_month[prodgroups], x='startTime', y='quantityKwh', color='productionGroup')
+        fig = px.line(df_month[df_month['productionGroup'] in prodgroups], 
+                      x='startTime', 
+                      y='quantityKwh', 
+                      color='productionGroup')
 
         st.plotly_chart(fig, use_container_width=True)
 
