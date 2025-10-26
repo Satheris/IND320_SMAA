@@ -117,5 +117,18 @@ expander.write('''
                The data covers energy production from hydro, wind, thermal and solar production \
                specifically, and other sources jointly. 
     
+               API link: https://api.elhub.no/energy-data-api
                
+               On the left column is a pie chart describing the yearly energy production by \
+               price area chosen in the radio widget. You will find that hovering on a section \
+               will give a legend box marking the production group, total energy produced \
+               in that production group and the percentage of the active groups. \
+               Because the plot is made with plotly, the legend is interactive, \
+               and you can mark which production groups to include in the plot and calculation.
+
+               On the right column is a line chart describing the energy production in the same \
+               price area as on the right, but for only the chosen month from the selectbox \
+               and for the marked production groups from the pill selection. \
+               Again, plotly innately produces an interactive plot where you can mark out \
+               specific areas of the plot to study closer. A guide appears when hovering over the chart.
     ''')
