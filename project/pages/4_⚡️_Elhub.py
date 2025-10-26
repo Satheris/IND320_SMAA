@@ -93,7 +93,7 @@ with c2:
     df_month = df_month.sort_values(by='productionGroup').sort_values(by='startTime').reset_index()
 
     try: 
-        fig = px.line(df_month, 
+        fig = px.line(df_month[df_month['productionGroup'] in prodgroups], 
                         x='startTime', 
                         y='quantityKwh', 
                         color='productionGroup',
