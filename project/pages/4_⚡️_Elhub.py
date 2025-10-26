@@ -35,18 +35,21 @@ df = pd.DataFrame(items)
 
 c1, c2 = st.columns(2)
 
-c1.subheader('Total energy production in 2021 by price area')
 
-areas = sorted(df["priceArea"].unique().tolist())
+with c1:
+        
+    st.subheader('Total energy production in 2021 by price area')
 
-area = c1.radio('Choose a geographic area', areas, horizontal=True)
+    areas = sorted(df["priceArea"].unique().tolist())
 
-df_kwh_byArea = df[df['priceArea'] == area].groupby('productionGroup').agg({'quantityKwh': 'sum'}).sort_values('quantityKwh')
+    area = c1.radio('Choose a geographic area', areas, horizontal=True)
 
-fig = px.pie(df_kwh_byArea, values='quantityKwh', names='productionGroup', 
-             title=f'Total energy production in area {area} by groduction group', 
-             color='productionGroup')
-c1.plotly_chart(fig)
+    df_kwh_byArea = df[df['priceArea'] == area].groupby('productionGroup').agg({'quantityKwh': 'sum'}).sort_values('quantityKwh')
+
+    fig = px.pie(df_kwh_byArea, values='quantityKwh', names='productionGroup', 
+                title=f'Total energy production in area {area} by groduction group', 
+                color='productionGroup')
+    st.plotly_chart(fig)
 
 
 
