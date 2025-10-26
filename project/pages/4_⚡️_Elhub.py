@@ -95,7 +95,8 @@ with c2:
                       color='productionGroup',
                       title=f'')
 
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig)
 
     except Exception as e:
         st.error(f'Error creating chart: {str(e)}')
+
