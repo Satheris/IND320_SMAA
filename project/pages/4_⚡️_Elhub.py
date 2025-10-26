@@ -142,5 +142,3 @@ expander.write('''
                Again, plotly innately produces an interactive plot where you can mark out \
                specific areas of the plot to study closer. A guide appears when hovering over the chart.
     ''')
-
-client.close() # Close connection to MongoDB
