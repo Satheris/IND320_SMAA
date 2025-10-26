@@ -33,7 +33,7 @@ def get_data():
 
 items = get_data()
 
-df = pd.DataFrame(items).sort_values(by='startTime').sort_values(by='priceArea').sort_values(by='productionGroup')
+df = pd.DataFrame(items).sort_values(by='priceArea').sort_values(by='productionGroup').sort_values(by='startTime')
 df['startTime'] = pd.to_datetime(df['startTime'], errors='coerce', utc=True)
 df['quantityKwh'] = pd.to_numeric(df['quantityKwh'], errors='coerce')
 df['month'] = df['startTime'].dt.month
