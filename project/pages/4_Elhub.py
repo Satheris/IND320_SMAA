@@ -2,16 +2,10 @@
 import streamlit as st
 import pandas as pd
 import pymongo
+import plotly.exceptions as px
 
-
-from utils.common import (read_data)
 
 st.set_page_config(layout="wide")
-
-
-if 'data' not in st.session_state:
-    st.session_state.data = read_data()
-
 
 st.header('Elhub')
 
@@ -36,11 +30,24 @@ def get_data():
 
 items = get_data()
 
+df = pd.DataFrame(items)
+
 
 c1, c2 = st.columns(2)
 
+c1.subheader('Total energy production in 2021 by price area')
+
+area = c1.radio('Choose a geographic area', ['NO1', 'NO2', 'NO3', 'NO4', 'NO5'])
+
+df_kwh_byArea = df[df['priceArea'] == area].groupby('productionGroup').agg({'quantityKwh': 'sum'})
+
+fig = px.pie(df_kwh_byArea, values='sum(quantityKwh)', names='productionGroup', 
+             title=f'Total energy production in area {area} by groduction group', 
+             color='productionGroup')
+fig.show()
 
 
-for i, item in enumerate(items):
-    if i < 10: 
-        c1.write(item)
+
+# for i, item in enumerate(items):
+#     if i < 10: 
+#         c1.write(item)
