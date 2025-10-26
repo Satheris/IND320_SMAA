@@ -34,6 +34,8 @@ def get_data():
 items = get_data()
 
 df = pd.DataFrame(items)
+df['startTime'] = pd.to_datetime(df['startTime'])
+
 
 # Initializing columns
 c1, c2 = st.columns(2, gap='medium')
@@ -86,7 +88,6 @@ with c2:
                   (df['startTime'] >= month_start_converter(month)) & \
                   (df['startTime'] < month_end_converter(month))]
     df_month = df_month.sort_values(by='productionGroup').sort_values(by='startTime').reset_index()
-    df_month['startTime'] = pd.to_datetime(df_month['startTime'])
 
     try: 
         fig = px.line(df_month, 
