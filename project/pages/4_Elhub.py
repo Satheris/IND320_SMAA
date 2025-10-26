@@ -28,7 +28,7 @@ client = init_connection()
 # Uses st.cache_data to only rerun when the query changes or after 10 min.
 @st.cache_data(ttl=600)
 def get_data():
-    db = client['example']
+    db = client['project']
     collection = db['data']
     items = collection.find()
     items = list(items)
@@ -36,6 +36,4 @@ def get_data():
 
 items = get_data()
 
-# Print results.
-for item in items:
-    st.write(f"{item['name']} is {item['age']} years old")
+print(items)
