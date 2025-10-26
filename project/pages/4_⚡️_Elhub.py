@@ -8,7 +8,7 @@ from utils.common import (generate_months,
                           month_start_converter,
                           month_end_converter)
 
-st.set_page_config(layout="wide")
+st.set_page_config(layout='wide')
 
 st.header('Elhub')
 
@@ -17,7 +17,7 @@ st.header('Elhub')
 # Uses st.cache_resource to only run once.
 @st.cache_resource
 def init_connection():
-    return pymongo.MongoClient(st.secrets["mongo"]["uri"])
+    return pymongo.MongoClient(st.secrets['mongo']['uri'])
 
 client = init_connection()
 
@@ -42,7 +42,7 @@ c1, c2 = st.columns(2, gap='medium')
 with c1:
     st.subheader('Total energy production in 2021 by price area')
 
-    areas = sorted(df["priceArea"].unique().tolist())
+    areas = sorted(df['priceArea'].unique().tolist())
     area = c1.radio('Choose a geographic area', areas, horizontal=True)
 
     df_kwh_byArea = df[df['priceArea'] == area]\
@@ -69,15 +69,15 @@ with c1:
         st.plotly_chart(fig, use_container_width=True)
         
     except Exception as e:
-        st.error(f"Error creating chart: {str(e)}")
+        st.error(f'Error creating chart: {str(e)}')
 
 
 # Filling column 2
 with c2:
     st.subheader('Energy production progress')
     
-    prods = sorted(df["productionGroup"].unique().tolist())
-    prodgroups = st.pills("Select production group(s)", prods, selection_mode="multi", default=prods)
+    prods = sorted(df['productionGroup'].unique().tolist())
+    prodgroups = st.pills('Select production group(s)', prods, selection_mode='multi', default=prods)
 
     months = generate_months()
     month = st.selectbox('Select month', months)
@@ -92,9 +92,10 @@ with c2:
         fig = px.line(df_month, 
                       x='startTime', 
                       y='quantityKwh', 
-                      color='productionGroup')
+                      color='productionGroup',
+                      title=f'')
 
         st.plotly_chart(fig, use_container_width=True)
 
     except Exception as e:
-        st.error(f"Error creating chart: {str(e)}")
+        st.error(f'Error creating chart: {str(e)}')
