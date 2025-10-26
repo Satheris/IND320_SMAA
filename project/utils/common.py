@@ -11,18 +11,10 @@ def read_data() -> pd.DataFrame:
     return data
 
 def generate_months():
-    months =   ['January',
-                'February',
-                'March',
-                'April', 
-                'May',
-                'June',
-                'July',
-                'August',
-                'September',
-                'October',
-                'November',
-                'December']
+    months =   ['January', 'February', 'March',
+                'April', 'May', 'June',
+                'July', 'August', 'September',
+                'October', 'November', 'December']
     return months
 
 def month_start_converter(month_text: str) -> str:
