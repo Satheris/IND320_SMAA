@@ -42,8 +42,12 @@ with c1:
     areas = sorted(df["priceArea"].unique().tolist())
     area = c1.radio('Choose a geographic area', areas, horizontal=True)
 
-    df_kwh_byArea = df[df['priceArea'] == area].groupby('productionGroup').agg({'quantityKwh': 'sum'}).sort_values('quantityKwh', ascending=False).reset_index()
-    
+    df_kwh_byArea = df[df['priceArea'] == area]\
+        .groupby('productionGroup')\
+            .agg({'quantityKwh': 'sum'})\
+                .sort_values('quantityKwh', ascending=False)\
+                    .reset_index()
+        
     try:
         # Simple version first
         fig = px.pie(
