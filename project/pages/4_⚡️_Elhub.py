@@ -33,7 +33,6 @@ def get_data():
     return items
 
 items = get_data()
-client.close() # Close connection to MongoDB
 
 
 # Converting data to dataframe and doing type conversion
@@ -143,3 +142,5 @@ expander.write('''
                Again, plotly innately produces an interactive plot where you can mark out \
                specific areas of the plot to study closer. A guide appears when hovering over the chart.
     ''')
+
+client.close() # Close connection to MongoDB
