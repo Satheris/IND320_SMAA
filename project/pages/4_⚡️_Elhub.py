@@ -89,7 +89,7 @@ with c2:
     months = generate_months()
     month = st.selectbox('Select month', months)
 
-    df_month = df[(df['priceArea'] == area) & (df['month'] == month_number_converter[month])]
+    df_month = df[(df['priceArea'] == area) & (df['month'] == month_number_converter(month))]
     df_month = df_month.sort_values(by='productionGroup').sort_values(by='startTime').reset_index()
 
     try: 
