@@ -33,7 +33,7 @@ def get_data():
 
 items = get_data()
 
-df = pd.DataFrame(items)
+df = pd.DataFrame(items).sort_values(by='startTime').sort_values(by='priceArea').sort_values(by='productionGroup')
 df['startTime'] = pd.to_datetime(df['startTime'], errors='coerce', utc=True)
 df['quantityKwh'] = pd.to_numeric(df['quantityKwh'], errors='coerce')
 df['month'] = df['startTime'].dt.month
@@ -49,7 +49,7 @@ with c1:
     st.subheader('Total energy production in 2021 by price area')
 
     areas = sorted(df['priceArea'].unique().tolist())
-    area = c1.radio('Choose a geographic area', areas, horizontal=True)
+    area = st.radio('Choose a geographic area', areas, horizontal=True)
 
     df_kwh_byArea = df[df['priceArea'] == area]\
         .groupby('productionGroup')\
