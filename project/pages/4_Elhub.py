@@ -37,14 +37,14 @@ c1, c2 = st.columns(2)
 
 c1.subheader('Total energy production in 2021 by price area')
 
-area = c1.radio('Choose a geographic area', ['NO1', 'NO2', 'NO3', 'NO4', 'NO5'])
+area = c1.radio('Choose a geographic area', ['NO1', 'NO2', 'NO3', 'NO4', 'NO5'], horizontal=True)
 
 df_kwh_byArea = df[df['priceArea'] == area].groupby('productionGroup').agg({'quantityKwh': 'sum'})
 
 fig = px.pie(df_kwh_byArea, values='sum(quantityKwh)', names='productionGroup', 
              title=f'Total energy production in area {area} by groduction group', 
              color='productionGroup')
-fig.show()
+c1.plotly_chart(fig)
 
 
 
