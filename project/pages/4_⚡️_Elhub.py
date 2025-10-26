@@ -4,6 +4,7 @@ import pandas as pd
 import pymongo
 import plotly.express as px
 
+from utils.common import generate_months
 
 st.set_page_config(layout="wide")
 
@@ -75,5 +76,6 @@ with c2:
     prods = sorted(df["productionGroup"].unique().tolist())
     prodgroups = st.pills("Select production group(s)", prods, selection_mode="multi", default=prods)
 
-    month = st.selectbox('Select month', ('January'))
+    months = generate_months()
+    month = st.selectbox('Select month', months)
 
