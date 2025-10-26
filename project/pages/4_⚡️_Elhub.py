@@ -43,11 +43,30 @@ with c1:
     area = c1.radio('Choose a geographic area', areas, horizontal=True)
 
     df_kwh_byArea = df[df['priceArea'] == area].groupby('productionGroup').agg({'quantityKwh': 'sum'}).sort_values('quantityKwh').reset_index()
+    try:
+        # Simple version first
+        fig = px.pie(
+            df_kwh_byArea, 
+            values='quantityKwh', 
+            names='productionGroup',
+            title=f'Total energy production in area {area} by production group'
+        )
+        
+        # Optional: Improve layout
+        fig.update_traces(textposition='inside', textinfo='percent+label')
+        fig.update_layout(uniformtext_minsize=12, uniformtext_mode='hide')
+        
+        st.plotly_chart(fig, use_container_width=True)
+        
+    except Exception as e:
+        st.error(f"Error creating chart: {str(e)}")
 
-    fig = px.pie(df_kwh_byArea, values='quantityKwh', names='productionGroup', 
-                title=f'Total energy production in area {area} by groduction group', 
-                color='productionGroup')
-    st.plotly_chart(fig)
+    # fig = px.pie(df_kwh_byArea, values='quantityKwh', names='productionGroup', 
+    #             title=f'Total energy production in area {area} by groduction group', 
+    #             color='productionGroup')
+    # st.plotly_chart(fig)
 
 with c2:
     st.subheader('Energy production progress')
+
+
