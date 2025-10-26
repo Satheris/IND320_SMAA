@@ -57,9 +57,26 @@ with c1:
             title=f'Total energy production in area {area} by production group',
             color='productionGroup')
         
+
+        fig.update_traces(
+            textposition='inside',
+            textinfo='percent',
+            hovertemplate='<b>%{label}</b><br>%{value} KWh<br>%{percent}'
+        )
+
+        fig.update_layout(
+            margin=dict(t=80),
+            legend=dict(
+                orientation="v",
+                yanchor="middle",
+                y=0.5,
+                xanchor="left",
+                x=1.05
+            )
+        )
         # Optional: Improve layout
-        fig.update_traces(textinfo='percent+label',
-                          pull=[0.02] * len(df_kwh_byArea))
+        # fig.update_traces(textinfo='percent+label',
+        #                   pull=[0.02] * len(df_kwh_byArea))
         # fig.update_layout(uniformtext_minsize=12, uniformtext_mode='hide')
         
         st.plotly_chart(fig, use_container_width=True)
