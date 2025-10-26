@@ -10,3 +10,18 @@ def read_data() -> pd.DataFrame:
     data['time'] = pd.to_datetime(data['time'])
     return data
 
+def generate_months():
+    months =   ['January',
+                'February',
+                'March',
+                'April', 
+                'May',
+                'June',
+                'July',
+                'August',
+                'September',
+                'October',
+                'November',
+                'December']
+    return months
+

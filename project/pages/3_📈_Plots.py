@@ -3,7 +3,8 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-from utils.common import read_data
+from utils.common import (read_data, 
+                          generate_months)
 
 st.set_page_config(layout="wide")
 
@@ -25,18 +26,7 @@ column = st.selectbox('Select column',
 
 # initiating selectslider for month selection
 startMonth, endMonth = st.select_slider('Select months', 
-                                        options=['January',
-                                                 'February',
-                                                 'March',
-                                                 'April', 
-                                                 'May',
-                                                 'June',
-                                                 'July',
-                                                 'August',
-                                                 'September',
-                                                 'October',
-                                                 'November',
-                                                 'December'],
+                                        options=generate_months(),
                                                  value=('January', 'January'))
 
 #making dictionaries to convert months into datetime values
