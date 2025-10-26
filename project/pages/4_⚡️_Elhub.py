@@ -33,7 +33,7 @@ items = get_data()
 df = pd.DataFrame(items)
 
 
-c1, c2 = st.columns(2)
+c1, c2 = st.columns(2, gap='medium')
 
 
 with c1:
@@ -49,5 +49,5 @@ with c1:
                 color='productionGroup')
     st.plotly_chart(fig)
 
-with c2: 
+with c2:
     st.subheader('Energy production progress')
