@@ -5,6 +5,8 @@ import plotly.express as px
 
 from utils.common import read_data
 
+st.set_page_config(layout="wide")
+
 if 'data' not in st.session_state:
     st.session_state.data = read_data()
 
