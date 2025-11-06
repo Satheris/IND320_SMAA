@@ -14,7 +14,7 @@ from retry_requests import retry
 from scipy.fft import dct, idct
 from scipy.stats import median_abs_deviation
 from statsmodels.tsa.seasonal import STL
-from sklearn.neighbors import LocalOutlierFactor
+# from sklearn.neighbors import LocalOutlierFactor
 
 
 # ----------------------------------------------------------------
