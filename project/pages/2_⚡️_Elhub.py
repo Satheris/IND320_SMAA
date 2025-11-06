@@ -10,8 +10,11 @@ from utils.common import (generate_months,
 
 
 # session_state.area to use across pages for data extraction
-if 'area' not in st.session_state:
-    st.session_state.area = 'NO1'
+if 'AREA' not in st.session_state:
+    st.session_state.AREA = 'NO1'
+
+def _set_new_area():
+    st.session_state.AREA = st.session_state.area
 
 
 # page configuration
@@ -60,7 +63,7 @@ with c1:
 
     # Initiating radio selection for price areas
     areas = sorted(df['priceArea'].unique().tolist())
-    area = st.radio('Choose a geographic area', areas, horizontal=True, key='area')
+    area = st.radio('Choose a geographic area', areas, horizontal=True, key='area', on_change=_set_new_area)
 
     # st.session_state.area = area
 
