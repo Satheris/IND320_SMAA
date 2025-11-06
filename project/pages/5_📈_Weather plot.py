@@ -11,11 +11,11 @@ from utils.common import (read_data,
 
 
 # session_state.area to use across pages for data extraction
-if 'area' not in st.session_state:
-    st.session_state.area = 'NO1'
+if 'AREA' not in st.session_state:
+    st.session_state.AREA = 'NO1'
 # assigning session_state.data if not in cache
 if 'data' not in st.session_state:
-    st.session_state.data = openmeteo_download(area=st.session_state.area)
+    st.session_state.data = openmeteo_download(area=st.session_state.AREA)
 
 # storing data on this page for further use
 df = st.session_state.data
@@ -24,6 +24,7 @@ df = st.session_state.data
 # page configuration
 st.set_page_config(layout='wide')
 st.header('Weather plot')
+st.write(f'Weather parameters over chosen month period for electrical price area {st.session_state.AREA}')
 
 
 # Initiating selectbox for variable selection
