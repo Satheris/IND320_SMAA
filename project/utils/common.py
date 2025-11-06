@@ -60,7 +60,7 @@ def openmeteo_download(area, year=2021):
     hourly_wind_gusts_10m = hourly.Variables(3).ValuesAsNumpy()
     hourly_precipitation = hourly.Variables(4).ValuesAsNumpy()
 
-    hourly_data = {"date": pd.date_range(
+    hourly_data = {"time": pd.date_range(
         start = pd.to_datetime(hourly.Time(), unit = "s", utc = True).tz_convert('Europe/Oslo'),
         end =  pd.to_datetime(hourly.TimeEnd(), unit = "s", utc = True).tz_convert('Europe/Oslo'),
         freq = pd.Timedelta(seconds = hourly.Interval()),
