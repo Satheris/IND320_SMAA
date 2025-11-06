@@ -117,36 +117,35 @@ def SPC_outlier_plot(df, column, dct_cutoff=10, n_std=3):
     st.plotly_chart(fig)
 
 
-# def lof_stats_plot(df:pd.DataFrame, column, contamination=0.01, n_neighbors=20):
-#     lof = LocalOutlierFactor(n_neighbors=n_neighbors, contamination=contamination)
+def lof_stats_plot(df:pd.DataFrame, column, contamination=0.01, n_neighbors=20):
+    lof = LocalOutlierFactor(n_neighbors=n_neighbors, contamination=contamination)
 
-#     # making a reduced dataframe for analysis
-#     df_reduced = pd.DataFrame(df[column])
-#     df_reduced['date'] = df['date']
-#     df_reduced['hour'] = pd.to_datetime(df_reduced['date']).dt.hour
-#     df_reduced['day_of_year'] = pd.to_datetime(df_reduced['date']).dt.dayofyear
+    # making a reduced dataframe for analysis
+    df_reduced = pd.DataFrame(df[column])
+    df_reduced['date'] = df['date']
+    df_reduced['hour'] = pd.to_datetime(df_reduced['date']).dt.hour
+    df_reduced['day_of_year'] = pd.to_datetime(df_reduced['date']).dt.dayofyear
 
-#     # Use both precipitation and time features (else LOF gets confused)
-#     features = df_reduced[[column, 'hour', 'day_of_year']]
-#     pred_labels = lof.fit_predict(features)
+    # Use both precipitation and time features (else LOF gets confused)
+    features = df_reduced[[column, 'hour', 'day_of_year']]
+    pred_labels = lof.fit_predict(features)
 
-#     # convert (-1) to 0 -> bincount needs non-negative numbers
-#     pred_labels[pred_labels == -1] = 0
+    # convert (-1) to 0 -> bincount needs non-negative numbers
+    pred_labels[pred_labels == -1] = 0
 
-#     # print for analysis results
-#     counts = np.bincount(pred_labels)
-#     print(f'LocalOutlierFactor found {counts[0]} outliers out of {sum(counts)} data points')
-#     print(f'The proportion of outliers is {counts[0]/sum(counts)*100:.3f}%')    
+    # print for analysis results
+    counts = np.bincount(pred_labels)
+    print(f'LocalOutlierFactor found {counts[0]} outliers out of {sum(counts)} data points')
+    print(f'The proportion of outliers is {counts[0]/sum(counts)*100:.3f}%')    
     
-#     # converting outlier information into dataframe format
-#     df_reduced['category'] = pred_labels
-#     df_reduced['outliers'] = df_reduced[column].copy()
-#     df_reduced.loc[(df_reduced['category'] == 1), 'outliers'] = None
+    # converting outlier information into dataframe format
+    df_reduced['category'] = pred_labels
+    df_reduced['outliers'] = df_reduced[column].copy()
+    df_reduced.loc[(df_reduced['category'] == 1), 'outliers'] = None
 
-#     # plotting with the outlier data
-#     fig = px.line(df_reduced, x='date', y=[column, 'outliers'], template='plotly')
-#     st.plotly_chart(fig)
-
+    # plotting with the outlier data
+    fig = px.line(df_reduced, x='date', y=[column, 'outliers'], template='plotly')
+    st.plotly_chart(fig)
 
 
 
