@@ -71,7 +71,7 @@ with tab2:
     with c2: 
         n_neighbors = st.slider('Number of neighbors', 3, 50, value=20, step=1)
 
-    LOF_stats_plot(df=df, column=column, contamination=contamination, n_neighbors=neighbors)
+    LOF_stats_plot(df=df, column=column, contamination=contamination, n_neighbors=n_neighbors)
 
     ## Give outlier stats
 
