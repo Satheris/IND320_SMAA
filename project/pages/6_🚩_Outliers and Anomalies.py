@@ -43,7 +43,7 @@ with tab1:
         columns.remove('time')
     column = st.radio('Choose a weather variable', columns, horizontal=True)
 
-    c1, c2 = st.columns(2, gap='medium')
+    c1, c2 = st.columns(2, gap='large')
     with c1:
         dct_cutoff = st.slider('Cutoff for DCT filter', 0, 25, value=10, step=1)
     with c2: 
