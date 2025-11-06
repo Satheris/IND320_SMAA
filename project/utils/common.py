@@ -122,7 +122,7 @@ def LOF_stats_plot(df:pd.DataFrame, column, contamination=0.01, n_neighbors=20):
 
     # making a reduced dataframe for analysis
     df_reduced = pd.DataFrame(df[column])
-    df_reduced['date'] = df['date']
+    df_reduced['date'] = df['time']
     df_reduced['hour'] = pd.to_datetime(df_reduced['date']).dt.hour
     df_reduced['day_of_year'] = pd.to_datetime(df_reduced['date']).dt.dayofyear
 
