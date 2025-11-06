@@ -20,7 +20,7 @@ df = st.session_state.data
 # page configuration
 st.set_page_config(layout='wide')
 st.header('Weather data')
-st.write(f'Weather data for electrical price area {st.session_state.AREA}')
+st.write(f'Weather data summary for electrical price area {st.session_state.AREA}')
 
 
 # making a subset of the dataset with only the first month 
