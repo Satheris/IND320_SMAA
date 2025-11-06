@@ -37,7 +37,16 @@ with tab1:
 
     ## Put in User Inputs here
 
-    SPC_outlier_plot(df=df, column="temperature_2m (°C)", dct_cutoff=10, n_std=3)
+    # radio selction of variable to analyze
+    columns = sorted(df.columns().tolist())
+    column = st.radio('Choose a weather variable', columns)
+
+    dct_cutoff = st.slider('Cutoff for DCT filter', 0, 25, value=10, step=1)
+    n_std = st.slider('Number of standard deviations for calculating upper and lower bounds', 0.5, 6, value=3, step=0.5)
+
+    SPC_outlier_plot(df=df, column=column, dct_cutoff=dct_cutoff, n_std=n_std)
+
+    ## Give outlier stats
 
 
 # Filling tab2
@@ -47,4 +56,6 @@ with tab2:
     ## Put in User Inputs here
 
     LOF_stats_plot(df=df, column="temperature_2m (°C)", contamination=0.01, n_neighbors=20)
+
+    ## Give outlier stats
 
