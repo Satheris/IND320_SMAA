@@ -63,7 +63,9 @@ with c1:
 
     # Initiating radio selection for price areas
     areas = sorted(df['priceArea'].unique().tolist())
-    area = st.radio('Choose a geographic area', areas, horizontal=True, key='area', on_change=_set_new_area)
+    area_index = {element: i for i, element in enumerate(areas)}
+    area = st.radio('Choose a geographic area', areas, index=area_index[st.session_state.AREA],
+                    horizontal=True, key='area', on_change=_set_new_area)
 
     # st.session_state.area = area
 
