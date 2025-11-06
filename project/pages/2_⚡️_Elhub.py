@@ -65,7 +65,7 @@ with c1:
     # st.session_state.area = area
 
     # Making reduced dataset
-    df_kwh_byArea = df[df['priceArea'] == area]\
+    df_kwh_byArea = df[df['priceArea'] == st.session_state.area]\
         .groupby('productionGroup')\
             .agg({'quantityKwh': 'sum'})\
                 .sort_values('quantityKwh', ascending=False)\
@@ -78,7 +78,7 @@ with c1:
             df_kwh_byArea, 
             values='quantityKwh', 
             names='productionGroup',
-            title=f'Total energy production in area {area} in 2021',
+            title=f'Total energy production in area {st.session_state.area} in 2021',
             color='productionGroup')
         
         # Update hover info
@@ -106,7 +106,7 @@ with c2:
     month = st.selectbox('Select month', months)
 
     # Reducing dataset
-    df_month = df[(df['priceArea'] == area) & 
+    df_month = df[(df['priceArea'] == st.session_state.area) & 
                   (df['month'] == month_number_converter(month)) &
                   (df['productionGroup'].isin(prodgroups))]
     df_month = df_month.sort_values(by='productionGroup').sort_values(by='startTime').reset_index()
@@ -117,7 +117,7 @@ with c2:
                         x='startTime', 
                         y='quantityKwh', 
                         color='productionGroup',
-                        title=f'Energy production in area {area} in {month}')
+                        title=f'Energy production in area {st.session_state.area} in {month}')
 
         st.plotly_chart(fig)
 
