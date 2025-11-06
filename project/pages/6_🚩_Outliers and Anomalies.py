@@ -67,7 +67,7 @@ with tab2:
     # sliders divided into two columns
     c1, c2 = st.columns(2, gap='large')
     with c1:
-        contamination = st.slider('Proportion of outliers', 0.0, 0.5, value=0.01, step=0.01)
+        contamination = st.slider('Proportion of outliers', 0.01, 0.5, value=0.01, step=0.01)
     with c2: 
         n_neighbors = st.slider('Number of neighbors', 3, 50, value=20, step=1)
 
