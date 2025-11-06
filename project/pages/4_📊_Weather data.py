@@ -19,7 +19,7 @@ df = st.session_state.data
 
 # page configuration
 st.set_page_config(layout='wide')
-st.header('Data')
+st.header('Weather data')
 st.write(f'Weather data for electrical price area {st.session_state.AREA}')
 
 
