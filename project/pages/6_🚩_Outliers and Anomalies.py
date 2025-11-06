@@ -38,7 +38,7 @@ with tab1:
     ## Put in User Inputs here
 
     # radio selction of variable to analyze
-    columns = sorted(df.columns().tolist())
+    columns = sorted(df.columns.tolist())
     column = st.radio('Choose a weather variable', columns)
 
     dct_cutoff = st.slider('Cutoff for DCT filter', 0, 25, value=10, step=1)
