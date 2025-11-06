@@ -30,15 +30,21 @@ st.write(f'Outlier and anomaly analysis of weather data from electrical price ar
 # Initializing tabs
 tab1, tab2 = st.tabs(['Outlier/SPC analysis', 'Anomaly/LOF analysis'])
 
+
 # Filling tab1
 with tab1:
     st.subheader('Outlier/SPC analysis')
 
+    ## Put in User Inputs here
+
     SPC_outlier_plot(df=df, column="temperature_2m (°C)", dct_cutoff=10, n_std=3)
+
 
 # Filling tab2
 with tab2:
     st.subheader('Anomaly/LOF analysis')
+
+    ## Put in User Inputs here
 
     LOF_stats_plot(df=df, column="temperature_2m (°C)", contamination=0.01, n_neighbors=20)
 
