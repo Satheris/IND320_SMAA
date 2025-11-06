@@ -60,9 +60,9 @@ with c1:
 
     # Initiating radio selection for price areas
     areas = sorted(df['priceArea'].unique().tolist())
-    area = st.radio('Choose a geographic area', areas, horizontal=True)
+    st.session_state.area = st.radio('Choose a geographic area', areas, horizontal=True)
 
-    st.session_state.area = area
+    # st.session_state.area = area
 
     # Making reduced dataset
     df_kwh_byArea = df[df['priceArea'] == area]\
