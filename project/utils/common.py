@@ -85,8 +85,8 @@ def openmeteo_download(area, year=2021):
 
 def SPC_outlier_plot(df, column, dct_cutoff=10, n_std=3):
     # DCT of chosen variable -> transform to frequency domain
-    df_reduced = df[column]
-    dct_coefs = dct(df_reduced)
+    df_copy = df.copy()
+    dct_coefs = dct(df_copy)
 
     # saving seasonal variation in low-pass filtering -> transform back to signal domain
     dct_coefs_lowpass = dct_coefs.copy()
@@ -102,24 +102,24 @@ def SPC_outlier_plot(df, column, dct_cutoff=10, n_std=3):
     MAD = median_abs_deviation(satv)
 
     # finding lower and upper bounds for the expected variation in year scale
-    df_reduced['upper_bound'] = np.add(seasonal_variation, n_std*MAD)
-    df_reduced['lower_bound'] = np.add(seasonal_variation, (-n_std)*MAD)
+    df_copy['upper_bound'] = np.add(seasonal_variation, n_std*MAD)
+    df_copy['lower_bound'] = np.add(seasonal_variation, (-n_std)*MAD)
 
     # marking outliers in a separate column and removing data from inlier positions
-    df_reduced['outliers'] = df_reduced[column].copy()
-    df_reduced.loc[((df_reduced[column] < df_reduced['upper_bound']) & 
-                    (df_reduced[column] > df_reduced['lower_bound'])), 
+    df_copy['outliers'] = df_copy[column].copy()
+    df_copy.loc[((df_copy[column] < df_copy['upper_bound']) & 
+                    (df_copy[column] > df_copy['lower_bound'])), 
                     'outliers'] = None
 
     # output statistics
-    print(f'Number of outliers found: {(df_reduced["outliers"].count())}')
-    print(f'Percentage of outliers: {(df_reduced["outliers"].count())/len(df_reduced["outliers"]):.3f}%')
+    print(f'Number of outliers found: {(df_copy["outliers"].count())}')
+    print(f'Percentage of outliers: {(df_copy["outliers"].count())/len(df_copy["outliers"]):.3f}%')
 
     # line plot with temperature in original scale, upper and lower outlier bounds in original scale and outliers marked
-    fig = px.line(df_reduced, x='time', y=[column, 'outliers', 'upper_bound', 'lower_bound'], template='plotly')
+    fig = px.line(df_copy, x='time', y=[column, 'outliers', 'upper_bound', 'lower_bound'], template='plotly')
     st.plotly_chart(fig)
 
-    # df_reduced.drop(labels=['upper_bound', 'lower_bound', 'outliers'])
+    # df_copy.drop(labels=['upper_bound', 'lower_bound', 'outliers'])
 
 
 def LOF_stats_plot(df:pd.DataFrame, column, contamination=0.01, n_neighbors=20):
