@@ -86,7 +86,7 @@ def openmeteo_download(area, year=2021):
 def SPC_outlier_plot(df, column, dct_cutoff=10, n_std=3):
     # DCT of chosen variable -> transform to frequency domain
     df_copy = df.copy()
-    dct_coefs = dct(df_copy)
+    dct_coefs = dct(df_copy[column])
 
     # saving seasonal variation in low-pass filtering -> transform back to signal domain
     dct_coefs_lowpass = dct_coefs.copy()
