@@ -23,7 +23,7 @@ df = st.session_state.data
 
 # page configuration
 st.set_page_config(layout='wide')
-st.header('Plots')
+st.header('Weather plot')
 
 
 # Initiating selectbox for variable selection
