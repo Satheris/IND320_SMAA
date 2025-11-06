@@ -41,7 +41,7 @@ with tab1:
 
 
     # radio selction of variable to analyze
-    column = st.radio('Choose a weather variable', columns, horizontal=True)
+    column1 = st.radio('Choose a weather variable', columns, horizontal=True)
 
     # sliders divided into two columns
     c1, c2 = st.columns(2, gap='large')
@@ -51,7 +51,7 @@ with tab1:
         n_std = st.slider('Number of standard deviations for calculating upper and lower bounds', 0.5, 6.0, value=3.0, step=0.5)
 
 
-    SPC_outlier_plot(df=df, column=column, dct_cutoff=dct_cutoff, n_std=n_std)
+    SPC_outlier_plot(df=df, column=column1, dct_cutoff=dct_cutoff, n_std=n_std)
 
     ## Give outlier stats
 
@@ -62,7 +62,7 @@ with tab2:
 
 
     # radio selction of variable to analyze
-    column = st.radio('Choose a weather variable', columns, horizontal=True)
+    column2 = st.radio('Choose a weather variable', columns, horizontal=True)
 
     # sliders divided into two columns
     c1, c2 = st.columns(2, gap='large')
@@ -71,7 +71,7 @@ with tab2:
     with c2: 
         n_neighbors = st.slider('Number of neighbors', 3, 50, value=20, step=1)
 
-    LOF_stats_plot(df=df, column=column, contamination=contamination, n_neighbors=neighbors)
+    LOF_stats_plot(df=df, column=column2, contamination=contamination, n_neighbors=neighbors)
 
     ## Give outlier stats
 
