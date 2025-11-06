@@ -4,6 +4,13 @@ import pandas as pd
 import pymongo
 import plotly.express as px
 
+# importing self defined functions
+from utils.common import (openmeteo_download)
+
+
+st.set_page_config(layout='wide')
+
+st.header('Decomposition')
 
 # tab1, tab2 = st.tabs(["Cat", "Dog"])
 
