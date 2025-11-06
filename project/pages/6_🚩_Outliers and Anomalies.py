@@ -41,7 +41,7 @@ with tab1:
     columns = sorted(df.columns.tolist())
     column = st.radio('Choose a weather variable', columns)
 
-    c1, c2 = st.columns()
+    c1, c2 = st.columns(2, gap='medium')
     with c1:
         dct_cutoff = st.slider('Cutoff for DCT filter', 0, 25, value=10, step=1)
     with c2: 
