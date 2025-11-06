@@ -27,16 +27,16 @@ st.header('Outliers and Anomalies')
 st.write(f'Outlier and anomaly analysis of weather data from electrical price area {st.session_state.AREA}')
 
 
-# Initializing tabs
-tab1, tab2 = st.tabs(['Outlier/SPC analysis', 'Anomaly/LOF analysis'])
-
 # need column names for UI in tabs
 columns = sorted(df.columns.tolist())
 if 'time' in columns:
     columns.remove('time')
-
-# radio selction of variable to analyze
+# radio selection of variable to analyze
 column = st.radio('Choose a weather variable', columns, horizontal=True) #, key='spc_column')
+
+
+# Initializing tabs
+tab1, tab2 = st.tabs(['Outlier/SPC analysis', 'Anomaly/LOF analysis'])
 
 # Filling tab1
 with tab1:
