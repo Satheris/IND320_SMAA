@@ -40,4 +40,5 @@ with tab1:
 with tab2:
     st.subheader('Anomaly/LOF analysis')
 
+    LOF_stats_plot(df=df, column="temperature_2m (°C)", contamination=0.01, n_neighbors=20)
 
