@@ -6,15 +6,23 @@ import plotly.express as px
 
 # importing self defined functions
 from utils.common import (generate_months,
-                          month_number_converter)
+                          month_number_converter,
+                          openmeteo_download)
 
 
 # session_state.area to use across pages for data extraction
 if 'AREA' not in st.session_state:
     st.session_state.AREA = 'NO1'
+# assigning session_state.data if not in cache
+if 'data' not in st.session_state:
+    st.session_state.data = openmeteo_download(area=st.session_state.AREA)
 
 def _set_new_area():
     st.session_state.AREA = st.session_state.area
+    _download_new_area()
+
+def _download_new_area():
+    st.session_state.data = openmeteo_download(area=st.session_state.AREA)
 
 
 # page configuration
