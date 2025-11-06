@@ -9,15 +9,20 @@ from utils.common import (read_data,
                           month_end_converter,
                           openmeteo_download)
 
-st.set_page_config(layout="wide")
 
+# session_state.area to use across pages for data extraction
+if 'area' not in st.session_state:
+    st.session_state.area = 'NO1'
+# assigning session_state.data if not in cache
 if 'data' not in st.session_state:
-    st.session_state.data = read_data()
+    st.session_state.data = openmeteo_download(area=st.session_state.area)
 
-# Storing data on this page for further use
+# storing data on this page for further use
 df = st.session_state.data
 
 
+# page configuration
+st.set_page_config(layout='wide')
 st.header('Plots')
 
 
