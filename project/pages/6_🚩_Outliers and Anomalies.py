@@ -30,6 +30,10 @@ st.write(f'Outlier and anomaly analysis of weather data from electrical price ar
 # Initializing tabs
 tab1, tab2 = st.tabs(['Outlier/SPC analysis', 'Anomaly/LOF analysis'])
 
+# need column names for UI in tabs
+columns = sorted(df.columns.tolist())
+if 'time' in columns:
+    columns.remove('time')
 
 # Filling tab1
 with tab1:
@@ -37,9 +41,6 @@ with tab1:
 
 
     # radio selction of variable to analyze
-    columns = sorted(df.columns.tolist())
-    if 'time' in columns:
-        columns.remove('time')
     column = st.radio('Choose a weather variable', columns, horizontal=True)
 
     # sliders divided into two columns
@@ -59,9 +60,18 @@ with tab1:
 with tab2:
     st.subheader('Anomaly/LOF analysis')
 
-    ## Put in User Inputs here
 
-    LOF_stats_plot(df=df, column="temperature_2m (°C)", contamination=0.01, n_neighbors=20)
+    # radio selction of variable to analyze
+    column = st.radio('Choose a weather variable', columns, horizontal=True)
+
+    # sliders divided into two columns
+    c1, c2 = st.columns(2, gap='large')
+    with c1:
+        contamination = st.slider('Proportion of outliers', 0.0, 0.5, value=0.01, step=0.005)
+    with c2: 
+        n_neighbors = st.slider('Number of neighbors', 3, 50, value=20, step=1)
+
+    LOF_stats_plot(df=df, column=column, contamination=contamination, n_neighbors=neighbors)
 
     ## Give outlier stats
 
