@@ -35,13 +35,16 @@ columns = sorted(df.columns.tolist())
 if 'time' in columns:
     columns.remove('time')
 
+# radio selction of variable to analyze
+column = st.radio('Choose a weather variable', columns, horizontal=True) #, key='spc_column')
+
 # Filling tab1
 with tab1:
     st.subheader('Outlier/SPC analysis')
 
 
     # radio selction of variable to analyze
-    column = st.radio('Choose a weather variable', columns, horizontal=True, key='spc_column')
+    # column = st.radio('Choose a weather variable', columns, horizontal=True, key='spc_column')
 
     # sliders divided into two columns
     c1, c2 = st.columns(2, gap='large')
@@ -62,7 +65,7 @@ with tab2:
 
 
     # radio selction of variable to analyze
-    column = st.radio('Choose a weather variable', columns, horizontal=True, key='lof_column')
+    # column = st.radio('Choose a weather variable', columns, horizontal=True, key='lof_column')
 
     # sliders divided into two columns
     c1, c2 = st.columns(2, gap='large')
