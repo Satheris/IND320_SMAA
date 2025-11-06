@@ -30,8 +30,8 @@ tab1, tab2 = st.tabs(['Outlier/SPC analysis', 'Anomaly/LOF analysis'])
 
 # Filling tab1
 with tab1:
-    st.header('Outlier/SPC analysis')
+    st.subheader('Outlier/SPC analysis')
 
 # Filling tab2
 with tab2:
-    st.header('Anomaly/LOF analysis')
+    st.subheader('Anomaly/LOF analysis')
