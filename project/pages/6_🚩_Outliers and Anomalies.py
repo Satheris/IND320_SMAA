@@ -35,7 +35,6 @@ tab1, tab2 = st.tabs(['Outlier/SPC analysis', 'Anomaly/LOF analysis'])
 with tab1:
     st.subheader('Outlier/SPC analysis')
 
-    ## Put in User Inputs here
 
     # radio selction of variable to analyze
     columns = sorted(df.columns.tolist())
@@ -43,11 +42,13 @@ with tab1:
         columns.remove('time')
     column = st.radio('Choose a weather variable', columns, horizontal=True)
 
+    # sliders divided into two columns
     c1, c2 = st.columns(2, gap='large')
     with c1:
         dct_cutoff = st.slider('Cutoff for DCT filter', 0, 25, value=10, step=1)
     with c2: 
         n_std = st.slider('Number of standard deviations for calculating upper and lower bounds', 0.5, 6.0, value=3.0, step=0.5)
+
 
     SPC_outlier_plot(df=df, column=column, dct_cutoff=dct_cutoff, n_std=n_std)
 
