@@ -5,7 +5,8 @@ import pymongo
 import plotly.express as px
 
 # Importing self defined functions
-from utils.common import (openmeteo_download)
+from utils.common import (openmeteo_download,
+                          SPC_outlier_plot)
 
 
 # session_state.area to use across pages for data extraction
@@ -31,6 +32,8 @@ tab1, tab2 = st.tabs(['Outlier/SPC analysis', 'Anomaly/LOF analysis'])
 # Filling tab1
 with tab1:
     st.subheader('Outlier/SPC analysis')
+
+    SPC_outlier_plot(df=df, column="temperature_2m (°C)", dct_cutoff=10, n_std=3)
 
 # Filling tab2
 with tab2:
