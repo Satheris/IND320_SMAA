@@ -6,7 +6,8 @@ import plotly.express as px
 
 # Importing self defined functions
 from utils.common import (openmeteo_download,
-                          SPC_outlier_plot)
+                          SPC_outlier_plot,
+                          LOF_stats_plot)
 
 
 # session_state.area to use across pages for data extraction
@@ -38,3 +39,5 @@ with tab1:
 # Filling tab2
 with tab2:
     st.subheader('Anomaly/LOF analysis')
+
+
