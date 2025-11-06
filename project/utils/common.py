@@ -116,6 +116,8 @@ def SPC_outlier_plot(df, column, dct_cutoff=10, n_std=3):
     fig = px.line(df, x='time', y=[column, 'outliers', 'upper_bound', 'lower_bound'], template='plotly')
     st.plotly_chart(fig)
 
+    df.drop(labels=['upper_bound', 'lower_bound', 'outliers'])
+
 
 def LOF_stats_plot(df:pd.DataFrame, column, contamination=0.01, n_neighbors=20):
     lof = LocalOutlierFactor(n_neighbors=n_neighbors, contamination=contamination)
