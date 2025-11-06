@@ -117,7 +117,7 @@ def SPC_outlier_plot(df, column, dct_cutoff=10, n_std=3):
     st.plotly_chart(fig)
 
 
-def lof_stats_plot(df:pd.DataFrame, column, contamination=0.01, n_neighbors=20):
+def LOF_stats_plot(df:pd.DataFrame, column, contamination=0.01, n_neighbors=20):
     lof = LocalOutlierFactor(n_neighbors=n_neighbors, contamination=contamination)
 
     # making a reduced dataframe for analysis
