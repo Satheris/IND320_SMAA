@@ -11,7 +11,7 @@ from utils.common import (generate_months,
 st.set_page_config(layout='wide')
 
 st.header('Elhub')
-st.subheader('Electrical data from Norway')
+st.write('Electrical data from Norway')
 
 
 # Initialize connection.
