@@ -23,7 +23,7 @@ st.header('Data')
 
 
 # making a subset of the dataset with only the first month 
-month_df = df[(df['time'] >= '2020-01-01T00:00') & (df['time'] < '2020-02-01T00:00')]
+month_df = df[(df['time'] >= '2021-01-01T00:00') & (df['time'] < '2021-02-01T00:00')]
 
 # making a dataframe on the necessary format, with arrays in single cells
 chart_df = pd.DataFrame({
