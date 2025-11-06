@@ -2,6 +2,7 @@
 import streamlit as st
 import pandas as pd
 import pymongo
+import numpy as np
 
 import plotly.express as px
 import plotly.graph_objects as go
@@ -79,8 +80,50 @@ def openmeteo_download(area, year=2021):
 
 
 # ----------------------------------------------------------------
+# ANALYSIS PLOTTERS
+# ----------------------------------------------------------------
+
+def SPC_outlier_plot(df, column, dct_cutoff=10, n_std=3):
+    # DCT of chosen variable -> transform to frequency domain
+    dct_coefs = dct(df[column])
+
+    # saving seasonal variation in low-pass filtering -> transform back to signal domain
+    dct_coefs_lowpass = dct_coefs.copy()
+    dct_coefs_lowpass[dct_cutoff:] = 0
+    seasonal_variation = idct(dct_coefs_lowpass)
+
+    # performing high-pass filtering -> transform back to signal domain
+    dct_coefs_highpass = dct_coefs.copy()
+    dct_coefs_highpass[:dct_cutoff] = 0
+    satv = idct(dct_coefs_highpass)
+
+    # finding the median absolute deviation (MAD) based on SATV
+    MAD = median_abs_deviation(satv)
+
+    # finding lower and upper bounds for the expected variation in year scale
+    df['upper_bound'] = np.add(seasonal_variation, n_std*MAD)
+    df['lower_bound'] = np.add(seasonal_variation, (-n_std)*MAD)
+
+    # marking outliers in a separate column and removing data from inlier positions
+    df['outliers'] = df[column].copy()
+    df.loc[((df[column] < df['upper_bound']) & (df[column] > df['lower_bound'])), 'outliers'] = None
+
+    # output statistics
+    print(f'Number of outliers found: {(df["outliers"].count())}')
+    print(f'Percentage of outliers: {(df["outliers"].count())/len(df["outliers"]):.3f}%')
+
+    # line plot with temperature in original scale, upper and lower outlier bounds in original scale and outliers marked
+    fig = px.line(df, x='date', y=[column, 'outliers', 'upper_bound', 'lower_bound'], template='plotly')
+    fig.show()
+
+
+
+
+
+# ----------------------------------------------------------------
 # GEO HELPER
 # ----------------------------------------------------------------
+
 def area_to_geoplacement(area):
     geo_dict = {'NO1': {'long': 10.7461, 'lat': 59.9127},
                 'NO2': {'long': 7.9956, 'lat': 58.1467},
@@ -89,6 +132,7 @@ def area_to_geoplacement(area):
                 'NO5': {'long': 10.3951, 'lat': 63.4305}}
     
     return geo_dict[area]['long'], geo_dict[area]['lat']
+
 
 
 # ----------------------------------------------------------------
