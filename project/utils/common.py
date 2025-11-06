@@ -113,7 +113,7 @@ def SPC_outlier_plot(df, column, dct_cutoff=10, n_std=3):
     print(f'Percentage of outliers: {(df["outliers"].count())/len(df["outliers"]):.3f}%')
 
     # line plot with temperature in original scale, upper and lower outlier bounds in original scale and outliers marked
-    fig = px.line(df, x='date', y=[column, 'outliers', 'upper_bound', 'lower_bound'], template='plotly')
+    fig = px.line(df, x='time', y=[column, 'outliers', 'upper_bound', 'lower_bound'], template='plotly')
     fig.show()
 
 
