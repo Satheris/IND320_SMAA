@@ -28,7 +28,7 @@ def read_data() -> pd.DataFrame:
 
 
 @st.cache_data(show_spinner=True)
-def openmeteo_download(area, year):
+def openmeteo_download(area, year=2021):
     # Setup the Open-Meteo API client with cache and retry on error
     cache_session = requests_cache.CachedSession('.cache', expire_after = 3600)
     retry_session = retry(cache_session, retries = 5, backoff_factor = 0.2)
