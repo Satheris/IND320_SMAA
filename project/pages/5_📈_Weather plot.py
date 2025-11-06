@@ -3,8 +3,7 @@ import streamlit as st
 import plotly.express as px
 
 # Importing self defined functions
-from utils.common import (read_data, 
-                          generate_months,
+from utils.common import (generate_months,
                           month_start_converter,
                           month_end_converter,
                           openmeteo_download)

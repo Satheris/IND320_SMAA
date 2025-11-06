@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 
 # importing self defined functions
-from utils.common import read_data, openmeteo_download
+from utils.common import openmeteo_download
 
 
 # session_state.area to use across pages for data extraction
