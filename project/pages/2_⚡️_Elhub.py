@@ -8,8 +8,14 @@ import plotly.express as px
 from utils.common import (generate_months,
                           month_number_converter)
 
-st.set_page_config(layout='wide')
 
+# session_state.area to use across pages for data extraction
+if 'area' not in st.session_state:
+    st.session_state.area = 'NO1'
+
+
+# page configuration
+st.set_page_config(layout='wide')
 st.header('Elhub')
 
 
@@ -55,6 +61,8 @@ with c1:
     # Initiating radio selection for price areas
     areas = sorted(df['priceArea'].unique().tolist())
     area = st.radio('Choose a geographic area', areas, horizontal=True)
+
+    st.session_state.area = area
 
     # Making reduced dataset
     df_kwh_byArea = df[df['priceArea'] == area]\
