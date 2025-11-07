@@ -54,7 +54,6 @@ with tab1:
         
         periodLength = st.number_input('Length of a period (hours)', min_value=24, value=24*7, step=24)
 
-    st.write('\n \n')
 
     STL_plotter(df_elhub=df_elhub, 
                 area=st.session_state.AREA, 
@@ -63,6 +62,7 @@ with tab1:
                 seasonalSmoother=seasonalSmoother, 
                 trendSmoother=trendSmoother, 
                 robust=robust)
+
 
 # filling tab 2
 with tab2:
@@ -73,10 +73,11 @@ with tab2:
     fs = 1/3600
 
     with c1: 
-        nperseg = 24*7
+        nperseg = st.number_input('Window length', min_value=24, value=24*7*2, step=24)
     
     with c2:
-        noverlap = None
+        overlap_rate = st.slider('Window overlap rate', min_value=0.00, max_value=1.00, value=0.50, step=0.25)
+        noverlap = int(nperseg*overlap_rate)
 
     STFT_plotter(df_elhub=df_elhub,
                  area=st.session_state.AREA,
