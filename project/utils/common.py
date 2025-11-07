@@ -221,15 +221,13 @@ def SPC_outlier_plot(df, column, dct_cutoff=10, n_std=3):
                     (df_copy[column] > df_copy['lower_bound'])), 
                     'outliers'] = None
 
-    # output statistics
-    print(f'Number of outliers found: {(df_copy["outliers"].count())}')
-    print(f'Percentage of outliers: {(df_copy["outliers"].count())/len(df_copy["outliers"]):.3f}%')
-
     # line plot with temperature in original scale, upper and lower outlier bounds in original scale and outliers marked
     fig = px.line(df_copy, x='time', y=[column, 'outliers', 'upper_bound', 'lower_bound'], template='plotly')
     st.plotly_chart(fig)
 
-    # df_copy.drop(labels=['upper_bound', 'lower_bound', 'outliers'])
+    # output statistics
+    st.write(f'Number of outliers found: {(df_copy["outliers"].count())}')
+    st.write(f'Percentage of outliers: {(df_copy["outliers"].count())/len(df_copy["outliers"]):.3f}%')
 
 
 def LOF_stats_plot(df:pd.DataFrame, column, contamination=0.01, n_neighbors=20):
