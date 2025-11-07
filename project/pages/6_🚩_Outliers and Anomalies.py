@@ -25,13 +25,6 @@ st.header('Outliers and Anomalies')
 st.write(f'Outlier and anomaly analysis of weather data from electrical price area {st.session_state.AREA}')
 
 
-# need column names for UI in tabs
-columns = sorted(df.columns.tolist())
-if 'time' in columns:
-    columns.remove('time')
-column = st.selectbox('Select weather variable for analyses below', columns)
-
-
 # Initializing tabs
 tab1, tab2 = st.tabs(['Outlier/SPC analysis', 'Anomaly/LOF analysis'])
 
@@ -50,7 +43,6 @@ with tab1:
 
 
     SPC_outlier_plot(df=df, column='temperature_2m (°C)', dct_cutoff=dct_cutoff, n_std=n_std)
-
 
 
 # tab2 -> LOF analysis with UI
