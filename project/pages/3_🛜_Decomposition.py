@@ -31,6 +31,7 @@ df_elhub = st.session_state.elhub_data
 
 # need prodgroups for radio widgets in tabs
 prodGroups = sorted(df_elhub['productionGroup'].unique().tolist())
+prodGroup = st.selectbox(prodGroups)
 
 
 # initializing tabs 
@@ -43,7 +44,7 @@ with tab1:
     c1, c2 = st.columns(2, gap='large')
     
     with c1: 
-        prodGroup = st.radio('Choose a production group', prodGroups, horizontal=True, key='stl_prodGroup')
+        # prodGroup = st.radio('Choose a production group', prodGroups, horizontal=True, key='stl_prodGroup')
 
         seasonalSmoother = st.slider('Seasonal smoother', 3, 21, value=3, step=2)
 
@@ -71,7 +72,7 @@ with tab1:
 with tab2:
     st.header('Spectrogram')
 
-    prodGroup = st.radio('Choose a production group', prodGroups, horizontal=True, key='stft_prodGroup')
+    # prodGroup = st.radio('Choose a production group', prodGroups, horizontal=True, key='stft_prodGroup')
 
 
     fs = 1/3600
