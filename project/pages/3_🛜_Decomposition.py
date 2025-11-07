@@ -57,7 +57,8 @@ with tab1:
         # button = st.button('None')
         trendSmoother = None
 
-        robust = None
+        robust = st.radio('Use weighted analysis that is robust to some forms of outliers', 
+                          [True, False], horizontal=True)
 
     STL_plotter(df_elhub=df_elhub, 
                 area=st.session_state.AREA, 
