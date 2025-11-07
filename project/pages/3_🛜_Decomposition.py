@@ -46,11 +46,13 @@ with tab1:
     with c1: 
         seasonalSmoother = st.number_input('Seasonal smoother', 
                                            min_value=3, value=13, step=2, 
-                                           placeholder='Input must be odd integer')
+                                           placeholder='Input must be odd integer',
+                                           on_change=st.rerun())
     
         trendSmoother = st.number_input('Trend smoother', 
                                         min_value=24, value=365, step=2,
-                                        placeholder='Input must be odd integer')
+                                        placeholder='Input must be odd integer',
+                                        on_change=st.rerun())
 
     with c2:
         robust = st.radio('Use weighted analysis that is robust to some forms of outliers', 
