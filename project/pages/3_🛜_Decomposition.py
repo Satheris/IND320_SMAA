@@ -49,16 +49,18 @@ with tab1:
         prodGroup = st.radio('Choose a production group', prodGroups, horizontal=True, key='stl_prodGroup')
 
         seasonalSmoother = st.slider('Seasonal smoother', 3, 21, value=3, step=2)
-        
-        periodFlag = st.checkbox('')
-        periodLength = st.slider('Length of a period', 1, 21, value=12, step=1)
+
+        flag = st.checkbox('', value=False)
+        # button = st.button('None')
 
     with c2:
-        # button = st.button('None')
-        trendSmoother = None
-
         robust = st.radio('Use weighted analysis that is robust to some forms of outliers', 
-                          [True, False], horizontal=True)
+                          [True, False], horizontal=True)        
+        
+        periodLength = st.slider('Length of a period', 1, 21, value=12, step=1)
+
+        trendSmoother = st.slider('', 1, 21, value=5, step=2, disabled=True)
+
 
     STL_plotter(df_elhub=df_elhub, 
                 area=st.session_state.AREA, 
