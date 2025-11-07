@@ -29,7 +29,7 @@ st.write(f'Decomposition analyses of Elhub data from electrical price area {st.s
 df_elhub = st.session_state.elhub_data
 
 
-# need prodgroups for radio widgets in tabs
+# production group selector for analyses below
 prodGroups = sorted(df_elhub['productionGroup'].unique().tolist())
 prodGroup = st.selectbox('Select production group', prodGroups)
 
