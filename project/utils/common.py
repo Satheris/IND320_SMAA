@@ -194,6 +194,7 @@ def STL_plotter(df_elhub, area='NO1', prodGroup='wind', periodLength=12,
     sub_df_elhub = df_elhub[(df_elhub['priceArea'] == area) & (df_elhub['productionGroup'] == prodGroup)]
     sub_df_elhub = pd.DataFrame(sub_df_elhub[['quantityKwh', 'startTime']])
     sub_df_elhub['startTime'] = pd.to_datetime(sub_df_elhub['startTime'], utc=True, errors='coerce').dt.tz_localize(None)
+    sub_df_elhub = sub_df_elhub.sort_values(by='startTime')
 
     # adding 1 hour because (utc=True) displaced the time
     sub_df_elhub['startTime'] = sub_df_elhub['startTime'] + pd.Timedelta(hours=1)
