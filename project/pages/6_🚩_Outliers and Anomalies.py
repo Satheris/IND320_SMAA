@@ -1,7 +1,5 @@
 # necessary imports for this page
 import streamlit as st
-import pandas as pd
-import plotly.express as px
 
 # Importing self defined functions
 from utils.common import (openmeteo_download,
