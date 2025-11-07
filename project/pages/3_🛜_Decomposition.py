@@ -8,6 +8,12 @@ from utils.common import (openmeteo_download,
                           STFT_plotter)
 
 
+# page configuration
+st.set_page_config(layout='wide')
+st.header('Decomposition')
+st.write(f'Decomposition analyses of Elhub data from electrical price area {st.session_state.AREA}')
+
+
 # session_state.area to use across pages for data extraction
 if 'AREA' not in st.session_state:
     st.session_state.AREA = 'NO1'
@@ -21,12 +27,6 @@ if 'elhub_data' not in st.session_state:
 
 # storing data on this page for further use
 df_elhub = st.session_state.elhub_data
-
-
-# page configuration
-st.set_page_config(layout='wide')
-st.header('Decomposition')
-st.write(f'Decomposition analyses of Elhub data from electrical price area {st.session_state.AREA}')
 
 
 # need prodgroups for radio widgets in tabs
