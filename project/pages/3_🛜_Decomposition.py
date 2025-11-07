@@ -38,12 +38,17 @@ tab1, tab2 = st.tabs(['STL analysis', 'Spectrogram'])
 with tab1:
     st.header('Seasonal-Trend decomposition with LOESS')
 
-    prodGroups = sorted(df_elhub['productionGroup'].unique().tolist())
-    prodGroup = st.radio('Choose a production group', prodGroups, horizontal=True)
+    c1, c2 = st.columns(2, gap='large')
+    
+    with c1: 
+        prodGroups = sorted(df_elhub['productionGroup'].unique().tolist())
+        prodGroup = st.radio('Choose a production group', prodGroups, horizontal=True)
+
 
     periodLength = 12
 
-    seasonalSmoother = st.slider('', 3, 21, value=3, step=2)
+    with c2:
+        seasonalSmoother = st.slider('', 3, 21, value=3, step=2)
 
     # button = st.button('None')
     trendSmoother = None
