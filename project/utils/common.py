@@ -236,7 +236,7 @@ def STL_plotter(df_elhub, area='NO1', prodGroup='wind', periodLength=12,
     
     fig.update_layout(autosize=False,
                       width=500,
-                      height=500,
+                      height=1000,
                       margin=dict(l=60, r=60, t=20, b=20, pad=5),
 )
 
