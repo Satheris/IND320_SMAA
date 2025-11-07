@@ -56,6 +56,7 @@ with tab1:
         
         periodLength = st.number_input('Length of a period (hours)', 1, 1000, value=24*7, step=1)
 
+    st.write('\n')
 
     STL_plotter(df_elhub=df_elhub, 
                 area=st.session_state.AREA, 
