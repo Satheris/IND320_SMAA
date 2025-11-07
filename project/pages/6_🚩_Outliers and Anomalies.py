@@ -35,13 +35,9 @@ column = st.selectbox('Select weather variable for analyses below', columns)
 # Initializing tabs
 tab1, tab2 = st.tabs(['Outlier/SPC analysis', 'Anomaly/LOF analysis'])
 
-# Filling tab1
+# tab1 -> SPC analysis with UI
 with tab1:
     st.subheader('Outlier/SPC analysis')
-
-
-    # radio selction of variable to analyze
-    # column = st.radio('Choose a weather variable', columns, horizontal=True, key='spc_column')
 
     # sliders divided into two columns
     c1, c2 = st.columns(2, gap='large')
@@ -57,14 +53,9 @@ with tab1:
 
 
 
-# Filling tab2
+# tab2 -> LOF analysis with UI
 with tab2:
     st.subheader('Anomaly/LOF analysis')
-
-
-    # radio selction of variable to analyze
-    # column = st.radio('Choose a weather variable', 
-    #                   columns, horizontal=True, key='lof_column')
 
     # sliders divided into two columns
     c1, c2 = st.columns(2, gap='large')
@@ -76,5 +67,3 @@ with tab2:
                                 3, 50, value=20, step=1)
 
     LOF_stats_plot(df=df, column=column, contamination=contamination, n_neighbors=n_neighbors)
-
-
