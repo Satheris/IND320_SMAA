@@ -30,7 +30,7 @@ def read_data() -> pd.DataFrame:
 
 
 @st.cache_data(show_spinner=True)
-def openmeteo_download(area, year=2021):
+def openmeteo_download(area, year=2021) -> pd.DataFrame:
     # Setup the Open-Meteo API client with cache and retry on error
     cache_session = requests_cache.CachedSession('.cache', expire_after = 3600)
     retry_session = retry(cache_session, retries = 5, backoff_factor = 0.2)
@@ -80,13 +80,13 @@ def openmeteo_download(area, year=2021):
 
 
 @st.cache_resource
-def init_connection():
+def init_connection() -> pymongo.MongoClient:
     return pymongo.MongoClient(st.secrets['mongo']['uri'])
 
 
 # Uses st.cache_data to only rerun when the query changes or after 10 min.
 @st.cache_data(ttl=600)
-def get_elhubdata():
+def get_elhubdata() -> pd.DataFrame:
     client = init_connection()
     db = client['project']
     collection = db['data']
@@ -101,8 +101,16 @@ def get_elhubdata():
     df_elhub['year'] = df_elhub['startTime'].dt.year
 
     df_elhub = df_elhub[df_elhub['year'] == 2021]
-    
+
     return df_elhub
+
+
+def _download_new_area() -> None:
+    st.session_state.data = openmeteo_download(area=st.session_state.AREA)
+
+def _set_new_area() -> None:
+    st.session_state.AREA = st.session_state.area
+    _download_new_area()
 
 
 
