@@ -6,7 +6,8 @@ import plotly.express as px
 
 # importing self defined functions
 from utils.common import (openmeteo_download,
-                          get_elhubdata)
+                          get_elhubdata,
+                          STL_plotter)
 
 
 # session_state.area to use across pages for data extraction
@@ -36,6 +37,9 @@ tab1, tab2 = st.tabs(['STL analysis', 'Spectrogram'])
 # filling tab 1
 with tab1:
     st.header('Seasonal-Trend decomposition with LOESS')
+
+    STL_plotter(df_elhub=df_elhub, area=st.session_state.AREA, prodGroup='wind', 
+                periodLength=12, seasonalSmoother=3, trendSmoother=None, robust=None)
 
 # filling tab 2
 with tab2:
