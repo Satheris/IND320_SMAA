@@ -8,7 +8,8 @@ import plotly.express as px
 from utils.common import (generate_months,
                           month_number_converter,
                           openmeteo_download,
-                          get_elhubdata)
+                          get_elhubdata,
+                          _set_new_area)
 
 
 # session_state.area to use across pages for data extraction
@@ -18,52 +19,14 @@ if 'AREA' not in st.session_state:
 if 'data' not in st.session_state:
     st.session_state.data = openmeteo_download(area=st.session_state.AREA)
 
-def _download_new_area():
-    st.session_state.data = openmeteo_download(area=st.session_state.AREA)
-
-def _set_new_area():
-    st.session_state.AREA = st.session_state.area
-    _download_new_area()
-
-
 
 # page configuration
 st.set_page_config(layout='wide')
 st.header('Elhub')
 
 
-# # Initialize connection.
-# # Uses st.cache_resource to only run once.
-# @st.cache_resource
-# def init_connection():
-#     return pymongo.MongoClient(st.secrets['mongo']['uri'])
-
-# client = init_connection()
-
-
-# # Pull data from the collection.
-# # Uses st.cache_data to only rerun when the query changes or after 10 min.
-# @st.cache_data(ttl=600)
-# def get_data():
-#     db = client['project']
-#     collection = db['data']
-#     items = collection.find()
-#     items = list(items)
-#     return items
-
-# items = get_data()
-
-
-# # Converting data to dataframe and doing type conversion
-# df_elhub = pd.DataFrame(items)
-# df_elhub['startTime'] = pd.to_datetime(df_elhub['startTime'], errors='coerce', utc=True)
-# df_elhub['quantityKwh'] = pd.to_numeric(df_elhub['quantityKwh'], errors='coerce')
-# df_elhub['month'] = df_elhub['startTime'].dt.month
-# df_elhub['year'] = df_elhub['startTime'].dt.year
-
-# df_elhub = df_elhub[df_elhub['year'] == 2021]
-
 df_elhub = get_elhubdata()
+
 
 # Initializing columns
 c1, c2 = st.columns(2, gap='medium')
