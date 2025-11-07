@@ -260,7 +260,7 @@ def STFT_plotter(df_elhub, area='NO1', prodGroup='wind', fs=1/3600, nperseg=24*7
     )
 
     # Show the plot
-    fig.show()
+    st.plotly_chart(fig)
 
 
 
