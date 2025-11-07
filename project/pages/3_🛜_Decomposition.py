@@ -38,7 +38,7 @@ tab1, tab2 = st.tabs(['STL analysis', 'Spectrogram'])
 with tab1:
     st.header('Seasonal-Trend decomposition with LOESS')
 
-    prodGroups = sorted(df_elhub['productionGroups'].unique().tolist())
+    prodGroups = sorted(df_elhub['productionGroup'].unique().tolist())
     prodGroup = st.radio('Choose a production group', prodGroups, horizontal=True)
 
     periodLength = 12
