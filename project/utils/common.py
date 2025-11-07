@@ -21,6 +21,7 @@ from sklearn.neighbors import LocalOutlierFactor
 # ----------------------------------------------------------------
 # DOWNLOADS
 # ----------------------------------------------------------------
+
 @st.cache_data(show_spinner=True)
 def read_data() -> pd.DataFrame:
     data = pd.read_csv('project/data/open-meteo-subset.csv')
@@ -76,6 +77,32 @@ def openmeteo_download(area, year=2021):
     df = pd.DataFrame(data = hourly_data)
 
     return df
+
+
+@st.cache_resource
+def init_connection():
+    return pymongo.MongoClient(st.secrets['mongo']['uri'])
+
+
+# Uses st.cache_data to only rerun when the query changes or after 10 min.
+@st.cache_data(ttl=600)
+def get_elhubdata():
+    client = init_connection()
+    db = client['project']
+    collection = db['data']
+    items = collection.find()
+    items = list(items)
+
+    # Converting data to dataframe and doing type conversion
+    df_elhub = pd.DataFrame(items)
+    df_elhub['startTime'] = pd.to_datetime(df_elhub['startTime'], errors='coerce', utc=True)
+    df_elhub['quantityKwh'] = pd.to_numeric(df_elhub['quantityKwh'], errors='coerce')
+    df_elhub['month'] = df_elhub['startTime'].dt.month
+    df_elhub['year'] = df_elhub['startTime'].dt.year
+
+    df_elhub = df_elhub[df_elhub['year'] == 2021]
+    
+    return df_elhub
 
 
 
@@ -151,6 +178,33 @@ def LOF_stats_plot(df:pd.DataFrame, column, contamination=0.01, n_neighbors=20):
     # plotting with the outlier data
     fig = px.line(df_reduced, x='date', y=[column, 'outliers'], template='plotly')
     st.plotly_chart(fig)
+
+
+def STL_plotter(df_elhub, area='NO1', prodGroup='wind', periodLength=12, 
+                seasonalSmoother=3, trendSmoother=None, robust=True):
+    # making subset of data 
+    sub_df_elhub = df_elhub[(df_elhub['priceArea'] == area) & (df_elhub['productionGroup'] == prodGroup)]
+    sub_df_elhub = pd.DataFrame(sub_df_elhub[['quantityKwh', 'startTime']])
+    sub_df_elhub['startTime'] = pd.to_datetime(sub_df_elhub['startTime'], utc=True, errors='coerce').dt.tz_localize(None)
+
+    # adding 1 hour because (utc=True) displaced the time
+    sub_df_elhub['startTime'] = sub_df_elhub['startTime'] + pd.Timedelta(hours=1)
+
+    # Let's make sure the index is properly set as datetime
+    if not isinstance(sub_df_elhub.index, pd.DatetimeIndex):
+        # If your time column is called 'startTime' and it's not the index
+        sub_df_elhub = sub_df_elhub.set_index('startTime')
+        
+    # Ensure the index is timezone-naive if it has timezone info
+    if sub_df_elhub.index.tz is not None:
+        sub_df_elhub.index = sub_df_elhub.index.tz_localize(None)
+
+    stl = STL(sub_df_elhub['quantityKwh'], period=periodLength, 
+            seasonal=seasonalSmoother, trend=trendSmoother, robust=robust)
+
+    res = stl.fit()
+    fig = res.plot()
+    plt.xticks(rotation=90)
 
 
 
