@@ -132,7 +132,7 @@ def STL_plotter(df_elhub, area='NO1', prodGroup='wind', periodLength=12,
     #plotting with plotly
     fig = make_subplots(
             rows=4, cols=1, 
-            row_titles=["Observed", "Trend", "Seasonal", "Residuals"])
+            subplot_titles=["Observed", "Trend", "Seasonal", "Residuals"])
     fig.add_trace(
         go.Scatter(x=res.seasonal.index, y=res.observed, mode='lines', line=dict(color="#a234e7")),
             row=1, col=1)
