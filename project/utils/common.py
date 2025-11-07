@@ -245,11 +245,6 @@ def LOF_stats_plot(df:pd.DataFrame, column, contamination=0.01, n_neighbors=20):
 
     # convert (-1) to 0 -> bincount needs non-negative numbers
     pred_labels[pred_labels == -1] = 0
-
-    # print for analysis results
-    # counts = np.bincount(pred_labels)
-    # print(f'LocalOutlierFactor found {counts[0]} outliers out of {sum(counts)} data points')
-    # print(f'The proportion of outliers is {counts[0]/sum(counts)*100:.3f}%')    
     
     # converting outlier information into dataframe format
     df_reduced['category'] = pred_labels
@@ -259,6 +254,11 @@ def LOF_stats_plot(df:pd.DataFrame, column, contamination=0.01, n_neighbors=20):
     # plotting with the outlier data
     fig = px.line(df_reduced, x='date', y=[column, 'outliers'], template='plotly')
     st.plotly_chart(fig)
+
+    # print for analysis results
+    counts = np.bincount(pred_labels)
+    st.write(f'LocalOutlierFactor found {counts[0]} outliers out of {sum(counts)} data points')
+    st.write(f'The proportion of outliers is {counts[0]/sum(counts)*100:.3f}%')    
 
 
 
