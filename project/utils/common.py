@@ -120,8 +120,8 @@ def _download_new_area() -> None:
 # ANALYSIS PLOTTERS
 # ----------------------------------------------------------------
 
-def STL_plotter(df_elhub, area='NO1', prodGroup='wind', periodLength=12, 
-                seasonalSmoother=3, trendSmoother=None, robust=True):
+def STL_plotter(df_elhub, area='NO1', prodGroup='hydro', periodLength=24*7, 
+                seasonalSmoother=13, trendSmoother=365, robust=True):
 
     sub_df_elhub = make_elhub_subset(df_elhub, area, prodGroup)
 
