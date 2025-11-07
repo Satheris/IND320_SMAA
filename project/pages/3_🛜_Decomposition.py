@@ -44,18 +44,17 @@ with tab1:
     c1, c2 = st.columns(2, gap='large')
     
     with c1: 
-        # prodGroup = st.radio('Choose a production group', prodGroups, horizontal=True, key='stl_prodGroup')
 
-        seasonalSmoother = st.slider('Seasonal smoother', 3, 21, value=3, step=2)
+        seasonalSmoother = st.number_input('Seasonal smoother', 3, 31, value=13, step=2)
 
-        trendSmoother = st.slider('', 3, 21, value=13, step=2, disabled=False)
+        trendSmoother = st.number_input('Trend smoother', 3, 730, value=365, step=2)
 
 
     with c2:
         robust = st.radio('Use weighted analysis that is robust to some forms of outliers', 
                           [True, False], horizontal=True)        
         
-        periodLength = st.slider('Length of a period', 1, 21, value=12, step=1)
+        periodLength = st.number_input('Length of a period (hours)', 1, 1000, value=24*7, step=1)
 
 
     STL_plotter(df_elhub=df_elhub, 
@@ -69,8 +68,6 @@ with tab1:
 # filling tab 2
 with tab2:
     st.subheader('Spectrogram')
-
-    # prodGroup = st.radio('Choose a production group', prodGroups, horizontal=True, key='stft_prodGroup')
 
 
     fs = 1/3600
