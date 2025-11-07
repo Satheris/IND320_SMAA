@@ -67,7 +67,7 @@ with tab1:
                     trendSmoother=trendSmoother, 
                     robust=robust)
     except ValueError:
-        st.write('Seasonal and trend smoothers must be ODD integers')
+        st.write('ValueError: Seasonal and trend smoothers must be ODD integers')
 
 
 # tab2 -> Spectrogram with UI
