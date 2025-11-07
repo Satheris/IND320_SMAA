@@ -29,7 +29,7 @@ st.write(f'Outlier and anomaly analysis of weather data from electrical price ar
 columns = sorted(df.columns.tolist())
 if 'time' in columns:
     columns.remove('time')
-column = st.selectbox('Select a weather variable', columns)
+column = st.selectbox('Select weather variable for analyses below', columns)
 
 
 # Initializing tabs

@@ -31,7 +31,7 @@ df_elhub = st.session_state.elhub_data
 
 # production group selector for analyses below
 prodGroups = sorted(df_elhub['productionGroup'].unique().tolist())
-prodGroup = st.selectbox('Select production group', prodGroups)
+prodGroup = st.selectbox('Select production group for analyses below', prodGroups)
 
 
 # initializing tabs 
