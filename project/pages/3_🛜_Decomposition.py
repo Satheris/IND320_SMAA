@@ -44,17 +44,15 @@ with tab1:
     c1, c2 = st.columns(2, gap='large')
     
     with c1: 
+        seasonalSmoother = st.number_input('Seasonal smoother', min_value=3, value=13, step=2)
 
-        seasonalSmoother = st.number_input('Seasonal smoother', 3, 31, value=13, step=2)
-
-        trendSmoother = st.number_input('Trend smoother', 3, 730, value=365, step=2)
-
+        trendSmoother = st.number_input('Trend smoother', min_value=24, value=365, step=2)
 
     with c2:
         robust = st.radio('Use weighted analysis that is robust to some forms of outliers', 
                           [True, False], horizontal=True)        
         
-        periodLength = st.number_input('Length of a period (hours)', 1, 1000, value=24*7, step=1)
+        periodLength = st.number_input('Length of a period (hours)', min_value=24, value=24*7, step=1)
 
     st.write('\n')
 
