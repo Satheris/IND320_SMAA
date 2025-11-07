@@ -39,7 +39,7 @@ tab1, tab2 = st.tabs(['STL analysis', 'Spectrogram'])
 
 # filling tab 1
 with tab1:
-    st.header('Seasonal-Trend decomposition with LOESS')
+    st.subheader('Seasonal-Trend decomposition with LOESS')
 
     c1, c2 = st.columns(2, gap='large')
     
@@ -48,8 +48,6 @@ with tab1:
 
         seasonalSmoother = st.slider('Seasonal smoother', 3, 21, value=3, step=2)
 
-        flag = st.checkbox('', value=False)
-        # button = st.button('None')
         trendSmoother = st.slider('', 3, 21, value=13, step=2, disabled=False)
 
 
@@ -70,7 +68,7 @@ with tab1:
 
 # filling tab 2
 with tab2:
-    st.header('Spectrogram')
+    st.subheader('Spectrogram')
 
     # prodGroup = st.radio('Choose a production group', prodGroups, horizontal=True, key='stft_prodGroup')
 
