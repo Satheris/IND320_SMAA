@@ -7,6 +7,7 @@ import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
+from plotly.subplots import make_subplots
 
 import openmeteo_requests
 import requests_cache
@@ -212,11 +213,26 @@ def STL_plotter(df_elhub, area='NO1', prodGroup='wind', periodLength=12,
             seasonal=seasonalSmoother, trend=trendSmoother, robust=robust)
 
     res = stl.fit()
-    fig = res.plot()
-    plt.xticks(rotation=90)
-    st.pyplot(fig)
+    fig = make_subplots(
+            rows=4, cols=1,
+            subplot_titles=["Observed", "Trend", "Seasonal", "Residuals"])
+    fig.add_trace(
+        go.Scatter(x=res.seasonal.index, y=res.observed, mode='lines', line=dict(color="#8c2ac9")),
+            row=1, col=1)
 
+    fig.add_trace(
+        go.Scatter(x=res.trend.index, y=res.trend, mode='lines', line=dict(color="#2bc335")),
+            row=2, col=1)
 
+    fig.add_trace(
+        go.Scatter(x=res.seasonal.index, y=res.seasonal, mode='lines', line=dict(color="#2831dd")),
+            row=3, col=1)
+
+    fig.add_trace(
+        go.Scatter(x=res.resid.index, y=res.resid, mode='lines', line=dict(color="#cc2d3d")),
+            row=4, col=1)
+
+    st.plotly_chart(fig)
 
 # ----------------------------------------------------------------
 # GEO HELPER
