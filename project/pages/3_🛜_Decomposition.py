@@ -59,7 +59,7 @@ with tab1:
         
         periodLength = st.slider('Length of a period', 1, 21, value=12, step=1)
 
-        trendSmoother = st.slider('', 1, 21, value=5, step=2, disabled=False)
+        trendSmoother = st.slider('', periodLength, 21, step=2, disabled=False)
 
 
     STL_plotter(df_elhub=df_elhub, 
