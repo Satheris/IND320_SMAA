@@ -7,7 +7,8 @@ import plotly.express as px
 # importing self defined functions
 from utils.common import (openmeteo_download,
                           get_elhubdata,
-                          STL_plotter)
+                          STL_plotter,
+                          STFT_plotter)
 
 
 # session_state.area to use across pages for data extraction
@@ -66,3 +67,14 @@ with tab1:
 # filling tab 2
 with tab2:
     st.header('Spectrogram')
+
+    fs = 1/3600
+    nperseg = 24*7
+    noverlap = nperseg//2
+
+    STFT_plotter(df_elhub=df_elhub,
+                 area=st.session_state.AREA,
+                 prodGroup=prodGroup,
+                 fs=fs,
+                 nperseg=nperseg,
+                 noverlap=noverlap)
