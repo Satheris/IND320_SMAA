@@ -45,16 +45,15 @@ with tab1:
         prodGroups = sorted(df_elhub['productionGroup'].unique().tolist())
         prodGroup = st.radio('Choose a production group', prodGroups, horizontal=True)
 
-
-    periodLength = 12
+        seasonalSmoother = st.slider('Seasonal smoother', 3, 21, value=3, step=2)
+        
+        periodLength = st.slider('Length of a period', 1, 21, value=12, step=1)
 
     with c2:
-        seasonalSmoother = st.slider('Seasonal smoother', 3, 21, value=3, step=2)
+        # button = st.button('None')
+        trendSmoother = None
 
-    # button = st.button('None')
-    trendSmoother = None
-
-    robust = None
+        robust = None
 
     STL_plotter(df_elhub=df_elhub, 
                 area=st.session_state.AREA, 
