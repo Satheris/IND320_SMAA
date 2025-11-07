@@ -15,6 +15,7 @@ from retry_requests import retry
 
 from scipy.fft import dct, idct
 from scipy.stats import median_abs_deviation
+from scipy.signal import stft
 from statsmodels.tsa.seasonal import STL
 from sklearn.neighbors import LocalOutlierFactor
 
@@ -220,6 +221,46 @@ def STL_plotter(df_elhub, area='NO1', prodGroup='wind', periodLength=12,
                       margin=dict(l=60, r=60, t=20, b=20, pad=5))
 
     st.plotly_chart(fig)
+
+
+def STFT_plotter(df_elhub, area='NO1', prodGroup='wind', fs=1/3600, nperseg=24*7, noverlap=nperseg//2):
+
+    sub_df_elhub = make_elhub_subset(df_elhub, area, prodGroup)
+
+    # Extract the values for STFT
+    data = sub_df_elhub['quantityKwh'].values
+
+    # Compute STFT
+    frequencies, times, Zxx = stft(data, fs=fs, nperseg=nperseg, noverlap=noverlap, window='hann')
+
+    # Convert magnitude to dB scale for better visualization
+    magnitude = np.abs(Zxx)
+    magnitude_db = 20 * np.log10(magnitude + 1e-10)  # Add small value to avoid log(0)
+
+    # Create the spectrogram plot
+    fig = go.Figure()
+
+    # Create the heatmap (spectrogram)
+    fig.add_trace(go.Heatmap(
+        x=times / (24 * 3600),  # Convert seconds to days for x-axis
+        y=frequencies * (24 * 3600),  # Convert Hz to cycles per day for y-axis
+        z=magnitude_db,
+        colorscale='Viridis',
+        colorbar=dict(title="Magnitude (dB)"),
+        hovertemplate='Time: %{x:.1f} days<br>Frequency: %{y:.3f} cycles/day<br>Magnitude: %{z:.2f} dB<extra></extra>'
+    ))
+
+    # Update layout
+    fig.update_layout(
+        title=f'Spectrogram of Energy Production in area {area} for {prodGroup}',
+        xaxis_title='Time (days)',
+        yaxis_title='Frequency (cycles per day)',
+        height=500, 
+        width=800,
+    )
+
+    # Show the plot
+    fig.show()
 
 
 
