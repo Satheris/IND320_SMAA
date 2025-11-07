@@ -37,7 +37,7 @@ tab1, tab2 = st.tabs(['Outlier/SPC analysis', 'Anomaly/LOF analysis'])
 
 # tab1 -> SPC analysis with UI
 with tab1:
-    st.subheader('Outlier/SPC analysis')
+    st.subheader(f'Outlier/SPC analysis of temperature in area {st.session_state.AREA}')
 
     # sliders divided into two columns
     c1, c2 = st.columns(2, gap='large')
@@ -49,13 +49,13 @@ with tab1:
                           0.5, 6.0, value=3.0, step=0.25)
 
 
-    SPC_outlier_plot(df=df, column=column, dct_cutoff=dct_cutoff, n_std=n_std)
+    SPC_outlier_plot(df=df, column='temperature_2m (°C)', dct_cutoff=dct_cutoff, n_std=n_std)
 
 
 
 # tab2 -> LOF analysis with UI
 with tab2:
-    st.subheader('Anomaly/LOF analysis')
+    st.subheader(f'Anomaly/LOF analysis of precipitation in area {st.session_state.AREA}')
 
     # sliders divided into two columns
     c1, c2 = st.columns(2, gap='large')
@@ -66,4 +66,4 @@ with tab2:
         n_neighbors = st.slider('Number of neighbors', 
                                 3, 50, value=20, step=1)
 
-    LOF_stats_plot(df=df, column=column, contamination=contamination, n_neighbors=n_neighbors)
+    LOF_stats_plot(df=df, column='precipitation (mm)', contamination=contamination, n_neighbors=n_neighbors)
