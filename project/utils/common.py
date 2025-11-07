@@ -191,11 +191,47 @@ def LOF_stats_plot(df:pd.DataFrame, column, contamination=0.01, n_neighbors=20):
 
 def STL_plotter(df_elhub, area='NO1', prodGroup='wind', periodLength=12, 
                 seasonalSmoother=3, trendSmoother=None, robust=True):
+
+    sub_df_elhub = make_elhub_subset(df_elhub, area, prodGroup)
+
+    stl = STL(sub_df_elhub['quantityKwh'], period=periodLength, 
+            seasonal=seasonalSmoother, trend=trendSmoother, robust=robust)
+    res = stl.fit()
+
+    #plotting with plotly
+    fig = make_subplots(
+            rows=4, cols=1,
+            subplot_titles=["Observed", "Trend", "Seasonal", "Residuals"])
+    fig.add_trace(
+        go.Scatter(x=res.seasonal.index, y=res.observed, mode='lines', line=dict(color="#a234e7")),
+            row=1, col=1)
+    fig.add_trace(
+        go.Scatter(x=res.trend.index, y=res.trend, mode='lines', line=dict(color="#19a222")),
+            row=2, col=1)
+    fig.add_trace(
+        go.Scatter(x=res.seasonal.index, y=res.seasonal, mode='lines', line=dict(color="#28a8ed")),
+            row=3, col=1)
+    fig.add_trace(
+        go.Scatter(x=res.resid.index, y=res.resid, mode='lines', line=dict(color="#c22535")),
+            row=4, col=1)
+    fig.update_layout(autosize=False,
+                      width=300,
+                      height=700,
+                      margin=dict(l=60, r=60, t=20, b=20, pad=5))
+
+    st.plotly_chart(fig)
+
+
+
+# ----------------------------------------------------------------
+# SUBSET HELPER
+# ----------------------------------------------------------------
+
+def make_elhub_subset(df_elhub, area='NO1', prodGroup='hydro') -> pd.DataFrame:
     # making subset of data 
     sub_df_elhub = df_elhub[(df_elhub['priceArea'] == area) & (df_elhub['productionGroup'] == prodGroup)]
     sub_df_elhub = pd.DataFrame(sub_df_elhub[['quantityKwh', 'startTime']])
     sub_df_elhub['startTime'] = pd.to_datetime(sub_df_elhub['startTime'], utc=True, errors='coerce').dt.tz_localize(None)
-    sub_df_elhub = sub_df_elhub.sort_values(by='startTime')
 
     # adding 1 hour because (utc=True) displaced the time
     sub_df_elhub['startTime'] = sub_df_elhub['startTime'] + pd.Timedelta(hours=1)
@@ -209,37 +245,15 @@ def STL_plotter(df_elhub, area='NO1', prodGroup='wind', periodLength=12,
     if sub_df_elhub.index.tz is not None:
         sub_df_elhub.index = sub_df_elhub.index.tz_localize(None)
 
-    stl = STL(sub_df_elhub['quantityKwh'], period=periodLength, 
-            seasonal=seasonalSmoother, trend=trendSmoother, robust=robust)
 
-    res = stl.fit()
+    # Ensure the data is sorted by time and has regular hourly frequency
+    sub_df_elhub = sub_df_elhub.sort_index()
+    sub_df_elhub = sub_df_elhub.asfreq('h')  # Ensure hourly frequency
 
-    #plotting with plotly
-    fig = make_subplots(
-            rows=4, cols=1,
-            subplot_titles=["Observed", "Trend", "Seasonal", "Residuals"])
-    fig.add_trace(
-        go.Scatter(x=res.seasonal.index, y=res.observed, mode='lines', line=dict(color="#a234e7")),
-            row=1, col=1)
+    # Handle any missing values if necessary
+    sub_df_elhub['quantityKwh'] = sub_df_elhub['quantityKwh'].interpolate()
 
-    fig.add_trace(
-        go.Scatter(x=res.trend.index, y=res.trend, mode='lines', line=dict(color="#19a222")),
-            row=2, col=1)
-
-    fig.add_trace(
-        go.Scatter(x=res.seasonal.index, y=res.seasonal, mode='lines', line=dict(color="#28a8ed")),
-            row=3, col=1)
-
-    fig.add_trace(
-        go.Scatter(x=res.resid.index, y=res.resid, mode='lines', line=dict(color="#c22535")),
-            row=4, col=1)
-    
-    fig.update_layout(autosize=False,
-                      width=300,
-                      height=700,
-                      margin=dict(l=60, r=60, t=20, b=20, pad=5))
-
-    st.plotly_chart(fig)
+    return sub_df_elhub
 
 
 
