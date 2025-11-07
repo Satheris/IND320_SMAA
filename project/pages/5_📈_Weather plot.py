@@ -26,17 +26,22 @@ st.header('Weather plot')
 st.write(f'Weather parameters over chosen month period for electrical price area {st.session_state.AREA}')
 
 
-# Initiating selectbox for variable selection
-column = st.selectbox('Select column', 
-                      ('temperature_2m (°C)', 'precipitation (mm)', 
-                       'wind_speed_10m (m/s)', 'wind_gusts_10m (m/s)', 
-                       'wind_direction_10m (°)', 'all'))
+# Initiating columns for UI
+c1, c2 = st.columns(2, gap='large')
 
-# Initiating selectslider for month selection
-months = generate_months()
-startMonth, endMonth = st.select_slider('Select months', 
-                                        options=months,
-                                                 value=(months[0], months[0]))
+with c1:
+    # Initiating selectbox for variable selection
+    column = st.selectbox('Select column', 
+                        ('temperature_2m (°C)', 'precipitation (mm)', 
+                        'wind_speed_10m (m/s)', 'wind_gusts_10m (m/s)', 
+                        'wind_direction_10m (°)', 'all'))
+
+with c2:
+    # Initiating selectslider for month selection
+    months = generate_months()
+    startMonth, endMonth = st.select_slider('Select months', 
+                                            options=months,
+                                                    value=(months[0], months[0]))
 
 
 # Using values given above to make plots
