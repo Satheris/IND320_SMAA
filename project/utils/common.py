@@ -120,76 +120,6 @@ def _download_new_area() -> None:
 # ANALYSIS PLOTTERS
 # ----------------------------------------------------------------
 
-def SPC_outlier_plot(df, column, dct_cutoff=10, n_std=3):
-    # DCT of chosen variable -> transform to frequency domain
-    df_copy = df.copy()
-    dct_coefs = dct(df_copy[column])
-
-    # saving seasonal variation in low-pass filtering -> transform back to signal domain
-    dct_coefs_lowpass = dct_coefs.copy()
-    dct_coefs_lowpass[dct_cutoff:] = 0
-    seasonal_variation = idct(dct_coefs_lowpass)
-
-    # performing high-pass filtering -> transform back to signal domain
-    dct_coefs_highpass = dct_coefs.copy()
-    dct_coefs_highpass[:dct_cutoff] = 0
-    satv = idct(dct_coefs_highpass)
-
-    # finding the median absolute deviation (MAD) based on SATV
-    MAD = median_abs_deviation(satv)
-
-    # finding lower and upper bounds for the expected variation in year scale
-    df_copy['upper_bound'] = np.add(seasonal_variation, n_std*MAD)
-    df_copy['lower_bound'] = np.add(seasonal_variation, (-n_std)*MAD)
-
-    # marking outliers in a separate column and removing data from inlier positions
-    df_copy['outliers'] = df_copy[column].copy()
-    df_copy.loc[((df_copy[column] < df_copy['upper_bound']) & 
-                    (df_copy[column] > df_copy['lower_bound'])), 
-                    'outliers'] = None
-
-    # output statistics
-    print(f'Number of outliers found: {(df_copy["outliers"].count())}')
-    print(f'Percentage of outliers: {(df_copy["outliers"].count())/len(df_copy["outliers"]):.3f}%')
-
-    # line plot with temperature in original scale, upper and lower outlier bounds in original scale and outliers marked
-    fig = px.line(df_copy, x='time', y=[column, 'outliers', 'upper_bound', 'lower_bound'], template='plotly')
-    st.plotly_chart(fig)
-
-    # df_copy.drop(labels=['upper_bound', 'lower_bound', 'outliers'])
-
-
-def LOF_stats_plot(df:pd.DataFrame, column, contamination=0.01, n_neighbors=20):
-    lof = LocalOutlierFactor(n_neighbors=n_neighbors, contamination=contamination)
-
-    # making a reduced dataframe for analysis
-    df_reduced = pd.DataFrame(df[column])
-    df_reduced['date'] = df['time']
-    df_reduced['hour'] = pd.to_datetime(df_reduced['date']).dt.hour
-    df_reduced['day_of_year'] = pd.to_datetime(df_reduced['date']).dt.dayofyear
-
-    # Use both precipitation and time features (else LOF gets confused)
-    features = df_reduced[[column, 'hour', 'day_of_year']]
-    pred_labels = lof.fit_predict(features)
-
-    # convert (-1) to 0 -> bincount needs non-negative numbers
-    pred_labels[pred_labels == -1] = 0
-
-    # print for analysis results
-    # counts = np.bincount(pred_labels)
-    # print(f'LocalOutlierFactor found {counts[0]} outliers out of {sum(counts)} data points')
-    # print(f'The proportion of outliers is {counts[0]/sum(counts)*100:.3f}%')    
-    
-    # converting outlier information into dataframe format
-    df_reduced['category'] = pred_labels
-    df_reduced['outliers'] = df_reduced[column].copy()
-    df_reduced.loc[(df_reduced['category'] == 1), 'outliers'] = None
-
-    # plotting with the outlier data
-    fig = px.line(df_reduced, x='date', y=[column, 'outliers'], template='plotly')
-    st.plotly_chart(fig)
-
-
 def STL_plotter(df_elhub, area='NO1', prodGroup='wind', periodLength=12, 
                 seasonalSmoother=3, trendSmoother=None, robust=True):
 
@@ -260,6 +190,76 @@ def STFT_plotter(df_elhub, area='NO1', prodGroup='wind', fs=1/3600, nperseg=24*7
     )
 
     # Show the plot
+    st.plotly_chart(fig)
+
+
+def SPC_outlier_plot(df, column, dct_cutoff=10, n_std=3):
+    # DCT of chosen variable -> transform to frequency domain
+    df_copy = df.copy()
+    dct_coefs = dct(df_copy[column])
+
+    # saving seasonal variation in low-pass filtering -> transform back to signal domain
+    dct_coefs_lowpass = dct_coefs.copy()
+    dct_coefs_lowpass[dct_cutoff:] = 0
+    seasonal_variation = idct(dct_coefs_lowpass)
+
+    # performing high-pass filtering -> transform back to signal domain
+    dct_coefs_highpass = dct_coefs.copy()
+    dct_coefs_highpass[:dct_cutoff] = 0
+    satv = idct(dct_coefs_highpass)
+
+    # finding the median absolute deviation (MAD) based on SATV
+    MAD = median_abs_deviation(satv)
+
+    # finding lower and upper bounds for the expected variation in year scale
+    df_copy['upper_bound'] = np.add(seasonal_variation, n_std*MAD)
+    df_copy['lower_bound'] = np.add(seasonal_variation, (-n_std)*MAD)
+
+    # marking outliers in a separate column and removing data from inlier positions
+    df_copy['outliers'] = df_copy[column].copy()
+    df_copy.loc[((df_copy[column] < df_copy['upper_bound']) & 
+                    (df_copy[column] > df_copy['lower_bound'])), 
+                    'outliers'] = None
+
+    # output statistics
+    print(f'Number of outliers found: {(df_copy["outliers"].count())}')
+    print(f'Percentage of outliers: {(df_copy["outliers"].count())/len(df_copy["outliers"]):.3f}%')
+
+    # line plot with temperature in original scale, upper and lower outlier bounds in original scale and outliers marked
+    fig = px.line(df_copy, x='time', y=[column, 'outliers', 'upper_bound', 'lower_bound'], template='plotly')
+    st.plotly_chart(fig)
+
+    # df_copy.drop(labels=['upper_bound', 'lower_bound', 'outliers'])
+
+
+def LOF_stats_plot(df:pd.DataFrame, column, contamination=0.01, n_neighbors=20):
+    lof = LocalOutlierFactor(n_neighbors=n_neighbors, contamination=contamination)
+
+    # making a reduced dataframe for analysis
+    df_reduced = pd.DataFrame(df[column])
+    df_reduced['date'] = df['time']
+    df_reduced['hour'] = pd.to_datetime(df_reduced['date']).dt.hour
+    df_reduced['day_of_year'] = pd.to_datetime(df_reduced['date']).dt.dayofyear
+
+    # Use both precipitation and time features (else LOF gets confused)
+    features = df_reduced[[column, 'hour', 'day_of_year']]
+    pred_labels = lof.fit_predict(features)
+
+    # convert (-1) to 0 -> bincount needs non-negative numbers
+    pred_labels[pred_labels == -1] = 0
+
+    # print for analysis results
+    # counts = np.bincount(pred_labels)
+    # print(f'LocalOutlierFactor found {counts[0]} outliers out of {sum(counts)} data points')
+    # print(f'The proportion of outliers is {counts[0]/sum(counts)*100:.3f}%')    
+    
+    # converting outlier information into dataframe format
+    df_reduced['category'] = pred_labels
+    df_reduced['outliers'] = df_reduced[column].copy()
+    df_reduced.loc[(df_reduced['category'] == 1), 'outliers'] = None
+
+    # plotting with the outlier data
+    fig = px.line(df_reduced, x='date', y=[column, 'outliers'], template='plotly')
     st.plotly_chart(fig)
 
 
