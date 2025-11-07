@@ -234,8 +234,10 @@ def STL_plotter(df_elhub, area='NO1', prodGroup='wind', periodLength=12,
         go.Scatter(x=res.resid.index, y=res.resid, mode='lines', line=dict(color="#c22535")),
             row=4, col=1)
     
-    fig.update_layout(
-        margin=dict(l=60, r=60, t=20, b=20, pad=5),
+    fig.update_layout(autosize=False,
+                      width=500,
+                      height=500,
+                      margin=dict(l=60, r=60, t=20, b=20, pad=5),
 )
 
     st.plotly_chart(fig)
