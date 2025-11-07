@@ -52,14 +52,14 @@ with tab1:
 
         flag = st.checkbox('', value=False)
         # button = st.button('None')
+        trendSmoother = st.slider('', 3, 21, value=13, step=2, disabled=False)
+
 
     with c2:
         robust = st.radio('Use weighted analysis that is robust to some forms of outliers', 
                           [True, False], horizontal=True)        
         
         periodLength = st.slider('Length of a period', 1, 21, value=12, step=1)
-
-        trendSmoother = st.slider('', periodLength+1, 21, step=2, disabled=False)
 
 
     STL_plotter(df_elhub=df_elhub, 
