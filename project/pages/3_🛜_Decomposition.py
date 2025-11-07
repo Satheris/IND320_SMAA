@@ -32,6 +32,10 @@ st.header('Decomposition')
 st.write(f'Decomposition analyses of Elhub data from electrical price area {st.session_state.AREA}')
 
 
+# need prodgroups for radio widgets in tabs
+prodGroups = sorted(df_elhub['productionGroup'].unique().tolist())
+
+
 # initializing tabs 
 tab1, tab2 = st.tabs(['STL analysis', 'Spectrogram'])
 
@@ -42,11 +46,11 @@ with tab1:
     c1, c2 = st.columns(2, gap='large')
     
     with c1: 
-        prodGroups = sorted(df_elhub['productionGroup'].unique().tolist())
-        prodGroup = st.radio('Choose a production group', prodGroups, horizontal=True)
+        prodGroup = st.radio('Choose a production group', prodGroups, horizontal=True, key='stl_prodGroup')
 
         seasonalSmoother = st.slider('Seasonal smoother', 3, 21, value=3, step=2)
         
+        periodFlag = st.checkbox('')
         periodLength = st.slider('Length of a period', 1, 21, value=12, step=1)
 
     with c2:
@@ -66,6 +70,9 @@ with tab1:
 # filling tab 2
 with tab2:
     st.header('Spectrogram')
+
+    prodGroup = st.radio('Choose a production group', prodGroups, horizontal=True, key='stft_prodGroup')
+
 
     fs = 1/3600
     nperseg = 24*7
