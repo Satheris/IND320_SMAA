@@ -52,7 +52,7 @@ with tab1:
         robust = st.radio('Use weighted analysis that is robust to some forms of outliers', 
                           [True, False], horizontal=True)        
         
-        periodLength = st.number_input('Length of a period (hours)', min_value=24, value=24*7, step=1)
+        periodLength = st.number_input('Length of a period (hours)', min_value=24, value=24*7, step=24)
 
     st.write('\n')
 
