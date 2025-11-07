@@ -37,7 +37,7 @@ prodGroup = st.selectbox('Select production group for analyses below', prodGroup
 # initializing tabs 
 tab1, tab2 = st.tabs(['STL analysis', 'Spectrogram'])
 
-# filling tab 1
+# tab1 -> STL decomposition with UI
 with tab1:
     st.subheader('Seasonal-Trend decomposition with LOESS')
 
@@ -64,7 +64,7 @@ with tab1:
                 robust=robust)
 
 
-# filling tab 2
+# tab2 -> Spectrogram with UI
 with tab2:
     st.subheader('Spectrogram')
 
