@@ -58,14 +58,16 @@ with tab1:
         
         periodLength = st.number_input('Length of a period (hours)', min_value=24, value=24*7, step=24)
 
-
-    STL_plotter(df_elhub=df_elhub, 
-                area=st.session_state.AREA, 
-                prodGroup=prodGroup, 
-                periodLength=periodLength, 
-                seasonalSmoother=seasonalSmoother, 
-                trendSmoother=trendSmoother, 
-                robust=robust)
+    try:
+        STL_plotter(df_elhub=df_elhub, 
+                    area=st.session_state.AREA, 
+                    prodGroup=prodGroup, 
+                    periodLength=periodLength, 
+                    seasonalSmoother=seasonalSmoother, 
+                    trendSmoother=trendSmoother, 
+                    robust=robust)
+    except ValueError:
+        st.write('Seasonal and trend smoothers must be ODD integers')
 
 
 # tab2 -> Spectrogram with UI
