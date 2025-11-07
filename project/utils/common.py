@@ -241,6 +241,8 @@ def STL_plotter(df_elhub, area='NO1', prodGroup='wind', periodLength=12,
 
     st.plotly_chart(fig)
 
+
+
 # ----------------------------------------------------------------
 # GEO HELPER
 # ----------------------------------------------------------------
