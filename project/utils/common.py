@@ -213,7 +213,7 @@ def STL_plotter(df_elhub, area='NO1', prodGroup='wind', periodLength=12,
     res = stl.fit()
     fig = res.plot()
     plt.xticks(rotation=90)
-    st.show(fig)
+    st.pyplot(fig)
 
 
 
