@@ -31,8 +31,7 @@ st.write(f'Outlier and anomaly analysis of weather data from electrical price ar
 columns = sorted(df.columns.tolist())
 if 'time' in columns:
     columns.remove('time')
-# radio selection of variable to analyze
-# column = st.radio('Choose a weather variable', columns, horizontal=True) #, key='spc_column')
+
 
 
 # Initializing tabs
@@ -56,7 +55,6 @@ with tab1:
 
     SPC_outlier_plot(df=df, column=column, dct_cutoff=dct_cutoff, n_std=n_std)
 
-    ## Give outlier stats
 
 
 # Filling tab2
@@ -76,5 +74,4 @@ with tab2:
 
     LOF_stats_plot(df=df, column=column, contamination=contamination, n_neighbors=n_neighbors)
 
-    ## Give outlier stats
 
