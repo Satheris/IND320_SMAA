@@ -131,8 +131,8 @@ def STL_plotter(df_elhub, area='NO1', prodGroup='wind', periodLength=12,
 
     #plotting with plotly
     fig = make_subplots(
-            rows=4, cols=1,
-            subplot_titles=["Observed", "Trend", "Seasonal", "Residuals"])
+            rows=4, cols=1, 
+            row_titles=["Observed", "Trend", "Seasonal", "Residuals"])
     fig.add_trace(
         go.Scatter(x=res.seasonal.index, y=res.observed, mode='lines', line=dict(color="#a234e7")),
             row=1, col=1)
@@ -145,7 +145,8 @@ def STL_plotter(df_elhub, area='NO1', prodGroup='wind', periodLength=12,
     fig.add_trace(
         go.Scatter(x=res.resid.index, y=res.resid, mode='lines', line=dict(color="#c22535")),
             row=4, col=1)
-    fig.update_layout(autosize=False,
+    fig.update_layout(title=dict(text=f'STL analysis for Energy Production in area {area} for {prodGroup}'),
+                      autosize=False,
                       width=300,
                       height=700,
                       margin=dict(l=60, r=60, t=20, b=20, pad=5))
