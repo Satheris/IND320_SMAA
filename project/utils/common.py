@@ -107,12 +107,12 @@ def get_elhubdata() -> pd.DataFrame:
     return df_elhub
 
 
-def _download_new_area() -> None:
-    st.session_state.data = openmeteo_download(area=st.session_state.AREA)
-
 def _set_new_area() -> None:
     st.session_state.AREA = st.session_state.area
     _download_new_area()
+
+def _download_new_area() -> None:
+    st.session_state.data = openmeteo_download(area=st.session_state.AREA)
 
 
 
