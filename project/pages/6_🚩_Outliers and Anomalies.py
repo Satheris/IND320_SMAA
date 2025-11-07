@@ -48,9 +48,11 @@ with tab1:
     # sliders divided into two columns
     c1, c2 = st.columns(2, gap='large')
     with c1:
-        dct_cutoff = st.slider('Cutoff for DCT filter', 0, 25, value=10, step=1)
+        dct_cutoff = st.slider('Cutoff for DCT filter', 
+                               0, 25, value=10, step=1)
     with c2: 
-        n_std = st.slider('Number of standard deviations for calculating upper and lower bounds', 0.5, 6.0, value=3.0, step=0.25)
+        n_std = st.slider('Number of standard deviations for calculating upper and lower bounds', 
+                          0.5, 6.0, value=3.0, step=0.25)
 
 
     SPC_outlier_plot(df=df, column=column, dct_cutoff=dct_cutoff, n_std=n_std)
@@ -63,14 +65,17 @@ with tab2:
 
 
     # radio selction of variable to analyze
-    column = st.radio('Choose a weather variable', columns, horizontal=True, key='lof_column')
+    column = st.radio('Choose a weather variable', 
+                      columns, horizontal=True, key='lof_column')
 
     # sliders divided into two columns
     c1, c2 = st.columns(2, gap='large')
     with c1:
-        contamination = st.slider('Proportion of outliers', 0.01, 0.5, value=0.01, step=0.01)
+        contamination = st.slider('Proportion of outliers', 
+                                  0.01, 0.5, value=0.01, step=0.01)
     with c2: 
-        n_neighbors = st.slider('Number of neighbors', 3, 50, value=20, step=1)
+        n_neighbors = st.slider('Number of neighbors', 
+                                3, 50, value=20, step=1)
 
     LOF_stats_plot(df=df, column=column, contamination=contamination, n_neighbors=n_neighbors)
 
