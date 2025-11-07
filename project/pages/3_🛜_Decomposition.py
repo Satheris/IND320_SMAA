@@ -48,7 +48,7 @@ with tab1:
     periodLength = 12
 
     with c2:
-        seasonalSmoother = st.slider('', 3, 21, value=3, step=2)
+        seasonalSmoother = st.slider('Seasonal smoother', 3, 21, value=3, step=2)
 
     # button = st.button('None')
     trendSmoother = None
