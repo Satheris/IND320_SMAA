@@ -223,7 +223,7 @@ def STL_plotter(df_elhub, area='NO1', prodGroup='wind', periodLength=12,
     st.plotly_chart(fig)
 
 
-def STFT_plotter(df_elhub, area='NO1', prodGroup='wind', fs=1/3600, nperseg=24*7, noverlap=nperseg//2):
+def STFT_plotter(df_elhub, area='NO1', prodGroup='wind', fs=1/3600, nperseg=24*7, noverlap=None):
 
     sub_df_elhub = make_elhub_subset(df_elhub, area, prodGroup)
 

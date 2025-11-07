@@ -70,7 +70,7 @@ with tab2:
 
     fs = 1/3600
     nperseg = 24*7
-    noverlap = nperseg//2
+    noverlap = None
 
     STFT_plotter(df_elhub=df_elhub,
                  area=st.session_state.AREA,
