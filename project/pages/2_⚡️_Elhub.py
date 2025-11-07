@@ -7,7 +7,8 @@ import plotly.express as px
 # importing self defined functions
 from utils.common import (generate_months,
                           month_number_converter,
-                          openmeteo_download)
+                          openmeteo_download,
+                          get_elhubdata)
 
 
 # session_state.area to use across pages for data extraction
@@ -19,7 +20,7 @@ if 'data' not in st.session_state:
 
 def _download_new_area():
     st.session_state.data = openmeteo_download(area=st.session_state.AREA)
-    
+
 def _set_new_area():
     st.session_state.AREA = st.session_state.area
     _download_new_area()
@@ -31,37 +32,38 @@ st.set_page_config(layout='wide')
 st.header('Elhub')
 
 
-# Initialize connection.
-# Uses st.cache_resource to only run once.
-@st.cache_resource
-def init_connection():
-    return pymongo.MongoClient(st.secrets['mongo']['uri'])
+# # Initialize connection.
+# # Uses st.cache_resource to only run once.
+# @st.cache_resource
+# def init_connection():
+#     return pymongo.MongoClient(st.secrets['mongo']['uri'])
 
-client = init_connection()
-
-
-# Pull data from the collection.
-# Uses st.cache_data to only rerun when the query changes or after 10 min.
-@st.cache_data(ttl=600)
-def get_data():
-    db = client['project']
-    collection = db['data']
-    items = collection.find()
-    items = list(items)
-    return items
-
-items = get_data()
+# client = init_connection()
 
 
-# Converting data to dataframe and doing type conversion
-df = pd.DataFrame(items)
-df['startTime'] = pd.to_datetime(df['startTime'], errors='coerce', utc=True)
-df['quantityKwh'] = pd.to_numeric(df['quantityKwh'], errors='coerce')
-df['month'] = df['startTime'].dt.month
-df['year'] = df['startTime'].dt.year
+# # Pull data from the collection.
+# # Uses st.cache_data to only rerun when the query changes or after 10 min.
+# @st.cache_data(ttl=600)
+# def get_data():
+#     db = client['project']
+#     collection = db['data']
+#     items = collection.find()
+#     items = list(items)
+#     return items
 
-df = df[df['year'] == 2021]
+# items = get_data()
 
+
+# # Converting data to dataframe and doing type conversion
+# df_elhub = pd.DataFrame(items)
+# df_elhub['startTime'] = pd.to_datetime(df_elhub['startTime'], errors='coerce', utc=True)
+# df_elhub['quantityKwh'] = pd.to_numeric(df_elhub['quantityKwh'], errors='coerce')
+# df_elhub['month'] = df_elhub['startTime'].dt.month
+# df_elhub['year'] = df_elhub['startTime'].dt.year
+
+# df_elhub = df_elhub[df_elhub['year'] == 2021]
+
+df_elhub = get_elhubdata()
 
 # Initializing columns
 c1, c2 = st.columns(2, gap='medium')
@@ -71,7 +73,7 @@ with c1:
     st.subheader('Total energy production in 2021 by price area')
 
     # Initiating radio selection for price areas
-    areas = sorted(df['priceArea'].unique().tolist())
+    areas = sorted(df_elhub['priceArea'].unique().tolist())
     area_index = {element: i for i, element in enumerate(areas)}
     area = st.radio('Choose a geographic area', areas, index=area_index[st.session_state.AREA],
                     horizontal=True, key='area', on_change=_set_new_area)
@@ -79,7 +81,7 @@ with c1:
     # st.session_state.area = area
 
     # Making reduced dataset
-    df_kwh_byArea = df[df['priceArea'] == area]\
+    df_elhub_kwh_byArea = df_elhub[df_elhub['priceArea'] == area]\
         .groupby('productionGroup')\
             .agg({'quantityKwh': 'sum'})\
                 .sort_values('quantityKwh', ascending=False)\
@@ -89,7 +91,7 @@ with c1:
     try:
         # Base figure
         fig = px.pie(
-            df_kwh_byArea, 
+            df_elhub_kwh_byArea, 
             values='quantityKwh', 
             names='productionGroup',
             title=f'Total energy production in area {area} in 2021',
@@ -112,7 +114,7 @@ with c2:
     st.subheader('Energy production by month')
     
     # Initiating pill selection for production groups
-    prods = sorted(df['productionGroup'].unique().tolist())
+    prods = sorted(df_elhub['productionGroup'].unique().tolist())
     prodgroups = st.pills('Select production group(s)', prods, selection_mode='multi', default=prods)
 
     # Initiating selectbox for month selction
@@ -120,14 +122,14 @@ with c2:
     month = st.selectbox('Select month', months)
 
     # Reducing dataset
-    df_month = df[(df['priceArea'] == area) & 
-                  (df['month'] == month_number_converter(month)) &
-                  (df['productionGroup'].isin(prodgroups))]
-    df_month = df_month.sort_values(by='productionGroup').sort_values(by='startTime').reset_index()
+    df_elhub_month = df_elhub[(df_elhub['priceArea'] == area) & 
+                  (df_elhub['month'] == month_number_converter(month)) &
+                  (df_elhub['productionGroup'].isin(prodgroups))]
+    df_elhub_month = df_elhub_month.sort_values(by='productionGroup').sort_values(by='startTime').reset_index()
 
     # try, except block to catch errors without crashing  
     try: 
-        fig = px.line(df_month, 
+        fig = px.line(df_elhub_month, 
                         x='startTime', 
                         y='quantityKwh', 
                         color='productionGroup',
