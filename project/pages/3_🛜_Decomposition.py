@@ -22,7 +22,7 @@ df = st.session_state.data
 # page configuration
 st.set_page_config(layout='wide')
 st.header('Decomposition')
-st.write(f'Decomposition analyses of weather data from electrical price area {st.session_state.AREA}')
+st.write(f'Decomposition analyses of Elhub data from electrical price area {st.session_state.AREA}')
 
 
 # initializing tabs 
