@@ -213,28 +213,29 @@ def STL_plotter(df_elhub, area='NO1', prodGroup='wind', periodLength=12,
             seasonal=seasonalSmoother, trend=trendSmoother, robust=robust)
 
     res = stl.fit()
+
+    #plotting with plotly
     fig = make_subplots(
             rows=4, cols=1,
             subplot_titles=["Observed", "Trend", "Seasonal", "Residuals"])
     fig.add_trace(
-        go.Scatter(x=res.seasonal.index, y=res.observed, mode='lines', line=dict(color="#8c2ac9")),
+        go.Scatter(x=res.seasonal.index, y=res.observed, mode='lines', line=dict(color="#a234e7")),
             row=1, col=1)
 
     fig.add_trace(
-        go.Scatter(x=res.trend.index, y=res.trend, mode='lines', line=dict(color="#2bc335")),
+        go.Scatter(x=res.trend.index, y=res.trend, mode='lines', line=dict(color="#19a222")),
             row=2, col=1)
 
     fig.add_trace(
-        go.Scatter(x=res.seasonal.index, y=res.seasonal, mode='lines', line=dict(color="#2831dd")),
+        go.Scatter(x=res.seasonal.index, y=res.seasonal, mode='lines', line=dict(color="#28a8ed")),
             row=3, col=1)
 
     fig.add_trace(
-        go.Scatter(x=res.resid.index, y=res.resid, mode='lines', line=dict(color="#cc2d3d")),
+        go.Scatter(x=res.resid.index, y=res.resid, mode='lines', line=dict(color="#c22535")),
             row=4, col=1)
     
     fig.update_layout(
         margin=dict(l=40, r=40, t=20, b=20),
-        # paper_bgcolor="LightSteelBlue",
 )
 
     st.plotly_chart(fig)
