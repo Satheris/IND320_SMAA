@@ -31,7 +31,7 @@ df_elhub = st.session_state.elhub_data
 
 # need prodgroups for radio widgets in tabs
 prodGroups = sorted(df_elhub['productionGroup'].unique().tolist())
-prodGroup = st.selectbox(prodGroups)
+prodGroup = st.selectbox('Select production group', prodGroups)
 
 
 # initializing tabs 
