@@ -54,7 +54,7 @@ with tab1:
         
         periodLength = st.number_input('Length of a period (hours)', min_value=24, value=24*7, step=24)
 
-    st.write('\n')
+    st.write('\n \n')
 
     STL_plotter(df_elhub=df_elhub, 
                 area=st.session_state.AREA, 
@@ -68,10 +68,15 @@ with tab1:
 with tab2:
     st.subheader('Spectrogram')
 
+    c1, c2 = st.columns(2, gap='large')
 
     fs = 1/3600
-    nperseg = 24*7
-    noverlap = None
+
+    with c1: 
+        nperseg = 24*7
+    
+    with c2:
+        noverlap = None
 
     STFT_plotter(df_elhub=df_elhub,
                  area=st.session_state.AREA,
