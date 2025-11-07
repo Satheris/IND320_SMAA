@@ -253,7 +253,7 @@ def LOF_stats_plot(df:pd.DataFrame, column, contamination=0.01, n_neighbors=20):
     df_reduced.loc[(df_reduced['category'] == 1), 'outliers'] = None
 
     # plotting with the outlier data
-    fig = px.line(df_reduced, x='date', y=[column, 'outliers'], template='plotly')
+    fig = px.scatter(df_reduced, x='date', y=[column, 'outliers'], template='plotly')
     st.plotly_chart(fig)
 
     # print for analysis results
