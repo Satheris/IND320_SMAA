@@ -235,10 +235,10 @@ def compute_fence_height(Qt, fence_type):
     H = (Qt_tonnes / factor) ** (1 / 2.2)
     return H
 
-def main():
-    # Read the CSV file (skip metadata rows so that the header is read correctly).
-    filename = "open-meteo-60.57N7.60E1212m.csv"
-    df = pd.read_csv(filename, skiprows=3)
+def snowdrift_plot(df):
+    # # Read the CSV file (skip metadata rows so that the header is read correctly).
+    # filename = "open-meteo-60.57N7.60E1212m.csv"
+    # df = pd.read_csv(filename, skiprows=3)
     
     # Convert the 'time' column to datetime.
     df['time'] = pd.to_datetime(df['time'])
@@ -289,6 +289,3 @@ def main():
         "Slat-and-wire (m)": lambda x: f"{x:.1f}",
         "Solid (m)": lambda x: f"{x:.1f}"
     }))
-
-if __name__ == "__main__":
-    main()
