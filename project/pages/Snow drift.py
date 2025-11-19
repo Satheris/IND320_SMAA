@@ -14,6 +14,12 @@ if 'AREA' not in st.session_state:
 if 'weather_data' not in st.session_state:
     st.session_state.weather_data = openmeteo_download(area=st.session_state.AREA)
 
+# page configuration
+st.set_page_config(layout='wide')
+st.header('Snow Drift analysis')
+st.write(f'Snow drift direction diagram for location chosen on *map page*')
+
+
 weather_data_snow = openmeteo_download_snowdrift(area=st.session_state.AREA, endYear=2022)
 
 snowdrift_plot(weather_data_snow)
