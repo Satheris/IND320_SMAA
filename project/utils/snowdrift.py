@@ -138,6 +138,7 @@ def compute_yearly_results(df, T, F, theta):
         df_season = df[(df['time'] >= season_start) & (df['time'] <= season_end)]
         if df_season.empty:
             continue
+
         # Calculate hourly Swe: precipitation counts when temperature < +1°C.
         df_season = df_season.copy()  # avoid SettingWithCopyWarning
         df_season['Swe_hourly'] = df_season.apply(
@@ -147,6 +148,7 @@ def compute_yearly_results(df, T, F, theta):
         result = compute_snow_transport(T, F, theta, total_Swe, wind_speeds)
         result["season"] = f"{s}-{s+1}"
         results_list.append(result)
+        
     return pd.DataFrame(results_list)
 
 
