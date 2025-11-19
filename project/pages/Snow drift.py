@@ -14,6 +14,6 @@ if 'AREA' not in st.session_state:
 if 'weather_data' not in st.session_state:
     st.session_state.weather_data = openmeteo_download(area=st.session_state.AREA)
 
-weather_data_snow = openmeteo_download_snowdrift(area=st.session_state.AREA, endYear=2023)
+weather_data_snow = openmeteo_download_snowdrift(area=st.session_state.AREA, startYear=2019, endYear=2023)
 
 snowdrift_plot(weather_data_snow)
