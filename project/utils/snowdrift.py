@@ -36,6 +36,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
+import streamlit as st
 
 
 def compute_Qupot(hourly_wind_speeds, dt=3600):
@@ -269,7 +270,7 @@ def plot_rose_plotly(avg_sector_values, overall_avg):
         height=700
     )
     
-    fig
+    st.plotly_chart(fig)
 
 
 def compute_fence_height(Qt, fence_type):
