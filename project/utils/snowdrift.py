@@ -148,7 +148,7 @@ def compute_yearly_results(df, T, F, theta):
         result = compute_snow_transport(T, F, theta, total_Swe, wind_speeds)
         result["season"] = f"{s}-{s+1}"
         results_list.append(result)
-        
+
     return pd.DataFrame(results_list)
 
 
@@ -171,7 +171,7 @@ def compute_average_sector(df):
     return avg_sectors
 
 
-# generated using DeepSeek
+# modified from matplotlib using DeepSeek
 def plot_rose_plotly(avg_sector_values, overall_avg):
     """
     Create a canvas with a polar (wind rose) plot showing the average directional breakdown.
