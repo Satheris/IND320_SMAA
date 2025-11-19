@@ -50,6 +50,7 @@ def compute_Qupot(hourly_wind_speeds, dt=3600):
     total = sum((u ** 3.8) * dt for u in hourly_wind_speeds) / 233847
     return total
 
+
 def sector_index(direction):
     """
     Given a wind direction in degrees, returns the index (0-15)
@@ -57,6 +58,7 @@ def sector_index(direction):
     """
     # Center the bin by adding 11.25° then modulo 360 and divide by 22.5°
     return int(((direction + 11.25) % 360) // 22.5)
+
 
 def compute_sector_transport(hourly_wind_speeds, hourly_wind_dirs, dt=3600):
     """
@@ -75,6 +77,7 @@ def compute_sector_transport(hourly_wind_speeds, hourly_wind_dirs, dt=3600):
         idx = sector_index(d)
         sectors[idx] += ((u ** 3.8) * dt) / 233847
     return sectors
+
 
 def compute_snow_transport(T, F, theta, Swe, hourly_wind_speeds, dt=3600):
     """
@@ -119,6 +122,7 @@ def compute_snow_transport(T, F, theta, Swe, hourly_wind_speeds, dt=3600):
         "Control": control
     }
 
+
 def compute_yearly_results(df, T, F, theta):
     """
     Compute the yearly (seasonal) snow transport parameters for every season in the data.
@@ -144,6 +148,7 @@ def compute_yearly_results(df, T, F, theta):
         result["season"] = f"{s}-{s+1}"
         results_list.append(result)
     return pd.DataFrame(results_list)
+
 
 def compute_average_sector(df):
     """
@@ -259,6 +264,7 @@ def compute_fence_height(Qt, fence_type):
              - Solid: 2.9
       3. Calculate H = ( (Qt_tonnes) / (factor) )^(1/2.2)
     """
+
     Qt_tonnes = Qt / 1000.0
     if fence_type.lower() == "wyoming":
         factor = 8.5
@@ -272,11 +278,9 @@ def compute_fence_height(Qt, fence_type):
     H = (Qt_tonnes / factor) ** (1 / 2.2)
     return H
 
+
 def snowdrift_plot(df):
-    # # Read the CSV file (skip metadata rows so that the header is read correctly).
-    # filename = "open-meteo-60.57N7.60E1212m.csv"
-    # df = pd.read_csv(filename, skiprows=3)
-    
+
     # Convert the 'time' column to datetime.
     df['time'] = pd.to_datetime(df['time'])
     
