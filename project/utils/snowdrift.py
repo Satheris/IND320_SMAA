@@ -327,7 +327,7 @@ def snowdrift_plot(df):
     # Compute seasonal results (yearly averages for each season).
     yearly_df = compute_yearly_results(df, T, F, theta)
     overall_avg = yearly_df['Qt (kg/m)'].mean()
-    # print(f"\nYearly average snow drift (Qt) per season:\n{yearly_df}")
+    print(f"\nYearly average snow drift (Qt) per season:")
     print(yearly_df[['season', 'Qt (kg/m)', 'Control']].to_string(index=False, 
           formatters={'Qt (kg/m)': lambda x: f"{x:.1f}"}))
     print(f"Overall average Qt over all seasons: {overall_avg / 1000:.1f} tonnes/m")
@@ -338,8 +338,8 @@ def snowdrift_plot(df):
     print(yearly_df_disp[['season', 'Qt (tonnes/m)', 'Control']].to_string(index=False, 
           formatters={'Qt (tonnes/m)': lambda x: f"{x:.1f}"}))
     
-    overall_avg_tonnes = overall_avg / 1000
-    print(f"\nOverall average Qt over all seasons: {overall_avg_tonnes:.1f} tonnes/m")
+    # overall_avg_tonnes = overall_avg / 1000
+    # print(f"\nOverall average Qt over all seasons: {overall_avg_tonnes:.1f} tonnes/m")
     
     # Compute the average directional breakdown (average over all seasons).
     avg_sectors = compute_average_sector(df)
