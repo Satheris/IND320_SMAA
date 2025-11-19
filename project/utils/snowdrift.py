@@ -257,7 +257,7 @@ def plot_rose_plotly(avg_sector_values, overall_avg):
             ),
             angularaxis=dict(
                 direction="clockwise",  # Set direction to clockwise
-                rotation=0,  # North at the top (0 degrees)
+                rotation=90,  # North at the top (0 degrees)
                 thetaunit="degrees",
                 tickvals=np.arange(0, 360, 22.5),
                 ticktext=directions,
