@@ -82,6 +82,58 @@ def openmeteo_download(area, year=2021) -> pd.DataFrame:
     return df
 
 
+@st.cache_data(show_spinner=True)
+def openmeteo_download_snowdrift(area, startYear=2021, endYear=2022) -> pd.DataFrame:
+    # Setup the Open-Meteo API client with cache and retry on error
+    cache_session = requests_cache.CachedSession('.cache', expire_after = 3600)
+    retry_session = retry(cache_session, retries = 5, backoff_factor = 0.2)
+    openmeteo = openmeteo_requests.Client(session = retry_session)
+
+    longitude, latitude = area_to_geoplacement(area)
+
+    # Make sure all required weather variables are listed here
+    # The order of variables in hourly or daily is important to assign them correctly below
+    url = "https://archive-api.open-meteo.com/v1/archive"
+    params = {
+        "latitude": latitude,
+        "longitude": longitude,
+        "start_date": f"{startYear}-07-01",
+        "end_date": f"{endYear}-06-30",
+        "hourly": ["temperature_2m", "wind_speed_10m", "wind_direction_10m", "wind_gusts_10m", "precipitation"],
+        "models": "era5",
+        "timezone": "Europe/Berlin",
+        "wind_speed_unit": "ms"}
+    
+    responses = openmeteo.weather_api(url, params=params)
+    response = responses[0]    
+
+    # Process hourly data. The order of variables needs to be the same as requested.
+    hourly = response.Hourly()
+    hourly_temperature_2m = hourly.Variables(0).ValuesAsNumpy()
+    hourly_wind_direction_10m = hourly.Variables(1).ValuesAsNumpy()
+    hourly_wind_speed_10m = hourly.Variables(2).ValuesAsNumpy()
+    hourly_wind_gusts_10m = hourly.Variables(3).ValuesAsNumpy()
+    hourly_precipitation = hourly.Variables(4).ValuesAsNumpy()
+
+    hourly_data = {"time": pd.date_range(
+        start = pd.to_datetime(hourly.Time(), unit = "s", utc = True), # .tz_convert('Europe/Oslo'),
+        end =  pd.to_datetime(hourly.TimeEnd(), unit = "s", utc = True), # .tz_convert('Europe/Oslo'),
+        freq = pd.Timedelta(seconds = hourly.Interval()),
+        inclusive = "left")}
+    
+    hourly_data['time'] = pd.to_datetime(hourly_data['time']).tz_localize(None) + pd.Timedelta(hours=1)
+
+    hourly_data["temperature_2m (°C)"] = hourly_temperature_2m
+    hourly_data["wind_direction_10m (°)"] = hourly_wind_direction_10m
+    hourly_data["wind_speed_10m (m/s)"] = hourly_wind_speed_10m
+    hourly_data["wind_gusts_10m (m/s)"] = hourly_wind_gusts_10m
+    hourly_data["precipitation (mm)"] = hourly_precipitation
+
+    df = pd.DataFrame(data = hourly_data)
+
+    return df    
+
+
 @st.cache_resource
 def init_connection() -> pymongo.MongoClient:
     return pymongo.MongoClient(st.secrets['mongo']['uri'])
