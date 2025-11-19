@@ -35,6 +35,8 @@ Assumptions:
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import plotly.graph_objects as go
+
 
 def compute_Qupot(hourly_wind_speeds, dt=3600):
     """
@@ -197,7 +199,78 @@ def plot_rose(avg_sector_values, overall_avg):
         va='bottom'
     )
     plt.tight_layout()
-    plt.show()
+    # plt.show()
+
+
+# generated using DeepSeek
+def plot_rose_plotly(avg_sector_values, overall_avg):
+    """
+    Create a canvas with a polar (wind rose) plot showing the average directional breakdown.
+    
+    Parameters:
+      avg_sector_values: list of 16 average transport values (kg/m) for the sectors.
+      overall_avg: overall average yearly snow transport (Qt in kg/m) across all seasons.
+                   This value will be converted to tonnes/m.
+    """
+    num_sectors = 16
+    # Compute bin centers: each bin is 360/16 = 22.5° wide
+    angles = np.deg2rad(np.arange(0, 360, 360/num_sectors))
+    
+    # Convert the sector values from kg/m to tonnes/m
+    avg_sector_values_tonnes = np.array(avg_sector_values) / 1000.0
+    
+    # Convert overall average from kg/m to tonnes/m and format with one decimal
+    overall_tonnes = overall_avg / 1000.0
+    
+    # Direction labels
+    directions = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE',
+                  'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
+    
+    # Create the polar plot
+    fig = go.Figure()
+    
+    fig.add_trace(go.Barpolar(
+        r=avg_sector_values_tonnes,
+        theta=np.rad2deg(angles),  # Plotly uses degrees for theta
+        width=np.full(num_sectors, 360/num_sectors),  # Width in degrees for each bar
+        marker_color='lightblue',
+        marker_line_color='black',
+        marker_line_width=1,
+        opacity=0.8,
+        name='Snow Transport'
+    ))
+    
+    # Update layout for polar plot
+    fig.update_layout(
+        title={
+            'text': f"Average Directional Distribution of Snow Transport<br>Overall Average Qt: {overall_tonnes:,.1f} tonnes/m",
+            'x': 0.5,
+            'xanchor': 'center'
+        },
+        polar=dict(
+            radialaxis=dict(
+                visible=True,
+                showline=True,
+                showticklabels=True,
+                tickfont=dict(size=10)
+            ),
+            angularaxis=dict(
+                direction="clockwise",  # Set direction to clockwise
+                rotation=0,  # North at the top (0 degrees)
+                thetaunit="degrees",
+                tickvals=np.arange(0, 360, 22.5),
+                ticktext=directions,
+                tickfont=dict(size=11)
+            ),
+            bgcolor='black'
+        ),
+        showlegend=False,
+        width=700,
+        height=700
+    )
+    
+    return fig
+
 
 def compute_fence_height(Qt, fence_type):
     """
@@ -254,7 +327,7 @@ def snowdrift_plot(df):
     # Compute seasonal results (yearly averages for each season).
     yearly_df = compute_yearly_results(df, T, F, theta)
     overall_avg = yearly_df['Qt (kg/m)'].mean()
-    print("\nYearly average snow drift (Qt) per season:")
+    print(f"\nYearly average snow drift (Qt) per season:\n{yearly_df}")
     print(f"Overall average Qt over all seasons: {overall_avg / 1000:.1f} tonnes/m")
     
     yearly_df_disp = yearly_df.copy()
@@ -270,7 +343,7 @@ def snowdrift_plot(df):
     avg_sectors = compute_average_sector(df)
     
     # Create the rose plot canvas with the average directional breakdown.
-    plot_rose(avg_sectors, overall_avg)
+    plot_rose_plotly(avg_sectors, overall_avg)
     
     # Compute and print necessary fence heights for each season and for three fence types.
     fence_types = ["Wyoming", "Slat-and-wire", "Solid"]
