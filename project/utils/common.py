@@ -99,7 +99,7 @@ def openmeteo_download_snowdrift(area, startYear=2021, endYear=2022) -> pd.DataF
         "longitude": longitude,
         "start_date": f"{startYear}-07-01",
         "end_date": f"{endYear}-06-30",
-        "hourly": ["temperature_2m", "wind_speed_10m", "wind_direction_10m", "wind_gusts_10m", "precipitation"],
+        "hourly": ["temperature_2m", "wind_direction_10m", "wind_speed_10m", "wind_gusts_10m", "precipitation"],
         "models": "era5",
         "timezone": "Europe/Berlin",
         "wind_speed_unit": "ms"}
