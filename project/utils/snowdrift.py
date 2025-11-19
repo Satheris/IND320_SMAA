@@ -165,7 +165,7 @@ def compute_average_sector(df):
         wdir = group["wind_direction_10m (°)"].tolist()
         sectors = compute_sector_transport(ws, wdir)
         sectors_list.append(sectors)
-    avg_sectors = np.mean(sectors_list, axis=1)
+    avg_sectors = np.mean(sectors_list, axis=0)
     return avg_sectors
 
 
