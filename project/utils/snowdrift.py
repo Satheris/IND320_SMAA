@@ -269,7 +269,7 @@ def plot_rose_plotly(avg_sector_values, overall_avg):
         height=700
     )
     
-    return fig
+    fig
 
 
 def compute_fence_height(Qt, fence_type):
