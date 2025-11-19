@@ -199,7 +199,9 @@ def plot_rose_plotly(avg_sector_values, overall_avg):
         marker_line_color='black',
         marker_line_width=1,
         opacity=0.8,
-        name='Snow Transport'
+        name='Snow Transport',
+        hovertemplate= 
+        ''
     ))
     
     # Update layout for polar plot
