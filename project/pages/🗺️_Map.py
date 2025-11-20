@@ -2,9 +2,7 @@
 import streamlit as st
 
 # Importing self defined functions
-from utils.common import (openmeteo_download,
-                          openmeteo_download_snowdrift,
-                          map_outline)
+from utils.common import (map_outline)
 from utils.snowdrift import snowdrift_plot
 
 
