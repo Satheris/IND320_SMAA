@@ -303,20 +303,20 @@ def snowdrift_plot(df):
     
     # print(f"Overall average Qt over all seasons: {overall_avg / 1000:.1f} tonnes/m")
     
+    # Create the rose plot canvas with the average directional breakdown.
+    plot_rose_plotly(avg_sectors, overall_avg)
+    
     yearly_df_disp = yearly_df.copy()
     yearly_df_disp["Qt (tonnes/m)"] = yearly_df_disp["Qt (kg/m)"] / 1000
-    print("\nYearly average snow drift (Qt) per season (in tonnes/m) and control type:")
-    print(yearly_df_disp[['season', 'Qt (tonnes/m)', 'Control']].to_string(index=False, 
+    st.write("\nYearly average snow drift (Qt) per season (in tonnes/m) and control type:")
+    st.write(yearly_df_disp[['season', 'Qt (tonnes/m)', 'Control']].to_string(index=False, 
           formatters={'Qt (tonnes/m)': lambda x: f"{x:.1f}"}))
     
     overall_avg_tonnes = overall_avg / 1000
-    print(f"\nOverall average Qt over all seasons: {overall_avg_tonnes:.1f} tonnes/m")
+    st.write(f"\nOverall average Qt over all seasons: {overall_avg_tonnes:.1f} tonnes/m")
     
     # Compute the average directional breakdown (average over all seasons).
     avg_sectors = compute_average_sector(df)
-    
-    # Create the rose plot canvas with the average directional breakdown.
-    plot_rose_plotly(avg_sectors, overall_avg)
     
     # Compute and print necessary fence heights for each season and for three fence types.
     fence_types = ["Wyoming", "Slat-and-wire", "Solid"]
@@ -329,8 +329,8 @@ def snowdrift_plot(df):
             res[f"{ft} (m)"] = compute_fence_height(Qt_val, ft)
         fence_results.append(res)
     fence_df = pd.DataFrame(fence_results)
-    print("\nNecessary fence heights per season (in meters):")
-    print(fence_df.to_string(index=False, formatters={
+    st.write("\nNecessary fence heights per season (in meters):")
+    st.write(fence_df.to_string(index=False, formatters={
         "Wyoming (m)": lambda x: f"{x:.1f}",
         "Slat-and-wire (m)": lambda x: f"{x:.1f}",
         "Solid (m)": lambda x: f"{x:.1f}"
