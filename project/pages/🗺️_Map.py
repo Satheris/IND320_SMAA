@@ -3,7 +3,8 @@ import streamlit as st
 
 # Importing self defined functions
 from utils.common import (openmeteo_download,
-                          openmeteo_download_snowdrift)
+                          openmeteo_download_snowdrift,
+                          map_outline)
 from utils.snowdrift import snowdrift_plot
 
 
@@ -18,3 +19,4 @@ st.header('Map')
 st.write(f"Map covering Norway's electrical price areas")
 
 
+map_outline()
