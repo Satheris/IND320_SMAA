@@ -22,5 +22,5 @@ c1, c2 = st.columns(2, gap='medium')
 with c1: 
     st.plotly_chart(map_outline())#, key='location', on_select='rerun')
 
-with c2:
-    st.write(st.session_state.location)
+# with c2:
+#     st.write(st.session_state.location)
