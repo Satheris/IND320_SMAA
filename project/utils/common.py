@@ -344,7 +344,8 @@ def map_outline(df=None):
         map_style="open-street-map",
         zoom=3,
         center={"lat": 65, "lon": 8},
-        labels={'dummy_value': ''})
+        labels={'dummy_value': ''},
+        showscale=False)
 
     # Customize outlines
     fig.update_traces(
