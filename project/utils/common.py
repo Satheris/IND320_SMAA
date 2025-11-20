@@ -339,7 +339,7 @@ def map_outline(df=None):
         geojson=priceAreas,
         locations='area_id',
         featureidkey="properties.OBJECTID",
-        color='dummy_value',
+        color=None,
         color_continuous_scale=[(0, "rgba(0,0,0,0)"), (1, "rgba(0,0,0,0)")],  # Transparent colors
         map_style="open-street-map",
         zoom=3,
@@ -350,7 +350,7 @@ def map_outline(df=None):
     fig.update_traces(
         marker_line_width=2,
         marker_line_color="#e8862a",
-        showscale=True)
+        showscale=False)
     
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
