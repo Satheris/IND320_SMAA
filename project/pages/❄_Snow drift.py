@@ -20,7 +20,7 @@ st.header('Snow Drift analysis')
 st.write(f'Snow drift direction diagram for location chosen on *map page*')
 
 try: 
-    weather_data_snow = openmeteo_download_snowdrift(area=st.session_state.location, endYear=2022)
+    weather_data_snow = openmeteo_download_snowdrift(area=st.session_state['location'], endYear=2022)
     snowdrift_plot(weather_data_snow)
 except: 
     st.markdown('No location chosen on *map page*')
