@@ -345,7 +345,7 @@ def map_outline(df=None):
         zoom=3.5,
         center={"lat": 65.0, "lon": 16.0},
         labels={'dummy_value': ''},
-        hover_data={'area_names'=True}
+        hover_data={'area_names':True}
         )
 
     # Customize outlines
