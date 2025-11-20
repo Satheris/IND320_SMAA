@@ -350,7 +350,7 @@ def map_outline(df=None):
     fig.update_traces(
         marker_line_width=2,
         marker_line_color="#e8862a",
-        showscale=False)
+        showscale=True)
     
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
