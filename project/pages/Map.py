@@ -9,7 +9,7 @@ from utils.snowdrift import snowdrift_plot
 
 # assigning session_state.location
 if 'location' not in st.session_state:
-    st.session_state.location = {'longitude': None, 'latitude': None}
+    st.session_state.location = {'lat': None, 'lon': None}
 
 
 # page configuration
