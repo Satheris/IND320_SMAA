@@ -353,7 +353,9 @@ def map_outline(df=None):
         marker_line_color="#e8862a",
         showscale=False)
     
-    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0},
+                          coloraxis_showscale=False  # Explicitly hide color scale in layout
+                          )
 
     return fig
 
