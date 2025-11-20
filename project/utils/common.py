@@ -322,7 +322,7 @@ def LOF_stats_plot(df:pd.DataFrame, column, contamination=0.01, n_neighbors=20):
 # ----------------------------------------------------------------
 
 def map_outline(df=None):
-    with open(r'..\data\file.geojson') as file:
+    with open(r'project\data\file.geojson') as file:
         priceAreas = json.load(file)
 
     if df == None:
