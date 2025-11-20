@@ -6,9 +6,9 @@ from utils.common import (map_outline)
 from utils.snowdrift import snowdrift_plot
 
 
-# assigning session_state.location
+# assigning session_state.location if not in cache
 if 'location' not in st.session_state:
-    st.session_state.location = {'lat': None, 'lon': None}
+    st.session_state.location = None
 
 
 # page configuration
