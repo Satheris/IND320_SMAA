@@ -7,9 +7,9 @@ from utils.common import (openmeteo_download,
 from utils.snowdrift import snowdrift_plot
 
 
-# # session_state.area to use across pages for data extraction
-# if 'AREA' not in st.session_state:
-#     st.session_state.AREA = 'NO1'
+# session_state.area to use across pages for data extraction
+if 'AREA' not in st.session_state:
+    st.session_state.AREA = 'NO1'
 # # assigning session_state.weather_data if not in cache
 # if 'weather_data' not in st.session_state:
 #     st.session_state.weather_data = openmeteo_download(area=st.session_state.AREA)
