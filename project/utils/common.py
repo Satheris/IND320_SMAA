@@ -338,7 +338,7 @@ def map_outline(df=None):
         df,
         geojson=priceAreas,
         locations='area_id',
-        featureidkey="properties.ElSpotOmr",
+        featureidkey="properties.OBJECTID",
         color='dummy_value',
         color_continuous_scale=[(0, "rgba(0,0,0,0)"), (1, "rgba(0,0,0,0)")],  # Transparent colors
         map_style="open-street-map",
