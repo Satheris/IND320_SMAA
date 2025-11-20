@@ -352,6 +352,20 @@ def map_outline(df=None):
         marker_line_width=2,
         marker_line_color="#e8862a")
     
+    fig.update_traces(
+        selected=dict(
+            marker=dict(
+                opacity=0.7,
+                color="#2ca02c",
+                line=dict(width=3, color="#1f5a1f")  # Darker outline for selected
+            )),
+        unselected=dict(
+            marker=dict(
+                opacity=0,
+                line=dict(width=2, color="#e8862a")  # Normal outline for unselected
+            ))
+    )
+    
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0},
                       coloraxis_showscale=False,  # Explicitly hide color scale in layout
                       height=575,
