@@ -17,4 +17,6 @@ st.header('Map')
 st.write(f"Map covering Norway's electrical price areas")
 
 
-map_outline()
+st.plotly_chart(map_outline(), key='location', on_select='rerun')
+
+st.write(st.session_state.location)
