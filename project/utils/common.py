@@ -342,20 +342,21 @@ def map_outline(df=None):
         color='dummy_value',
         color_continuous_scale=[(0, "rgba(0,0,0,0)"), (1, "rgba(0,0,0,0)")],  # Transparent colors
         map_style="open-street-map",
-        zoom=3,
-        center={"lat": 65, "lon": 8},
+        zoom=4,
+        center={"lat": 64.0, "lon": 12.0},
         labels={'dummy_value': ''},
         )
 
     # Customize outlines
     fig.update_traces(
         marker_line_width=2,
-        marker_line_color="#e8862a",
-        )
+        marker_line_color="#e8862a")
     
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0},
-                          coloraxis_showscale=False  # Explicitly hide color scale in layout
-                          )
+                      coloraxis_showscale=False,  # Explicitly hide color scale in layout
+                      height=600,  # Good height for Norway's shape
+                      width=400    # Narrow width matches Norway's orientation
+                      )
 
     return fig
 
