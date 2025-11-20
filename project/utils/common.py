@@ -354,8 +354,8 @@ def map_outline(df=None):
     
     fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0},
                       coloraxis_showscale=False,  # Explicitly hide color scale in layout
-                      height=600,  # Good height for Norway's shape
-                      width=400    # Narrow width matches Norway's orientation
+                      height=700,  # Good height for Norway's shape
+                      width=450    # Narrow width matches Norway's orientation
                       )
 
     return fig
