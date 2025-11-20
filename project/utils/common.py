@@ -343,7 +343,7 @@ def map_outline(df=None):
         color_continuous_scale=[(0, "rgba(0,0,0,0)"), (1, "rgba(0,0,0,0)")],  # Transparent colors
         map_style="open-street-map",
         zoom=3.5,
-        center={"lat": 68.0, "lon": 16.0},
+        center={"lat": 66.0, "lon": 16.0},
         labels={'dummy_value': ''},
         )
 
