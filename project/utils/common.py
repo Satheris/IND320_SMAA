@@ -351,7 +351,8 @@ def map_outline(df=None):
     # Customize outlines
     fig.update_traces(
         marker_line_width=2,
-        marker_line_color="#e8862a")
+        marker_line_color="#e8862a",
+        )
     
     fig.update_traces(
         selected=dict(marker=dict(opacity=0.7)), #color="#2ca02c", 
