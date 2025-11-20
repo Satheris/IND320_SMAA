@@ -303,6 +303,9 @@ def snowdrift_plot(df):
     
     # print(f"Overall average Qt over all seasons: {overall_avg / 1000:.1f} tonnes/m")
     
+    # Compute the average directional breakdown (average over all seasons).
+    avg_sectors = compute_average_sector(df)
+    
     # Create the rose plot canvas with the average directional breakdown.
     plot_rose_plotly(avg_sectors, overall_avg)
     
@@ -314,9 +317,6 @@ def snowdrift_plot(df):
     
     overall_avg_tonnes = overall_avg / 1000
     st.write(f"\nOverall average Qt over all seasons: {overall_avg_tonnes:.1f} tonnes/m")
-    
-    # Compute the average directional breakdown (average over all seasons).
-    avg_sectors = compute_average_sector(df)
     
     # Compute and print necessary fence heights for each season and for three fence types.
     fence_types = ["Wyoming", "Slat-and-wire", "Solid"]
