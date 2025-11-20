@@ -351,6 +351,8 @@ def map_outline(df=None):
         marker_line_width=2,
         marker_line_color="#e8862a",
         showscale=False)
+    
+    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
     return fig
 
