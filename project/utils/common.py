@@ -326,6 +326,7 @@ def map_outline(df=None):
         priceAreas = json.load(file)
 
     if df == None:
+        # making dummy df with area identifiers
         area_ids = [feature['properties']['OBJECTID'] for feature in priceAreas['features']]
         area_names = [feature['properties']['ElSpotOmr'] for feature in priceAreas['features']]
         df = pd.DataFrame({'area_id': area_ids, 
