@@ -352,7 +352,7 @@ def map_outline(df=None):
         marker_line_color="#e8862a",
         showscale=False)
 
-    st.plotly_chart(fig)
+    return fig
 
 
 
