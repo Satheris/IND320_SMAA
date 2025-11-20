@@ -4,6 +4,7 @@ import streamlit as st
 import pandas as pd
 import pymongo
 import numpy as np
+import json
 
 import plotly.express as px
 import plotly.graph_objects as go
@@ -313,6 +314,44 @@ def LOF_stats_plot(df:pd.DataFrame, column, contamination=0.01, n_neighbors=20):
     counts = np.bincount(pred_labels)
     st.write(f'LocalOutlierFactor found {counts[0]} outliers out of {sum(counts)} data points')
     st.write(f'The proportion of outliers is {counts[0]/sum(counts)*100:.3f}%')    
+
+
+
+# ----------------------------------------------------------------
+# MAPPING
+# ----------------------------------------------------------------
+
+def map_outline(df=None):
+    with open(r'C:\Users\saraa\Documents\IND320_SMAA\project\data\file.geojson') as file:
+        priceAreas = json.load(file)
+
+    if df == None:
+        area_ids = [feature['properties']['OBJECTID'] for feature in priceAreas['features']]
+        area_names = [feature['properties']['ElSpotOmr'] for feature in priceAreas['features']]
+        df = pd.DataFrame({'area_id': area_ids, 
+                        'dummy_value': [1]*len(area_ids),
+                        'area_names': area_names})
+
+    # Create the map
+    fig = px.choropleth_map(
+        df,
+        geojson=priceAreas,
+        locations='area_id',
+        featureidkey="properties.OBJECTID",
+        color='dummy_value',
+        color_continuous_scale=[(0, "rgba(0,0,0,0)"), (1, "rgba(0,0,0,0)")],  # Transparent colors
+        map_style="open-street-map",
+        zoom=3,
+        center={"lat": 65, "lon": 8},
+        labels={'dummy_value': ''})
+
+    # Customize outlines
+    fig.update_traces(
+        marker_line_width=2,
+        marker_line_color="#e8862a",
+        showscale=False)
+
+    st.plotly_chart(fig)
 
 
 
