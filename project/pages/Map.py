@@ -7,12 +7,10 @@ from utils.common import (openmeteo_download,
 from utils.snowdrift import snowdrift_plot
 
 
-# # session_state.area to use across pages for data extraction
-# if 'AREA' not in st.session_state:
-#     st.session_state.AREA = 'NO1'
-# # assigning session_state.weather_data if not in cache
-# if 'weather_data' not in st.session_state:
-#     st.session_state.weather_data = openmeteo_download(area=st.session_state.AREA)
+# assigning session_state.location
+if 'location' not in st.session_state:
+    st.session_state.location = {'longitude': None, 'latitude': None}
+
 
 # page configuration
 st.set_page_config(layout='wide')
@@ -20,6 +18,3 @@ st.header('Map')
 st.write(f"Map covering Norway's electrical price areas")
 
 
-# weather_data_snow = openmeteo_download_snowdrift(area=st.session_state.AREA, endYear=2022)
-
-# snowdrift_plot(weather_data_snow)
