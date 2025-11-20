@@ -355,8 +355,7 @@ def map_outline(df=None):
     fig.update_traces(
         selected=dict(
             marker=dict(
-                opacity=0.7,
-                color="#2ca02c",
+                opacity=0,
                 line=dict(width=3, color="#1f5a1f")  # Darker outline for selected
             )),
         unselected=dict(
