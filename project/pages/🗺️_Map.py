@@ -5,8 +5,8 @@ from streamlit_folium import st_folium
 import json
 
 # Importing self defined functions
-from utils.common import (openmeteo_download_snowdrift,
-                          get_elhubdata,
+from utils.common import (get_elhubdata,
+                          openmeteo_download_snowdrift,
                           find_region_for_point)
 
 
@@ -17,8 +17,9 @@ if 'production_data' not in st.session_state:
 # assigning session_state.consumption_data if not in cache
 if 'consumption_data' not in st.session_state:
     st.session_state.consumption_data = get_elhubdata('consumption')
-
-
+# assigning session_state.snow_data if not in cache
+if 'snow_data' not in st.session_state:
+    st.session_state.snow_data = None
 
 # Initialize session state to store map state
 if 'marker_location' not in st.session_state:
@@ -136,6 +137,8 @@ if map_data.get('last_clicked'):
     # Update marker location
     lat, lng = map_data['last_clicked']['lat'], map_data['last_clicked']['lng']
     st.session_state.marker_location = [lat, lng]
+    
+    st.session_state.snow_data = openmeteo_download_snowdrift(st.session_state.marker_location)
 
 
     # Find which region contains the clicked point

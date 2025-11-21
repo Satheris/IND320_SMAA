@@ -84,13 +84,13 @@ def openmeteo_download(area, year=2021) -> pd.DataFrame:
 
 
 @st.cache_data(show_spinner=True)
-def openmeteo_download_snowdrift(area, startYear=2021, endYear=2022) -> pd.DataFrame:
+def openmeteo_download_snowdrift(location, startYear=2021, endYear=2022) -> pd.DataFrame:
     # Setup the Open-Meteo API client with cache and retry on error
     cache_session = requests_cache.CachedSession('.cache', expire_after = 3600)
     retry_session = retry(cache_session, retries = 5, backoff_factor = 0.2)
     openmeteo = openmeteo_requests.Client(session = retry_session)
 
-    longitude, latitude = area_to_geoplacement(area)
+    latitude, longitude = location
 
     # Make sure all required weather variables are listed here
     # The order of variables in hourly or daily is important to assign them correctly below
