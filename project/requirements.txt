@@ -9,3 +9,5 @@ retry_requests
 scipy
 statsmodels
 scikit-learn
+folium
+streamlit_folium
