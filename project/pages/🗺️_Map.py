@@ -1,7 +1,7 @@
 # necessary imports for this page
 import streamlit as st
 import folium
-import streamlit_folium as st_folium
+from streamlit_folium import st_folium
 import json
 
 # Importing self defined functions
