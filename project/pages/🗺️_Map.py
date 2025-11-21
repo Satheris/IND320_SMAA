@@ -60,7 +60,7 @@ try:
             st.session_state.selected_region_feature,
             style_function=lambda feature: {
                 'fillColor': 'orange',
-                'color': "rgba(255, 134, 42, 255)", #rgba(0,0,0,0)
+                'color': "rgba(232, 134, 42, 255)", #rgba(0,0,0,0)
                 'weight': 4,  # Thicker border for emphasis
                 'fillOpacity': 0, 
                 'dashArray': '0'  # Ensure no dashes
@@ -142,12 +142,6 @@ if map_data.get('last_clicked'):
 
 
 with c2:
-
-    energy_type = st.pills('', ['production', 'consumption'], selection_mode='single', default=None)
-
-    if energy_type:
-        e = st.selectbox('', ['nanana'])
-
     # Display coordinates and region information if a marker exists
     if st.session_state.marker_location is not None:        
         # Printing chosen values
@@ -164,3 +158,9 @@ with c2:
             st.warning('The selected location is not within any defined region.')
     else:
         st.info('No location selected yet. Click on the map to choose a location.')
+    
+
+    energy_type = st.pills('', ['production', 'consumption'], selection_mode='single', default=None)
+
+    if energy_type:
+        e = st.selectbox('', ['nanana'])
