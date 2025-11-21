@@ -145,6 +145,9 @@ with c2:
 
     energy_type = st.pills('', ['production', 'consumption'], selection_mode='single', default=None)
 
+    if energy_type:
+        e = st.selectbox('', ['nanana'])
+
     # Display coordinates and region information if a marker exists
     if st.session_state.marker_location is not None:        
         # Printing chosen values
