@@ -179,4 +179,4 @@ with c2:
     energy_type = st.pills('', ['production', 'consumption'], selection_mode='single', default=None)
 
     if energy_type:
-        e = st.selectbox('', ['nanana'])
+        e = st.selectbox('', st.session_state[energy_type+'_data'][energy_type+'Group'].unique())
