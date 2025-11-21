@@ -112,36 +112,41 @@ if st.session_state.marker_location is not None:
 
 c1, c2 = st.columns(2, gap='medium')
 
+
 with c1: 
     # Render the map and capture interactions
     map_data = st_folium(m, width=450, height=575, key='norway_map')
     # st.plotly_chart(map_outline(), key='location', on_select='rerun')
 
+
+# Update marker position, map state, and selected region if user interacted with the map
+if map_data.get('last_clicked'):
+    # Update marker location
+    lat, lng = map_data['last_clicked']['lat'], map_data['last_clicked']['lng']
+    st.session_state.marker_location = [lat, lng]
+    
+    # Find which region contains the clicked point
+    if 'geojson_data' in st.session_state:
+        region_name, region_feature = find_region_for_point(lat, lng, st.session_state.geojson_data)
+        st.session_state.selected_region = region_name
+        st.session_state.selected_region_feature = region_feature
+    
+    # Update map view state to maintain current view
+    if map_data.get('center'):
+        st.session_state.map_center = [map_data['center']['lat'], map_data['center']['lng']]
+    if map_data.get('zoom'):
+        st.session_state.zoom = map_data['zoom']
+    
+    # Use Streamlit's rerun to update the map immediately
+    st.rerun()
+
+
 with c2:
-    # Update marker position, map state, and selected region if user interacted with the map
-    if map_data.get('last_clicked'):
-        # Update marker location
-        lat, lng = map_data['last_clicked']['lat'], map_data['last_clicked']['lng']
-        st.session_state.marker_location = [lat, lng]
-        
-        # Find which region contains the clicked point
-        if 'geojson_data' in st.session_state:
-            region_name, region_feature = find_region_for_point(lat, lng, st.session_state.geojson_data)
-            st.session_state.selected_region = region_name
-            st.session_state.selected_region_feature = region_feature
-        
-        # Update map view state to maintain current view
-        if map_data.get('center'):
-            st.session_state.map_center = [map_data['center']['lat'], map_data['center']['lng']]
-        if map_data.get('zoom'):
-            st.session_state.zoom = map_data['zoom']
-        
-        # Use Streamlit's rerun to update the map immediately
-        st.rerun()
+
 
     # Display coordinates and region information if a marker exists
     if st.session_state.marker_location is not None:
-        st.success(f'**Selected Coordinates:** {st.session_state.marker_location}')
+        st.success(f'**Selected Coordinates:** {st.session_state.marker_location:.4f}')
         
         # Add some useful information
         col1, col2 = st.columns(2)
