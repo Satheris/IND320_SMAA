@@ -143,7 +143,14 @@ if map_data.get('last_clicked'):
 
 with c2:
     # Display coordinates and region information if a marker exists
-    if st.session_state.marker_location is not None:        
+    if st.session_state.marker_location is not None:
+        
+        # Display region information if available
+        if st.session_state.selected_region:
+            st.info(f'**Selected Region:** {st.session_state.selected_region}')
+        else:
+            st.warning('The selected location is not within any defined region.')
+
         # Printing chosen values
         col1, col2 = st.columns(2)
         with col1:
@@ -151,11 +158,6 @@ with c2:
         with col2:
             st.write(f'**Longitude:** {st.session_state.marker_location[1]:.6f}')
         
-        # Display region information if available
-        if st.session_state.selected_region:
-            st.info(f'**Selected Region:** {st.session_state.selected_region}')
-        else:
-            st.warning('The selected location is not within any defined region.')
     else:
         st.info('No location selected yet. Click on the map to choose a location.')
     
