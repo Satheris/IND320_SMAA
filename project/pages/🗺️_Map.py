@@ -146,8 +146,7 @@ with c2:
 
     # Display coordinates and region information if a marker exists
     if st.session_state.marker_location is not None:
-        st.success(f'**Selected Coordinates:**\n\n\
-                   Latitude: {st.session_state.marker_location[0]:.4f}      Longitude: {st.session_state.marker_location[1]:.4f}')
+        st.success(f'**Selected Coordinates:** \n\nLatitude: {st.session_state.marker_location[0]:.4f}      Longitude: {st.session_state.marker_location[1]:.4f}')
         
         # Add some useful information
         col1, col2 = st.columns(2)
