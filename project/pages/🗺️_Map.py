@@ -143,12 +143,11 @@ if map_data.get('last_clicked'):
 
 with c2:
 
+    energy_type = st.pills('', ['production', 'consumption'], selection_mode='single', default=None)
 
     # Display coordinates and region information if a marker exists
-    if st.session_state.marker_location is not None:
-        # st.success(f'**Selected Coordinates:** \n\nLatitude: {st.session_state.marker_location[0]:.4f}      Longitude: {st.session_state.marker_location[1]:.4f}')
-        
-        # Add some useful information
+    if st.session_state.marker_location is not None:        
+        # Printing chosen values
         col1, col2 = st.columns(2)
         with col1:
             st.write(f'**Latitude:** {st.session_state.marker_location[0]:.6f}')
