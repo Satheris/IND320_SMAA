@@ -60,7 +60,7 @@ try:
             st.session_state.selected_region_feature,
             style_function=lambda feature: {
                 'fillColor': 'orange',
-                'color': "rgba(232, 134, 42, 255)", #rgba(0,0,0,0)
+                'color': "orange", #rgba(0,0,0,0)
                 'weight': 4,  # Thicker border for emphasis
                 'fillOpacity': 0, 
                 'dashArray': '0'  # Ensure no dashes
@@ -144,7 +144,7 @@ if map_data.get('last_clicked'):
 with c2:
     # Display coordinates and region information if a marker exists
     if st.session_state.marker_location is not None:
-        
+
         # Display region information if available
         if st.session_state.selected_region:
             st.info(f'**Selected Region:** {st.session_state.selected_region}')
