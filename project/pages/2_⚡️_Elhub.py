@@ -18,12 +18,12 @@ if 'AREA' not in st.session_state:
 # assigning session_state.weather_data if not in cache
 if 'weather_data' not in st.session_state:
     st.session_state.weather_data = openmeteo_download(area=st.session_state.AREA)
-# assigning session_state.prod_data if not in cache
-if 'prod_data' not in st.session_state:
-    st.session_state.prod_data = get_elhubdata('production')
-# assigning session_state.cons_data if not in cache
-if 'cons_data' not in st.session_state:
-    st.session_state.cons_data = get_elhubdata('consumption')
+# assigning session_state.production_data if not in cache
+if 'production_data' not in st.session_state:
+    st.session_state.production_data = get_elhubdata('production')
+# assigning session_state.consumption_data if not in cache
+# if 'consumption_data' not in st.session_state:
+#     st.session_state.consumption_data = get_elhubdata('consumption')
 
 
 

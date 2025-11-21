@@ -11,12 +11,12 @@ from utils.common import (openmeteo_download_snowdrift,
 
 
 
-# assigning session_state.prod_data if not in cache
-if 'prod_data' not in st.session_state:
-    st.session_state.prod_data = get_elhubdata('production')
-# assigning session_state.cons_data if not in cache
-if 'cons_data' not in st.session_state:
-    st.session_state.cons_data = get_elhubdata('consumption')
+# assigning session_state.production_data if not in cache
+if 'production_data' not in st.session_state:
+    st.session_state.production_data = get_elhubdata('production')
+# assigning session_state.consumption_data if not in cache
+if 'consumption_data' not in st.session_state:
+    st.session_state.consumption_data = get_elhubdata('consumption')
 
 
 
@@ -137,7 +137,7 @@ if map_data.get('last_clicked'):
     lat, lng = map_data['last_clicked']['lat'], map_data['last_clicked']['lng']
     st.session_state.marker_location = [lat, lng]
 
-    
+
     # Find which region contains the clicked point
     if 'geojson_data' in st.session_state:
         region_name, region_feature = find_region_for_point(lat, lng, st.session_state.geojson_data)
@@ -174,6 +174,7 @@ with c2:
     else:
         st.info('No location selected yet. Click on the map to choose a location.')
     
+
 
     energy_type = st.pills('', ['production', 'consumption'], selection_mode='single', default=None)
 
