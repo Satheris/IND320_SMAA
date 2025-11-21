@@ -60,7 +60,7 @@ try:
             st.session_state.selected_region_feature,
             style_function=lambda feature: {
                 'fillColor': 'orange',
-                'color': "#c62d12",
+                'color': "red",
                 'weight': 4,  # Thicker border for emphasis
                 'fillOpacity': 0, 
                 'dashArray': '0'  # Ensure no dashes
