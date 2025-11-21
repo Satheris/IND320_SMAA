@@ -13,7 +13,7 @@ from utils.map import (find_region_for_point)
 if 'marker_location' not in st.session_state:
     st.session_state.marker_location = None  # No initial marker
 if 'zoom' not in st.session_state:
-    st.session_state.zoom = 3.5  # Zoom level to show all Norway
+    st.session_state.zoom = 4  # Zoom level to show all Norway
 if 'map_center' not in st.session_state:
     st.session_state.map_center = [64.0, 11.0]  # Initial center on Norway
 if 'selected_region' not in st.session_state:
@@ -110,7 +110,7 @@ if st.session_state.marker_location is not None:
     ).add_to(m)
 
 
-c1, c2 = st.columns([2, 1], gap='medium')
+c1, c2 = st.columns(2, gap='medium')
 
 with c1: 
     # Render the map and capture interactions
