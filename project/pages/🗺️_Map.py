@@ -10,7 +10,7 @@ from utils.common import (get_elhubdata,
                           find_region_for_point)
 
 
-
+# data session_state
 # assigning session_state.production_data if not in cache
 if 'production_data' not in st.session_state:
     st.session_state.production_data = get_elhubdata('production')
@@ -21,7 +21,8 @@ if 'consumption_data' not in st.session_state:
 if 'snow_data' not in st.session_state:
     st.session_state.snow_data = None
 
-# Initialize session state to store map state
+
+# map specific session_state features
 if 'marker_location' not in st.session_state:
     st.session_state.marker_location = None  # No initial marker
 if 'zoom' not in st.session_state:
