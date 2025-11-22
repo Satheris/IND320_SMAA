@@ -49,6 +49,11 @@ try:
     # Load the GeoJSON file
     with open(r'project/data/file.geojson', 'r', encoding='utf-8') as f:
         geojson_data = json.load(f)
+
+    for features_list in geojson_data['features']:
+        splitted = features_list['properties']['ElSpotOmr'].split(' ')
+        combined = splitted[0]+splitted[1]
+        print(combined)
     
     # Create the base map
     m = folium.Map(location=st.session_state.map_center, zoom_start=st.session_state.zoom)
