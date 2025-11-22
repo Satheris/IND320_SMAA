@@ -77,9 +77,7 @@ try:
             nan_fill_opacity=0.4,
         ).add_to(m)
 
-        m.get_root().script = folium.Element(
-            m.get_root().script.render().replace("topright", "bottomleft")
-        )
+        m.get_root().script.render().replace("topright", "bottomleft")
 
     # Add base GeoJSON layer with default styling (no highlighting)
     base_geojson = folium.GeoJson(
