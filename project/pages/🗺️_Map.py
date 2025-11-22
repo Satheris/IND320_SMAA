@@ -156,9 +156,6 @@ except Exception as e:
 
 
 
-
-
-
 c1, c2 = st.columns(2, gap='medium')
 
 
