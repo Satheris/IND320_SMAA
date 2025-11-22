@@ -32,6 +32,8 @@ if 'selected_region' not in st.session_state:
     st.session_state.selected_region = None  # No region selected initially
 if 'selected_region_feature' not in st.session_state:
     st.session_state.selected_region_feature = None  # Store the actual feature data
+if 'group' not in st.session_state:
+    st.session_state.group = None
 
 
 
@@ -83,10 +85,10 @@ try:
     
 
     # ADD CHOROPLETH LAYER HERE
-    if st.session_state['energy_type']:
+    if st.session_state['group']:
         # Aggregate your data by priceArea (region)
-        # Example: Calculate total energy production by region
-        aggregated_data = st.session_state[st.session_state['energy_type']+'_data'].groupby('priceArea')['quantityKwh'].sum().reset_index()
+        energy_type = st.session_state['energy_type']
+        aggregated_data = st.session_state[energy_type+'_data'].groupby('priceArea')[energy_type+'Group']['quantityKwh'].sum().reset_index()
         
         folium.Choropleth(
             geo_data=geojson_data,  # Your GeoJSON data
@@ -206,4 +208,4 @@ with c2:
     energy_type = st.pills('Select energy type', ['production', 'consumption'], selection_mode='single', default=None, key='energy_type')
 
     if energy_type:
-        e = st.selectbox(f'Select {energy_type} group', st.session_state[energy_type+'_data'][energy_type+'Group'].unique())
+        group = st.selectbox(f'Select {energy_type} group', st.session_state[energy_type+'_data'][energy_type+'Group'].unique(), key='group')
