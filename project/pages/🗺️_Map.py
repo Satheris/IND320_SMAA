@@ -77,6 +77,7 @@ try:
             nan_fill_opacity=0.4,
         ).add_to(m)
 
+        m.render() # to trigger the script
         m.get_root().script.render().replace("topright", "bottomleft")
 
     # Add base GeoJSON layer with default styling (no highlighting)
