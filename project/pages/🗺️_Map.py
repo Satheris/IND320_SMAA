@@ -52,12 +52,31 @@ try:
 
     for features_list in geojson_data['features']:
         splitted = features_list['properties']['ElSpotOmr'].split(' ')
-        combined = splitted[0]+splitted[1]
-        features_list['properties']['ElSpotOmr'] = combined
+        features_list['properties']['ElSpotOmr'] = splitted[0]+splitted[1]
     
     # Create the base map
     m = folium.Map(location=st.session_state.map_center, zoom_start=st.session_state.zoom)
     
+    # ADD CHOROPLETH LAYER HERE
+    if st.session_state['group'] is not None:
+        # Aggregate your data by priceArea (region)
+        energy_type = st.session_state['energy_type']
+        aggregated_data = st.session_state[energy_type+'_data'].groupby(['priceArea', energy_type+'Group'])\
+            ['quantityKwh'].sum().reset_index()
+        
+        folium.Choropleth(
+            geo_data=geojson_data,  # Your GeoJSON data
+            data=aggregated_data,   # Aggregated energy data
+            columns=["priceArea", "quantityKwh"],  # Region ID and value columns
+            key_on="feature.properties.ElSpotOmr",  # Match GeoJSON property to your data
+            fill_color="YlGn",      # Color scheme
+            fill_opacity=0.7,       # Adjust opacity as needed
+            line_opacity=0.2,
+            legend_name=f"{st.session_state['energy_type']} Energy Production (Kwh)",
+            nan_fill_color="purple",  # Color for regions with no data
+            nan_fill_opacity=0.4,
+        ).add_to(m)
+
     # Add base GeoJSON layer with default styling (no highlighting)
     base_geojson = folium.GeoJson(
         geojson_data,
@@ -90,26 +109,6 @@ try:
         ).add_to(m)
     
 
-    # ADD CHOROPLETH LAYER HERE
-    if st.session_state['group'] is not None:
-        # Aggregate your data by priceArea (region)
-        energy_type = st.session_state['energy_type']
-        aggregated_data = st.session_state[energy_type+'_data'].groupby(['priceArea', energy_type+'Group'])\
-            ['quantityKwh'].sum().reset_index()
-        
-        
-        folium.Choropleth(
-            geo_data=geojson_data,  # Your GeoJSON data
-            data=aggregated_data,   # Aggregated energy data
-            columns=["priceArea", "quantityKwh"],  # Region ID and value columns
-            key_on="feature.properties.ElSpotOmr",  # Match GeoJSON property to your data
-            fill_color="YlGn",      # Color scheme
-            fill_opacity=0.7,       # Adjust opacity as needed
-            line_opacity=0.2,
-            legend_name=f"{st.session_state['energy_type']} Energy Production (Kwh)",
-            nan_fill_color="purple",  # Color for regions with no data
-            nan_fill_opacity=0.4,
-        ).add_to(m)
     
     # Add marker only if a location has been clicked
     if st.session_state.marker_location is not None:
