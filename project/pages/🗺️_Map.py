@@ -81,6 +81,40 @@ try:
             name="Selected Region"
         ).add_to(m)
     
+
+    # ADD CHOROPLETH LAYER HERE
+    if st.session_state['energy_type']:
+        # Aggregate your data by priceArea (region)
+        # Example: Calculate total energy production by region
+        aggregated_data = st.session_state[st.session_state['energy_type']+'_data'].groupby('priceArea')['quantityKwh'].sum().reset_index()
+        
+        folium.Choropleth(
+            geo_data=geojson_data,  # Your GeoJSON data
+            data=aggregated_data,   # Aggregated energy data
+            columns=["priceArea", "quantityKwh"],  # Region ID and value columns
+            key_on="feature.properties.ElSpotOmr",  # Match GeoJSON property to your data
+            fill_color="YlGn",      # Color scheme
+            fill_opacity=0.7,       # Adjust opacity as needed
+            line_opacity=0.2,
+            legend_name=f"{st.session_state['energy_type']} Energy Production (Kwh)",
+            nan_fill_color="purple",  # Color for regions with no data
+            nan_fill_opacity=0.4,
+        ).add_to(m)
+    
+    # Add marker only if a location has been clicked
+    if st.session_state.marker_location is not None:
+        # Use CircleMarker for precise positioning
+        folium.CircleMarker(
+            location=st.session_state.marker_location,
+            radius=8,
+            popup=f"Coordinates: {st.session_state.marker_location}",
+            color="red",
+            fillColor="red",
+            fillOpacity=0.7,
+            weight=2
+        ).add_to(m)
+    
+
     # Add CSS to remove the black box highlight
     m.get_root().header.add_child(folium.Element("""
     <style>
@@ -109,18 +143,8 @@ except Exception as e:
     m = folium.Map(location=st.session_state.map_center, zoom_start=st.session_state.zoom)
 
 
-# Add marker only if a location has been clicked
-if st.session_state.marker_location is not None:
-    # Use CircleMarker for precise positioning
-    folium.CircleMarker(
-        location=st.session_state.marker_location,
-        radius=8,
-        popup=f"Coordinates: {st.session_state.marker_location}",
-        color="red",
-        fillColor="red",
-        fillOpacity=0.7,
-        weight=2
-    ).add_to(m)
+
+
 
 
 c1, c2 = st.columns(2, gap='medium')
@@ -137,7 +161,7 @@ if map_data.get('last_clicked'):
     # Update marker location
     lat, lng = map_data['last_clicked']['lat'], map_data['last_clicked']['lng']
     st.session_state.marker_location = [lat, lng]
-    
+
     st.session_state.snow_data = openmeteo_download_snowdrift(st.session_state.marker_location)
 
 
@@ -179,7 +203,7 @@ with c2:
     
 
 
-    energy_type = st.pills('Select energy type', ['production', 'consumption'], selection_mode='single', default=None)
+    energy_type = st.pills('Select energy type', ['production', 'consumption'], selection_mode='single', default=None, key='energy_type')
 
     if energy_type:
         e = st.selectbox(f'Select {energy_type} group', st.session_state[energy_type+'_data'][energy_type+'Group'].unique())
