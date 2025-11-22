@@ -53,7 +53,7 @@ try:
     for features_list in geojson_data['features']:
         splitted = features_list['properties']['ElSpotOmr'].split(' ')
         combined = splitted[0]+splitted[1]
-        print(combined)
+        features_list['properties']['ElSpotOmr'] = combined
     
     # Create the base map
     m = folium.Map(location=st.session_state.map_center, zoom_start=st.session_state.zoom)
