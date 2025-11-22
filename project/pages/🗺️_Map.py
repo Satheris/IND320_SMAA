@@ -86,10 +86,12 @@ try:
     
 
     # ADD CHOROPLETH LAYER HERE
-    if st.session_state['group']:
+    if st.session_state['group'] is not None:
         # Aggregate your data by priceArea (region)
         energy_type = st.session_state['energy_type']
-        aggregated_data = st.session_state[energy_type+'_data'].groupby('priceArea')[energy_type+'Group']['quantityKwh'].sum().reset_index()
+        aggregated_data = st.session_state[energy_type+'_data'].groupby(['priceArea', energy_type+'Group'])\
+            ['quantityKwh'].sum().reset_index()
+        
         
         folium.Choropleth(
             geo_data=geojson_data,  # Your GeoJSON data
