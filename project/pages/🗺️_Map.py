@@ -210,7 +210,7 @@ with c2:
         
     else:
         st.info('No location selected yet. Click on the map to choose a location.')
-    
+
 
 
     energy_type = st.pills('Select energy type', ['production', 'consumption'], selection_mode='single', default=None, key='energy_type')
