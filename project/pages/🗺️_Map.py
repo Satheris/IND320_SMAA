@@ -221,3 +221,4 @@ with c2:
         group = st.selectbox(f'Select {energy_type} group', groups, 
                              key='group', index=st.session_state.group_index) 
         st.session_state.group_index = groups.index(group)
+        # this apparently doesn't work, idk why
