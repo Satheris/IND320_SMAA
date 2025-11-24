@@ -219,6 +219,6 @@ with c2:
         groups = list(st.session_state[energy_type+'_data'][energy_type+'Group'].unique())
         groups.sort()
         group = st.selectbox(f'Select {energy_type} group', groups, 
-                             key='group', index=st.session_state.group_index) 
+                             key='group', index=st.session_state['group_index']) 
         st.session_state.group_index = groups.index(group)
         # this apparently doesn't work, idk why
