@@ -34,8 +34,8 @@ if 'selected_region' not in st.session_state:
     st.session_state.selected_region = None  # No region selected initially
 if 'selected_region_feature' not in st.session_state:
     st.session_state.selected_region_feature = None  # Store the actual feature data
-if 'GROUP' not in st.session_state:
-    st.session_state.GROUP = None
+if 'GROUP_INDEX' not in st.session_state:
+    st.session_state.GROUP_INDEX = 0
 # if 'group_index' not in st.session_state:
 #     st.session_state.group_index = 1
 
@@ -220,12 +220,6 @@ with c2:
         groups = sorted(st.session_state[energy_type+'_data'][energy_type+'Group'].unique().tolist())
         groups_indices = {element: i for i, element in enumerate(groups)}
         group = st.selectbox(f'Select {energy_type} group', groups, 
-                             index=groups_indices[st.session_state.GROUP],
-                             key='group', on_change=_set_new_group())
+                             index=st.session_state.GROUP_INDEX,
+                             key='group', on_change=_set_new_group(groups))
 
-
-
-        # Initiating radio selection for price areas
-    # area_index = {element: i for i, element in enumerate(areas)}
-    # area = st.radio('Choose a geographic area', areas, index=area_index[st.session_state.AREA],
-    #                 horizontal=True, key='area', on_change=_set_new_area)

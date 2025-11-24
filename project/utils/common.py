@@ -173,8 +173,8 @@ def _set_new_area() -> None:
 def _download_new_area() -> None:
     st.session_state.data = openmeteo_download(area=st.session_state.AREA)
 
-def _set_new_group() -> None:
-    st.session_state.GROUP = st.session_state.group
+def _set_new_group(groups) -> None:
+    st.session_state.GROUP_INDEX = groups.index(st.session_state.group)
 
 
 
