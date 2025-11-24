@@ -36,8 +36,8 @@ if 'selected_region_feature' not in st.session_state:
     st.session_state.selected_region_feature = None  # Store the actual feature data
 if 'GROUP_INDEX' not in st.session_state:
     st.session_state.GROUP_INDEX = 0
-# if 'group_index' not in st.session_state:
-#     st.session_state.group_index = 1
+if 'group' not in st.session_state:
+    st.session_state.group = None
 
 
 # page configuration
