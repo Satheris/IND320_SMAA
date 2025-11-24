@@ -35,7 +35,8 @@ if 'selected_region_feature' not in st.session_state:
     st.session_state.selected_region_feature = None  # Store the actual feature data
 if 'group' not in st.session_state:
     st.session_state.group = None
-
+if 'group_index' not in st.session_state:
+    st.session_state.group_index = None
 
 
 # page configuration
@@ -218,4 +219,5 @@ with c2:
         groups = st.session_state[energy_type+'_data'][energy_type+'Group'].unique()
         groups.sort()
         group = st.selectbox(f'Select {energy_type} group', groups, 
-                             key='group',)
+                             key='group', index=st.session_state.group_index)
+        st.session_state.group_index = groups.index(group)
