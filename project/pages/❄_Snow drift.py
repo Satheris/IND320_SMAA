@@ -25,4 +25,4 @@ st.write(f'Snow drift direction diagram for location chosen on *map page*')
 try: 
     snowdrift_plot(st.session_state.snow_data)
 except: 
-    st.markdown('No location chosen on *map page*')
+    st.info('No location chosen on *map page*')
