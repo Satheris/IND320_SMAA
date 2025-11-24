@@ -7,7 +7,8 @@ import json
 # Importing self defined functions
 from utils.common import (get_elhubdata,
                           openmeteo_download_snowdrift,
-                          find_region_for_point)
+                          find_region_for_point,
+                          _set_new_group)
 
 
 # data session_state
@@ -33,10 +34,10 @@ if 'selected_region' not in st.session_state:
     st.session_state.selected_region = None  # No region selected initially
 if 'selected_region_feature' not in st.session_state:
     st.session_state.selected_region_feature = None  # Store the actual feature data
-if 'group' not in st.session_state:
-    st.session_state.group = None
-if 'group_index' not in st.session_state:
-    st.session_state.group_index = 1
+if 'GROUP' not in st.session_state:
+    st.session_state.GROUP = None
+# if 'group_index' not in st.session_state:
+#     st.session_state.group_index = 1
 
 
 # page configuration
@@ -216,9 +217,15 @@ with c2:
     energy_type = st.pills('Select energy type', ['production', 'consumption'], selection_mode='single', default=None, key='energy_type')
 
     if energy_type:
-        groups = list(st.session_state[energy_type+'_data'][energy_type+'Group'].unique())
-        groups.sort()
+        groups = sorted(st.session_state[energy_type+'_data'][energy_type+'Group'].unique().tolist())
+        groups_indices = {element: i for i, element in enumerate(groups)}
         group = st.selectbox(f'Select {energy_type} group', groups, 
-                             key='group', index=st.session_state['group_index']) 
-        st.session_state.group_index = groups.index(group)
-        # this apparently doesn't work, idk why
+                             index=groups_indices[st.session_state.GROUP],
+                             key='group', on_change=_set_new_group)
+
+
+
+        # Initiating radio selection for price areas
+    # area_index = {element: i for i, element in enumerate(areas)}
+    # area = st.radio('Choose a geographic area', areas, index=area_index[st.session_state.AREA],
+    #                 horizontal=True, key='area', on_change=_set_new_area)

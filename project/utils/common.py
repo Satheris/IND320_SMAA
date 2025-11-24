@@ -161,12 +161,20 @@ def get_elhubdata(energy_type) -> pd.DataFrame:
     return df_elhub
 
 
+
+# ----------------------------------------------------------------
+# REPLACE st.sesstion_state
+# ----------------------------------------------------------------
+
 def _set_new_area() -> None:
     st.session_state.AREA = st.session_state.area
     _download_new_area()
 
 def _download_new_area() -> None:
     st.session_state.data = openmeteo_download(area=st.session_state.AREA)
+
+def _set_new_group() -> None:
+    st.session_state.GROUP = st.session_state.group
 
 
 
