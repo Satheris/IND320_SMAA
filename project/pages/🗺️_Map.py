@@ -215,6 +215,7 @@ with c2:
     energy_type = st.pills('Select energy type', ['production', 'consumption'], selection_mode='single', default=None, key='energy_type')
 
     if energy_type:
-        groups = st.session_state[energy_type+'_data'][energy_type+'Group'].unique().sort()
+        groups = st.session_state[energy_type+'_data'][energy_type+'Group'].unique()
+        groups.sort()
         group = st.selectbox(f'Select {energy_type} group', groups, 
                              key='group',)
