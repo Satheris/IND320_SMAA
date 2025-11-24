@@ -36,7 +36,7 @@ if 'selected_region_feature' not in st.session_state:
 if 'group' not in st.session_state:
     st.session_state.group = None
 if 'group_index' not in st.session_state:
-    st.session_state.group_index = 0
+    st.session_state.group_index = 1
 
 
 # page configuration
