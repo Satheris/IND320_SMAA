@@ -221,7 +221,7 @@ with c2:
         groups_indices = {element: i for i, element in enumerate(groups)}
         group = st.selectbox(f'Select {energy_type} group', groups, 
                              index=groups_indices[st.session_state.GROUP],
-                             key='group', on_change=_set_new_group)
+                             key='group', on_change=_set_new_group())
 
 
 
