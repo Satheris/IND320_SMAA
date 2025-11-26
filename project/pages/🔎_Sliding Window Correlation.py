@@ -1,6 +1,5 @@
 # necessary imports for this page
 import streamlit as st
-import pandas as pd
 
 # importing self defined functions
 from utils.common import (openmeteo_download,
