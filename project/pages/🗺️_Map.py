@@ -221,7 +221,7 @@ with c2:
         st.info('No location selected yet. Click on the map to choose a location.')
 
     
-    min_date = datetime.date.today()
+    min_date = datetime.date(2021, 1, 1)
     max_date = min_date + datetime.timedelta(days=2)
     start_date = st.date_input('Start date', min_value=min_date, value=min_date, format="DD/MM/YYYY")
     end_date = st.date_input('End date', min_value=min_date, value=max_date, format="DD/MM/YYYY")
