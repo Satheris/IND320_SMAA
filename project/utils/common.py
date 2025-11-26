@@ -634,11 +634,11 @@ def make_elhub_subset(df_elhub, area='NO1', prodGroup='hydro') -> pd.DataFrame:
 
 
 def make_choropleth_subset() -> pd.DataFrame:
-    df = st.session_state[st.session_state['energy_type']+'_data']
+    df = st.session_state[st.session_state['ENERGY_TYPE']+'_data']
 
     df_time_reduced = df[(df['startTime'].dt.date > (st.session_state.START_DATE)) & (df['startTime'].dt.date < st.session_state.END_DATE)]
 
-    df_group = df_time_reduced[df_time_reduced[st.session_state['energy_type']+'Group'] == st.session_state.GROUP]
+    df_group = df_time_reduced[df_time_reduced[st.session_state['ENERGY_TYPE']+'Group'] == st.session_state.GROUP]
 
     df_agg = df_group.groupby('priceArea')['quantityKwh'].mean().reset_index()
 
