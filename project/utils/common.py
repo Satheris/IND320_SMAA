@@ -5,6 +5,7 @@ import pandas as pd
 import pymongo
 import numpy as np
 import json
+import datetime
 
 import plotly.express as px
 import plotly.graph_objects as go
@@ -608,7 +609,7 @@ def make_elhub_subset(df_elhub, area='NO1', prodGroup='hydro') -> pd.DataFrame:
 def make_choropleth_subset() -> pd.DataFrame:
     df = st.session_state[st.session_state['energy_type']+'_data']
 
-    df_time_reduced = df[(df['startTime'] > st.session_state.start_date) & (df['startTime'] < st.session_state.end_date)]
+    df_time_reduced = df[(df['startTime'] > datetime.date(st.session_state.start_date)) & (df['startTime'] < datetime.date(st.session_state.end_date))]
 
     df_group = df_time_reduced[df_time_reduced[st.session_state['energy_type']+'Group'] == st.session_state.GROUP]
 
