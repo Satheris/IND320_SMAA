@@ -176,9 +176,7 @@ def _download_new_area() -> None:
 
 
 def _set_new_group() -> None:
-    # st.write(st.session_state.GROUP_INDEX)
     st.session_state.GROUP = st.session_state.group
-    # st.write(st.session_state.GROUP_INDEX)
 
 
 def _set_new_energy_type() -> None:
