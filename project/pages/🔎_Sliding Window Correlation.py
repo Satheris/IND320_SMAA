@@ -36,5 +36,7 @@ energy_type = st.pills('Select energy type', ['production', 'consumption'], sele
 
 weather_variables = list(st.session_state.weather_data.columns)
 weather_variables.remove('time')
-
 weather_variable = st.selectbox('Select weather variable', weather_variables)
+
+window_length = st.slider('Select window length', min_value=10, max_value=70, value=45, step=1)
+
