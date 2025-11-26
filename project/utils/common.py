@@ -333,20 +333,20 @@ def SWC_plot(weather_variable, energy_type, window_length):
     daily_energy = agg_energy.groupby(pd.Grouper(key='startTime', freq='D')).agg({'quantityKwh': 'sum'}).reset_index()
     energyKwh = daily_energy['quantityKwh']
 
-    # # Convert time to datetime if it's not already
-    # agg_weather = pd.DataFrame(st.session_state['weather_data'])
-    # agg_weather['time'] = pd.to_datetime(agg_weather['time'])
+    # Convert time to datetime if it's not already
+    agg_weather = pd.DataFrame(st.session_state['weather_data'])
+    agg_weather['time'] = pd.to_datetime(agg_weather['time'])
 
-    # # Aggregate to daily data 
-    # daily_weather = agg_weather.groupby(pd.Grouper(key='time', freq='D')).agg({weather_variable:'sum'}).reset_index()
-    # weather_series = daily_weather[weather_variable]
+    # Aggregate to daily data 
+    daily_weather = agg_weather.groupby(pd.Grouper(key='time', freq='D')).agg({weather_variable:'sum'}).reset_index()
+    weather_series = daily_weather[weather_variable]
 
 
     # agg_data = pd.DataFrame(st.session_state[energy_type+'_data'])
     # agg_data = agg_data[['startTime', 'quantityKwh']].groupby('startTime').agg({'quantityKwh': 'sum'}).reset_index()
     # energyKwh = agg_data[['quantityKwh', 'startTime']]
 
-    weather_series = st.session_state['weather_data'][weather_variable]
+    # weather_series = st.session_state['weather_data'][weather_variable]
 
     # Calculate rolling correlation
     Quantity_weather_SWC = energyKwh.rolling(window_length, center=True).corr(weather_series)
