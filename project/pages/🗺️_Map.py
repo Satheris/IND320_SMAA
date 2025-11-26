@@ -10,7 +10,8 @@ from utils.common import (get_elhubdata,
                           openmeteo_download_snowdrift,
                           find_region_for_point,
                           _set_new_group,
-                          _set_new_energy_type)
+                          _set_new_energy_type,
+                          make_choropleth_subset)
 
 
 # data session_state
@@ -64,15 +65,11 @@ try:
     
     # ADD CHOROPLETH LAYER HERE
     if st.session_state['GROUP'] is not None:
-        # Aggregate your data by priceArea (region)
-        energy_type = st.session_state['energy_type']
-        # aggregated_data = 
-        aggregated_data = st.session_state[energy_type+'_data'].groupby(['priceArea', energy_type+'Group'])\
-            ['quantityKwh'].sum().reset_index()
+        df_agg = make_choropleth_subset()
         
         folium.Choropleth(
             geo_data=geojson_data,  # Your GeoJSON data
-            data=aggregated_data,   # Aggregated energy data
+            data=df_agg,   # Aggregated energy data
             columns=["priceArea", "quantityKwh"],  # Region ID and value columns
             key_on="feature.properties.ElSpotOmr",  # Match GeoJSON property to your data
             fill_color="YlGn",      # Color scheme
