@@ -612,7 +612,7 @@ def make_choropleth_subset() -> pd.DataFrame:
 
     df_group = df_time_reduced[df_time_reduced[st.session_state['energy_type']+'Group'] == st.session_state.GROUP]
 
-    df_agg = df_group.groupby('priceArea')['quantityKwh'].sum().reset_index()
+    df_agg = df_group.groupby('priceArea')['quantityKwh'].mean().reset_index()
 
     return df_agg
 
