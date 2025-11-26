@@ -472,7 +472,7 @@ def SWC_plot(weather_variable, energy_type, window_length):
     fig.update_xaxes(title_text="Time", row=3, col=1)
 
     # Display the plot
-    st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, width='stretch')
 
     # Display correlation value at center point
     st.metric(
