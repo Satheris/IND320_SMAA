@@ -221,12 +221,12 @@ with c2:
         st.info('No location selected yet. Click on the map to choose a location.')
 
     
-    today = datetime.date.today()
-    tomorrow = today + datetime.timedelta(days=1)
-    start_date = st.date_input('Start date', today, format="DD/MM/YYYY")
-    end_date = st.date_input('End date', tomorrow, format="DD/MM/YYYY")
+    min_date = datetime.date.today()
+    max_date = min_date + datetime.timedelta(days=2)
+    start_date = st.date_input('Start date', min_value=min_date, value=min_date, format="DD/MM/YYYY")
+    end_date = st.date_input('End date', min_value=min_date, value=max_date, format="DD/MM/YYYY")
     if start_date < end_date:
-        st.success('Start date: `%s`\n\nEnd date:`%s`' % (start_date, end_date))
+        st.success(f'Start date: {start_date}\n\nEnd date: {end_date}')
     else:
         st.error('Error: End date must fall after start date.')
 
