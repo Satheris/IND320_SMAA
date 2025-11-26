@@ -35,6 +35,8 @@ if 'selected_region' not in st.session_state:
     st.session_state.selected_region = None  # No region selected initially
 if 'selected_region_feature' not in st.session_state:
     st.session_state.selected_region_feature = None  # Store the actual feature data
+if 'energy_type' not in st.session_state:
+    st.session_state.energy_type = None
 
 if 'GROUP_INDEX' not in st.session_state:
     st.session_state.GROUP_INDEX = 0
@@ -223,7 +225,7 @@ with c2:
     
     st.subheader('Selections for choropleth layer')
 
-    energy_type = st.pills('Select energy type', ['production', 'consumption'], selection_mode='single', default=None, key='energy_type')
+    energy_type = st.pills('Select energy type', ['production', 'consumption'], selection_mode='single', default=st.session_state.energy_type, key='energy_type')
 
     if energy_type:
         # groups = sorted(st.session_state[energy_type+'_data'][energy_type+'Group'].unique().tolist())
