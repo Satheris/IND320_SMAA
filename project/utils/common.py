@@ -141,7 +141,7 @@ def init_connection() -> pymongo.MongoClient:
 
 
 # Uses st.cache_data to only rerun when the query changes or after 10 min.
-@st.cache_data(ttl=600)
+@st.cache_data(ttl=1800)
 def get_elhubdata(energy_type) -> pd.DataFrame:
     client = init_connection()
     db = client['project']
