@@ -32,7 +32,7 @@ st.header('Sliding Window Correlation')
 st.write('Correlation analysis between weather and energy production or consumption. *Lag* optional.')
 
 
-c1, c2, c3 = st.columns([1, 2, 2], gap='medium')
+c1, c2, c3 = st.columns([1, 1, 2], gap='medium')
 
 with c1:
     energy_type = st.pills('Select energy type:', ['production', 'consumption'], selection_mode='single', default='production', key='energy_type')
