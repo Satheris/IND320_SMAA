@@ -342,23 +342,17 @@ def SWC_plot(weather_variable, energy_type, window_length):
     weather_series = daily_weather[weather_variable]
 
 
-    # agg_data = pd.DataFrame(st.session_state[energy_type+'_data'])
-    # agg_data = agg_data[['startTime', 'quantityKwh']].groupby('startTime').agg({'quantityKwh': 'sum'}).reset_index()
-    # energyKwh = agg_data[['quantityKwh', 'startTime']]
-
-    # weather_series = st.session_state['weather_data'][weather_variable]
-
     # Calculate rolling correlation
     Quantity_weather_SWC = energyKwh.rolling(window_length, center=True).corr(weather_series)
 
 
     # Create slider for center point
-    max_center = len(energyKwh) - window_length//(2)
+    max_center = len(energyKwh) - window_length//2
     center = st.slider(
         "Select center point:",
-        min_value=window_length//(2),
+        min_value=window_length//2,
         max_value=max_center,
-        value=min(window_length//(2), max_center),
+        value=min(window_length//2, max_center),
         step=1
     )
 
@@ -370,7 +364,7 @@ def SWC_plot(weather_variable, energy_type, window_length):
         shared_xaxes=True
     )
 
-    # Add PerEURO trace
+    # Add energy data trace
     fig.add_trace(
         go.Scatter(
             x=energyKwh.index,
@@ -382,9 +376,9 @@ def SWC_plot(weather_variable, energy_type, window_length):
         row=1, col=1
     )
 
-    # Highlight window for PerEURO
-    window_start = center - window_length//(2)
-    window_end = center + window_length//(2)
+    # Highlight window for energy data
+    window_start = center - window_length//2
+    window_end = center + window_length//2
     fig.add_trace(
         go.Scatter(
             x=energyKwh.index[window_start:window_end],
@@ -396,7 +390,7 @@ def SWC_plot(weather_variable, energy_type, window_length):
         row=1, col=1
     )
 
-    # Add ExpNatGas trace
+    # Add weather variable trace
     fig.add_trace(
         go.Scatter(
             x=weather_series.index,
@@ -408,7 +402,7 @@ def SWC_plot(weather_variable, energy_type, window_length):
         row=2, col=1
     )
 
-    # Highlight window for ExpNatGas
+    # Highlight window for weather variable
     fig.add_trace(
         go.Scatter(
             x=weather_series.index[window_start:window_end],
@@ -470,10 +464,10 @@ def SWC_plot(weather_variable, energy_type, window_length):
     st.plotly_chart(fig, use_container_width=True)
 
     # Display correlation value at center point
-    # st.metric(
-    #     label=f"Correlation at center point ({OilExchange.index[center].strftime('%Y-%m-%d') if hasattr(OilExchange.index, 'strftime') else center})",
-    #     value=f"{PerEURO_ExpNatGas_SWC.iloc[center]:.3f}"
-    # )
+    st.metric(
+        label=f"Correlation at center point ({energyKwh.index[center].strftime('%Y-%m-%d') if hasattr(energyKwh.index, 'strftime') else center})",
+        value=f"{Quantity_weather_SWC.iloc[center]:.3f}"
+    )
 
 
 
