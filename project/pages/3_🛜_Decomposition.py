@@ -29,7 +29,7 @@ st.write(f'Decomposition analyses of Elhub data from electrical price area {st.s
 
 
 # storing data on this page for further use
-df_elhub = st.session_state.elhub_data
+df_elhub = st.session_state.production_data
 
 
 # production group selector for analyses below
