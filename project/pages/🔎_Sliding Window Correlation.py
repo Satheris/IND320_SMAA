@@ -32,13 +32,17 @@ st.header('Sliding Window Correlation')
 st.write('Correlation analysis between weather and energy production or consumption. *Lag* optional.')
 
 
+c1, c2, c3 = st.columns(3)
 
-energy_type = st.pills('Select energy type:', ['production', 'consumption'], selection_mode='single', default='production', key='energy_type')
+with c1:
+    energy_type = st.pills('Select energy type:', ['production', 'consumption'], selection_mode='single', default='production', key='energy_type')
 
-weather_variables = list(st.session_state.weather_data.columns)
-weather_variables.remove('time')
-weather_variable = st.selectbox('Select weather variable:', weather_variables)
+with c2:
+    weather_variables = list(st.session_state.weather_data.columns)
+    weather_variables.remove('time')
+    weather_variable = st.selectbox('Select weather variable:', weather_variables)
 
-window_length = st.slider('Select window length (in days):', min_value=10, max_value=70, value=45, step=1)
+with c3:
+    window_length = st.slider('Select window length (in days):', min_value=10, max_value=70, value=45, step=1)
 
 SWC_plot(weather_variable=weather_variable, energy_type=energy_type, window_length=window_length)
