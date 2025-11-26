@@ -91,7 +91,7 @@ if st.session_state['GROUP'] is not None:
         fill_color="YlGn",      # Color scheme
         fill_opacity=0.7,       # Adjust opacity as needed
         line_opacity=0.2,
-        legend_name=f"{st.session_state['energy_type']} Energy Production (Kwh)",
+        legend_name=f"{st.session_state['ENERGY_TYPE']} Energy Production (Kwh)",
         nan_fill_color="purple",  # Color for regions with no data
         nan_fill_opacity=0.4,
     ).add_to(m)
