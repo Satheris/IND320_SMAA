@@ -231,14 +231,14 @@ with c2:
                            on_change=_set_new_energy_type)
 
     if energy_type:
-        groups = sorted(st.session_state[energy_type+'_data'][energy_type+'Group'].unique().tolist())
-        groups_indices = {element: i for i, element in enumerate(groups)}
-        group = st.selectbox(f'Select {energy_type} group', groups, 
-                             index=st.session_state.GROUP_INDEX,
-                             key='group', on_change=_set_new_group(groups))
-
         # groups = sorted(st.session_state[energy_type+'_data'][energy_type+'Group'].unique().tolist())
-        # group = st.selectbox(f'Select {energy_type} group', groups)
+        # groups_indices = {element: i for i, element in enumerate(groups)}
+        # group = st.selectbox(f'Select {energy_type} group', groups, 
+        #                      index=st.session_state.GROUP_INDEX,
+        #                      key='group', on_change=_set_new_group(groups))
+
+        groups = sorted(st.session_state[energy_type+'_data'][energy_type+'Group'].unique().tolist())
+        group = st.selectbox(f'Select {energy_type} group', groups)
 
         min_date = datetime.date(2021, 1, 1)
         value = min_date + datetime.timedelta(days=2)
