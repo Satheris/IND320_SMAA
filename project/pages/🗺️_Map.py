@@ -45,7 +45,7 @@ if 'group' not in st.session_state:
 # page configuration
 st.set_page_config(layout='wide')
 st.header('Map')
-st.write(f"Map covering Norway's electrical price areas. Click a location for snow drift calculation on *snow drift page*")
+st.write(f"Map covering Norway's electrical price areas. Click a location for snow drift calculation on *snow drift page*.")
 
 
 # Load and add GeoJSON regions
@@ -223,8 +223,8 @@ with c2:
     
     today = datetime.date.today()
     tomorrow = today + datetime.timedelta(days=1)
-    start_date = st.date_input('Start date', today)
-    end_date = st.date_input('End date', tomorrow)
+    start_date = st.date_input('Start date', today, format="DD/MM/YYYY")
+    end_date = st.date_input('End date', tomorrow, format="DD/MM/YYYY")
     if start_date < end_date:
         st.success('Start date: `%s`\n\nEnd date:`%s`' % (start_date, end_date))
     else:
