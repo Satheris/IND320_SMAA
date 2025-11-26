@@ -326,15 +326,15 @@ def LOF_stats_plot(df:pd.DataFrame, column, contamination=0.01, n_neighbors=20):
 
 def SWC_plot(weather_variable, energy_type, window_length):
 
-    energyKwh = st.session_state[energy_type+'_data']['quantityKwh']
+    agg_data = st.session_state[energy_type+'_data'].groupby('startTime').sum().reset_index()
+    energyKwh = agg_data['quantityKwh']
+
+
     weather_series = st.session_state['weather_data'][weather_variable]
 
     # Calculate rolling correlation
     Quantity_weather_SWC = energyKwh.rolling(window_length, center=True).corr(weather_series)
 
-    # Streamlit app
-    # st.title("Sliding Window Correlation Analysis")
-    # st.markdown("Window size: 45 days")
 
     # Create slider for center point
     max_center = len(energyKwh) - window_length//2
