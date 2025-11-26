@@ -4,7 +4,8 @@ import streamlit as st
 # importing self defined functions
 from utils.common import (openmeteo_download,
                           get_elhubdata,
-                          SWC_plot)
+                          SWC_plot,
+                          _set_new_energy_type)
 
 
 # session_state.AREA to use across pages for data extraction
@@ -31,7 +32,7 @@ st.write('Correlation analysis between weather and energy production or consumpt
 c1, c2, c3 = st.columns([1, 2, 2], gap='medium')
 
 with c1:
-    energy_type = st.pills('Select energy type:', ['production', 'consumption'], selection_mode='single', default='production', key='energy_type')
+    energy_type = st.pills('Select energy type:', ['production', 'consumption'], selection_mode='single', default='production')
 
 with c2:
     weather_variables = list(st.session_state.weather_data.columns)
