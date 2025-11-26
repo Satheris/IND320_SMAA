@@ -252,7 +252,7 @@ with c2:
                                  key='group', on_change=_set_new_group)
 
 
-        col1, col2 = st.columns(2)
+        # col1, col2 = st.columns(2)
         with col1: 
             start_date = st.date_input('Start date', min_value=st.session_state.min_date, max_value=st.session_state.max_date, value=st.session_state.START_DATE, format="DD/MM/YYYY", key='start_date', on_change=_set_new_start_date)
         with col2:
