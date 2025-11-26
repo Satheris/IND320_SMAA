@@ -41,4 +41,4 @@ weather_variable = st.selectbox('Select weather variable', weather_variables)
 
 window_length = st.slider('Select window length', min_value=10, max_value=70, value=45, step=1)
 
-SWC_plot(weather_variable=weather_variable, energy_type=energy_type, window_length=window_length*24)
+SWC_plot(weather_variable=weather_variable, energy_type=energy_type, window_length=window_length)

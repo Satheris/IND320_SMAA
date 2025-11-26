@@ -325,25 +325,40 @@ def LOF_stats_plot(df:pd.DataFrame, column, contamination=0.01, n_neighbors=20):
 
 
 def SWC_plot(weather_variable, energy_type, window_length):
+    # Convert startTime to datetime if it's not already
+    agg_energy = pd.DataFrame(st.session_state[energy_type+'_data'])
+    agg_energy['startTime'] = pd.to_datetime(agg_energy['startTime'])
 
-    agg_data = pd.DataFrame(st.session_state[energy_type+'_data'])
-    agg_data = agg_data[['startTime', 'quantityKwh']].groupby('startTime').agg({'quantityKwh': 'sum'}).reset_index()
-    energyKwh = agg_data[['quantityKwh', 'startTime']]
+    # Aggregate to daily data
+    daily_energy = agg_energy.groupby(pd.Grouper(key='startTime', freq='D')).agg({'quantityKwh': 'sum'}).reset_index()
+    energyKwh = daily_energy['quantityKwh']
+
+    # Convert time to datetime if it's not already
+    agg_weather = pd.DataFrame(st.session_state['weather_data'])
+    agg_weather['time'] = pd.to_datetime(agg_weather['time'])
+
+    # Aggregate to daily data 
+    daily_weather = agg_weather.groupby(pd.Grouper(key='time', freq='D')).agg({weather_variable:'sum'}).reset_index()
+    weather_series = daily_weather[weather_variable]
 
 
-    weather_series = st.session_state['weather_data'][[weather_variable, 'time']]
+    # agg_data = pd.DataFrame(st.session_state[energy_type+'_data'])
+    # agg_data = agg_data[['startTime', 'quantityKwh']].groupby('startTime').agg({'quantityKwh': 'sum'}).reset_index()
+    # energyKwh = agg_data[['quantityKwh', 'startTime']]
+
+    # weather_series = st.session_state['weather_data'][[weather_variable, 'time']]
 
     # Calculate rolling correlation
-    Quantity_weather_SWC = energyKwh['quantityKwh'].rolling(window_length, center=True).corr(weather_series)
+    Quantity_weather_SWC = energyKwh.rolling(window_length, center=True).corr(weather_series)
 
 
     # Create slider for center point
-    max_center = len(energyKwh) - window_length//(2*24)
+    max_center = len(energyKwh) - window_length//(2)
     center = st.slider(
         "Select center point:",
-        min_value=window_length//(2*24),
+        min_value=window_length//(2),
         max_value=max_center,
-        value=min(window_length//(2*24), max_center),
+        value=min(window_length//(2), max_center),
         step=1
     )
 
@@ -358,8 +373,8 @@ def SWC_plot(weather_variable, energy_type, window_length):
     # Add PerEURO trace
     fig.add_trace(
         go.Scatter(
-            x=energyKwh['startTime'],
-            y=energyKwh['quantityKwh'],
+            x=energyKwh.index,
+            y=energyKwh,
             mode='lines',
             name=energy_type,
             line=dict(color='blue')
@@ -368,12 +383,12 @@ def SWC_plot(weather_variable, energy_type, window_length):
     )
 
     # Highlight window for PerEURO
-    window_start = center - 22
-    window_end = center + 22
+    window_start = center - window_length//(2)
+    window_end = center + window_length//(2)
     fig.add_trace(
         go.Scatter(
-            x=energyKwh['startTime'].iloc[window_start:window_end],
-            y=energyKwh['quantityKwh'].iloc[window_start:window_end],
+            x=energyKwh.index[window_start:window_end],
+            y=energyKwh.iloc[window_start:window_end],
             mode='lines',
             name=f'{energy_type} Window',
             line=dict(color='red', width=2)
@@ -384,8 +399,8 @@ def SWC_plot(weather_variable, energy_type, window_length):
     # Add ExpNatGas trace
     fig.add_trace(
         go.Scatter(
-            x=weather_series['time'],
-            y=weather_series[weather_variable],
+            x=weather_series.index,
+            y=weather_series,
             mode='lines',
             name=weather_variable,
             line=dict(color='green')
@@ -396,8 +411,8 @@ def SWC_plot(weather_variable, energy_type, window_length):
     # Highlight window for ExpNatGas
     fig.add_trace(
         go.Scatter(
-            x=weather_series['time'].iloc[window_start:window_end],
-            y=weather_series[weather_variable].iloc[window_start:window_end],
+            x=weather_series.index[window_start:window_end],
+            y=weather_series.iloc[window_start:window_end],
             mode='lines',
             name=f'{weather_variable} Window',
             line=dict(color='red', width=2)
@@ -408,7 +423,7 @@ def SWC_plot(weather_variable, energy_type, window_length):
     # Add SWC trace
     fig.add_trace(
         go.Scatter(
-            x=energyKwh['startTime'],
+            x=energyKwh.index,
             y=Quantity_weather_SWC,
             mode='lines',
             name='SWC',
@@ -420,7 +435,7 @@ def SWC_plot(weather_variable, energy_type, window_length):
     # Add center point marker for SWC
     fig.add_trace(
         go.Scatter(
-            x=[energyKwh['startTime'].iloc[center]],
+            x=[energyKwh.index[center]],
             y=[Quantity_weather_SWC.iloc[center]],
             mode='markers',
             name='Center Point',
