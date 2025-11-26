@@ -39,10 +39,17 @@ if 'selected_region_feature' not in st.session_state:
 if 'ENERGY_TYPE' not in st.session_state:
     st.session_state.ENERGY_TYPE = None
 
-if 'GROUP_INDEX' not in st.session_state:
-    st.session_state.GROUP_INDEX = 0
-if 'group' not in st.session_state:
-    st.session_state.group = None
+if st.session_state.ENERGY_TYPE == 'production':
+    st.session_state.GROUP = 'hydro'
+elif st.session_state.ENERGY_TYPE == 'consumption':
+    st.session_state.GROUP = 'cabin'
+else: 
+    st.session_state.GROUP = None
+
+# if 'GROUP_INDEX' not in st.session_state:
+#     st.session_state.GROUP_INDEX = 0
+# if 'group' not in st.session_state:
+#     st.session_state.group = None
 
 
 # page configuration
@@ -234,7 +241,7 @@ with c2:
         groups = sorted(st.session_state[energy_type+'_data'][energy_type+'Group'].unique().tolist())
         groups_indices = {element: i for i, element in enumerate(groups)}
         group = st.selectbox(f'Select {energy_type} group', groups, 
-                             index=st.session_state.GROUP_INDEX,
+                             index=groups_indices[st.session_state.GROUP],
                              key='group', on_change=_set_new_group(groups))
 
         # groups = sorted(st.session_state[energy_type+'_data'][energy_type+'Group'].unique().tolist())
