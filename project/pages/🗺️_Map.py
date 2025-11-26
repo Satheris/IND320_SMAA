@@ -224,8 +224,8 @@ with c2:
     min_date = datetime.date(2021, 1, 1)
     value = min_date + datetime.timedelta(days=2)
     max_date = datetime.date(2021, 12, 31)
-    start_date = st.date_input('Start date', min_value=min_date, max_value=max_date, value=min_date, format="DD/MM/YYYY")
-    end_date = st.date_input('End date', min_value=min_date, max_value=max_date, value=value, format="DD/MM/YYYY")
+    start_date = st.date_input('Start date', min_value=min_date, max_value=max_date, value=min_date, format="DD/MM/YYYY", key='start_date')
+    end_date = st.date_input('End date', min_value=min_date, max_value=max_date, value=value, format="DD/MM/YYYY", key='end_date')
     if start_date < end_date:
         st.success(f'Start date: {start_date}\n\nEnd date: {end_date}')
     else:
