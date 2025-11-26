@@ -4,8 +4,8 @@ import streamlit as st
 # importing self defined functions
 from utils.common import (openmeteo_download,
                           get_elhubdata,
-                          SWC_plot,
-                          _set_new_energy_type)
+                          SWC_plot
+                          )
 
 
 # session_state.AREA to use across pages for data extraction
