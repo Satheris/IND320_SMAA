@@ -32,7 +32,7 @@ st.write('Correlation analysis between weather and energy production or consumpt
 
 
 
-energy_type = st.pills('Select energy type', ['production', 'consumption'], selection_mode='single', default='production', key='energy_type')
+energy_type = st.pills('Select energy type', ['production', 'consumption'], selection_mode='single', default=0, key='energy_type')
 
 weather_variables = list(st.session_state.weather_data.columns)
 weather_variables.remove('time')
