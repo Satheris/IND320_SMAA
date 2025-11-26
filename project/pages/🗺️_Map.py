@@ -12,7 +12,9 @@ from utils.common import (get_elhubdata,
                           _set_new_group,
                           _set_new_energy_type,
                           make_choropleth_subset,
-                          read_geojson)
+                          read_geojson,
+                          _set_new_start_date,
+                          _set_new_end_date)
 
 
 # data session_state
@@ -42,6 +44,17 @@ if 'ENERGY_TYPE' not in st.session_state:
     st.session_state.ENERGY_TYPE = None
 if 'GROUP' not in st.session_state:
     st.session_state.GROUP = None
+
+# date caches
+if 'min_date' not in st.session_state:
+    st.session_state.min_date = datetime.date(2021, 1, 1)
+if 'START_DATE' not in st.session_state:
+    st.session_state.START_DATE = datetime.date(2021, 1, 1)
+if 'max_date' not in st.session_state:
+    st.session_state.max_date = datetime.date(2021, 12, 31)
+if 'END_DATE' not in st.session_state:
+    st.session_state.END_DATE = datetime.date(2021, 1, 5)
+
 
 
 
@@ -235,14 +248,10 @@ with c2:
                              index=groups_indices[st.session_state.GROUP],
                              key='group', on_change=_set_new_group)
 
-        # groups = sorted(st.session_state[energy_type+'_data'][energy_type+'Group'].unique().tolist())
-        # group = st.selectbox(f'Select {energy_type} group', groups)
 
-        min_date = datetime.date(2021, 1, 1)
-        value = min_date + datetime.timedelta(days=2)
-        max_date = datetime.date(2021, 12, 31)
-        start_date = st.date_input('Start date', min_value=min_date, max_value=max_date, value=min_date, format="DD/MM/YYYY", key='start_date')
-        end_date = st.date_input('End date', min_value=min_date, max_value=max_date, value=value, format="DD/MM/YYYY", key='end_date')
+
+        start_date = st.date_input('Start date', min_value=st.session_state.min_date, max_value=st.session_state.max_date, value=st.session_state.START_DATE, format="DD/MM/YYYY", key='start_date', on_change=_set_new_start_date)
+        end_date = st.date_input('End date', min_value=st.session_state.min_date, max_value=st.session_state.max_date, value=st.session_state.END_DATE, format="DD/MM/YYYY", key='end_date', on_change=_set_new_end_date)
         if start_date < end_date:
             st.success(f'Start date: {start_date}\n\nEnd date: {end_date}')
         else:

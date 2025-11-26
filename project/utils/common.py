@@ -207,6 +207,14 @@ def _set_new_energy_type() -> None:
         st.session_state.GROUP = 'cabin'
 
 
+def _set_new_start_date():
+    st.session_state.START_DATE = st.session_state.start_date
+
+
+def _set_new_end_date():
+    st.session_state.END_DATE = st.session_state.end_date
+
+
 
 # ----------------------------------------------------------------
 # ANALYSIS PLOTTERS
