@@ -31,3 +31,8 @@ st.header('Sliding Window Correlation')
 st.write('Correlation analysis between weather and energy production or consumption. *Lag* optional.')
 
 
+
+energy_type = st.pills('Select energy type', ['production', 'consumption'], selection_mode='single', default=None, key='energy_type')
+
+
+weather_variable = st.selectbox('Select weather variable', st.session_state.weather_data.columns)
