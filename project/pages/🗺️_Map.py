@@ -1,5 +1,6 @@
 # necessary imports for this page
 import streamlit as st
+import datetime
 import folium
 from streamlit_folium import st_folium
 import json
@@ -34,6 +35,7 @@ if 'selected_region' not in st.session_state:
     st.session_state.selected_region = None  # No region selected initially
 if 'selected_region_feature' not in st.session_state:
     st.session_state.selected_region_feature = None  # Store the actual feature data
+
 if 'GROUP_INDEX' not in st.session_state:
     st.session_state.GROUP_INDEX = 0
 if 'group' not in st.session_state:
@@ -63,8 +65,9 @@ try:
     if st.session_state['group'] is not None:
         # Aggregate your data by priceArea (region)
         energy_type = st.session_state['energy_type']
-        aggregated_data = st.session_state[energy_type+'_data'].groupby(['priceArea', energy_type+'Group'])\
-            ['quantityKwh'].sum().reset_index()
+        aggregated_data = 
+        # aggregated_data = st.session_state[energy_type+'_data'].groupby(['priceArea', energy_type+'Group'])\
+        #     ['quantityKwh'].sum().reset_index()
         
         folium.Choropleth(
             geo_data=geojson_data,  # Your GeoJSON data
@@ -216,6 +219,16 @@ with c2:
         
     else:
         st.info('No location selected yet. Click on the map to choose a location.')
+
+    
+    today = datetime.date.today()
+    tomorrow = today + datetime.timedelta(days=1)
+    start_date = st.date_input('Start date', today)
+    end_date = st.date_input('End date', tomorrow)
+    if start_date < end_date:
+        st.success('Start date: `%s`\n\nEnd date:`%s`' % (start_date, end_date))
+    else:
+        st.error('Error: End date must fall after start date.')
 
 
 
