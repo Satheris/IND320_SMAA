@@ -249,9 +249,11 @@ with c2:
                              key='group', on_change=_set_new_group)
 
 
-
-        start_date = st.date_input('Start date', min_value=st.session_state.min_date, max_value=st.session_state.max_date, value=st.session_state.START_DATE, format="DD/MM/YYYY", key='start_date', on_change=_set_new_start_date)
-        end_date = st.date_input('End date', min_value=st.session_state.min_date, max_value=st.session_state.max_date, value=st.session_state.END_DATE, format="DD/MM/YYYY", key='end_date', on_change=_set_new_end_date)
+        col1, col2 = st.columns(2)
+        with col1: 
+            start_date = st.date_input('Start date', min_value=st.session_state.min_date, max_value=st.session_state.max_date, value=st.session_state.START_DATE, format="DD/MM/YYYY", key='start_date', on_change=_set_new_start_date)
+        with col2:
+            end_date = st.date_input('End date', min_value=st.session_state.min_date, max_value=st.session_state.max_date, value=st.session_state.END_DATE, format="DD/MM/YYYY", key='end_date', on_change=_set_new_end_date)
         if start_date < end_date:
             st.success(f'Start date: {start_date}\n\nEnd date: {end_date}')
         else:
