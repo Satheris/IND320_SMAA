@@ -327,7 +327,7 @@ def LOF_stats_plot(df:pd.DataFrame, column, contamination=0.01, n_neighbors=20):
 def SWC_plot(weather_variable, energy_type, window_length):
 
     agg_data = pd.DataFrame(st.session_state[energy_type+'_data'])
-    agg_data = agg_data.groupby('startTime').sum()#.reset_index()
+    agg_data.groupby('startTime').sum().reset_index()
     energyKwh = agg_data['quantityKwh']
 
 
