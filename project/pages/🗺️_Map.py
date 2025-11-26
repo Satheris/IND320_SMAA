@@ -237,16 +237,19 @@ with c2:
     
     st.subheader('Selections for choropleth layer')
 
-    energy_type = st.pills('Select energy type', ['production', 'consumption'], selection_mode='single', 
-                           default=st.session_state.ENERGY_TYPE, key='energy_type',
-                           on_change=_set_new_energy_type)
+    col1, col2 = st.columns(2)
+    with col1:
+        energy_type = st.pills('Select energy type', ['production', 'consumption'], selection_mode='single', 
+                               default=st.session_state.ENERGY_TYPE, key='energy_type',
+                               on_change=_set_new_energy_type)
 
-    if energy_type:
-        groups = sorted(st.session_state[energy_type+'_data'][energy_type+'Group'].unique().tolist())
-        groups_indices = {element: i for i, element in enumerate(groups)}
-        group = st.selectbox(f'Select {energy_type} group', groups, 
-                             index=groups_indices[st.session_state.GROUP],
-                             key='group', on_change=_set_new_group)
+    with col2:
+        if energy_type:
+            groups = sorted(st.session_state[energy_type+'_data'][energy_type+'Group'].unique().tolist())
+            groups_indices = {element: i for i, element in enumerate(groups)}
+            group = st.selectbox(f'Select {energy_type} group', groups, 
+                                 index=groups_indices[st.session_state.GROUP],
+                                 key='group', on_change=_set_new_group)
 
 
         col1, col2 = st.columns(2)
