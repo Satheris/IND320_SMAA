@@ -9,7 +9,8 @@ import json
 from utils.common import (get_elhubdata,
                           openmeteo_download_snowdrift,
                           find_region_for_point,
-                          _set_new_group)
+                          _set_new_group,
+                          _set_new_energy_type)
 
 
 # data session_state
@@ -35,8 +36,8 @@ if 'selected_region' not in st.session_state:
     st.session_state.selected_region = None  # No region selected initially
 if 'selected_region_feature' not in st.session_state:
     st.session_state.selected_region_feature = None  # Store the actual feature data
-if 'energy_type' not in st.session_state:
-    st.session_state.energy_type = None
+if 'ENERGY_TYPE' not in st.session_state:
+    st.session_state.ENERGY_TYPE = None
 
 if 'GROUP_INDEX' not in st.session_state:
     st.session_state.GROUP_INDEX = 0
@@ -225,7 +226,9 @@ with c2:
     
     st.subheader('Selections for choropleth layer')
 
-    energy_type = st.pills('Select energy type', ['production', 'consumption'], selection_mode='single', default=st.session_state.energy_type, key='energy_type')
+    energy_type = st.pills('Select energy type', ['production', 'consumption'], selection_mode='single', 
+                           default=st.session_state.ENERGY_TYPE, key='energy_type',
+                           on_change=_set_new_energy_type)
 
     if energy_type:
         # groups = sorted(st.session_state[energy_type+'_data'][energy_type+'Group'].unique().tolist())
