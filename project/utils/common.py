@@ -445,7 +445,7 @@ def SWC_plot(weather_variable, energy_type, window_length):
         hovermode='x unified'
     )
 
-    # Update y-axes
+    # Update axes
     fig.update_yaxes(title_text=f"{energy_type}", row=1, col=1)
     fig.update_yaxes(title_text=f"{weather_variable}", row=2, col=1)
     fig.update_yaxes(title_text="SWC", row=3, col=1, range=[-1, 1])
