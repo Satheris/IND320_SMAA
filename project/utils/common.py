@@ -183,6 +183,10 @@ def _set_new_group(groups) -> None:
 
 def _set_new_energy_type() -> None:
     st.session_state.ENERGY_TYPE = st.session_state.energy_type
+    if st.session_state.ENERGY_TYPE == 'production':
+        st.session_state.GROUP = 'hydro'
+    elif st.session_state.ENERGY_TYPE == 'consumption':
+        st.session_state.GROUP = 'cabin'
 
 
 
