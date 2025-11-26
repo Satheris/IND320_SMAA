@@ -3,11 +3,8 @@ import streamlit as st
 import pandas as pd
 
 # importing self defined functions
-from utils.common import (generate_months,
-                          month_number_converter,
-                          openmeteo_download,
+from utils.common import (openmeteo_download,
                           get_elhubdata,
-                          _set_new_area,
                           SWC_plot)
 
 
