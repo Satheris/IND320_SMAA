@@ -63,7 +63,7 @@ try:
     m = folium.Map(location=st.session_state.map_center, zoom_start=st.session_state.zoom)
     
     # ADD CHOROPLETH LAYER HERE
-    if st.session_state['group'] is not None:
+    if st.session_state['GROUP'] is not None:
         # Aggregate your data by priceArea (region)
         energy_type = st.session_state['energy_type']
         # aggregated_data = 
