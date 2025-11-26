@@ -110,6 +110,11 @@ try:
                 'fillOpacity': 0, 
                 'dashArray': '0'  # Ensure no dashes
             },
+            tooltip=folium.GeoJsonTooltip(
+                fields=['ElSpotOmr'],
+                aliases=['Region:'],
+                localize=True
+            ),
             name="Selected Region"
         ).add_to(m)
     
