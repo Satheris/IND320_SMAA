@@ -347,7 +347,10 @@ def SWC_plot(weather_variable, energy_type, window_length):
 
 
     # Create slider for center point
-    max_center = len(energyKwh) - window_length//2
+    if window_length % 2 == 0:
+        max_center = len(energyKwh) - window_length//2 
+    else:
+        max_center = len(energyKwh) - window_length//2 + 1
     center = st.slider(
         "Select center point:",
         min_value=window_length//2,
