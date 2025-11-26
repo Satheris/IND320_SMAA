@@ -13,7 +13,8 @@ from utils.common import (get_elhubdata,
                           make_choropleth_subset,
                           read_geojson,
                           _set_new_start_date,
-                          _set_new_end_date)
+                          _set_new_end_date
+                          )
 
 
 # data session_state
