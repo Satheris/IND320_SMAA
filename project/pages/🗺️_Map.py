@@ -3,7 +3,6 @@ import streamlit as st
 import datetime
 import folium
 from streamlit_folium import st_folium
-import json
 
 # Importing self defined functions
 from utils.common import (get_elhubdata,
