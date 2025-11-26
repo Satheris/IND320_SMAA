@@ -11,7 +11,8 @@ from utils.common import (get_elhubdata,
                           find_region_for_point,
                           _set_new_group,
                           _set_new_energy_type,
-                          make_choropleth_subset)
+                          make_choropleth_subset,
+                          read_geojson)
 
 
 # data session_state
@@ -51,116 +52,118 @@ st.write(f"Map covering Norway's electrical price areas. Click a location for sn
 
 
 # Load and add GeoJSON regions
-try:
-    # Load the GeoJSON file
-    with open(r'project/data/file.geojson', 'r', encoding='utf-8') as f:
-        geojson_data = json.load(f)
+# try:
+#     # Load the GeoJSON file
+#     with open(r'project/data/file.geojson', 'r', encoding='utf-8') as f:
+#         geojson_data = json.load(f)
 
-    for features_list in geojson_data['features']:
-        splitted = features_list['properties']['ElSpotOmr'].split(' ')
-        features_list['properties']['ElSpotOmr'] = splitted[0]+splitted[1]
+#     for features_list in geojson_data['features']:
+#         splitted = features_list['properties']['ElSpotOmr'].split(' ')
+#         features_list['properties']['ElSpotOmr'] = splitted[0]+splitted[1]
     
-    # Create the base map
-    m = folium.Map(location=st.session_state.map_center, zoom_start=st.session_state.zoom)
+geojson_data = read_geojson()
+
+# Create the base map
+m = folium.Map(location=st.session_state.map_center, zoom_start=st.session_state.zoom)
+
+# ADD CHOROPLETH LAYER HERE
+if st.session_state['GROUP'] is not None:
+    df_agg = make_choropleth_subset()
     
-    # ADD CHOROPLETH LAYER HERE
-    if st.session_state['GROUP'] is not None:
-        df_agg = make_choropleth_subset()
-        
-        folium.Choropleth(
-            geo_data=geojson_data,  # Your GeoJSON data
-            data=df_agg,   # Aggregated energy data
-            columns=["priceArea", "quantityKwh"],  # Region ID and value columns
-            key_on="feature.properties.ElSpotOmr",  # Match GeoJSON property to your data
-            fill_color="YlGn",      # Color scheme
-            fill_opacity=0.7,       # Adjust opacity as needed
-            line_opacity=0.2,
-            legend_name=f"{st.session_state['energy_type']} Energy Production (Kwh)",
-            nan_fill_color="purple",  # Color for regions with no data
-            nan_fill_opacity=0.4,
-        ).add_to(m)
+    folium.Choropleth(
+        geo_data=geojson_data,  # Your GeoJSON data
+        data=df_agg,   # Aggregated energy data
+        columns=["priceArea", "quantityKwh"],  # Region ID and value columns
+        key_on="feature.properties.ElSpotOmr",  # Match GeoJSON property to your data
+        fill_color="YlGn",      # Color scheme
+        fill_opacity=0.7,       # Adjust opacity as needed
+        line_opacity=0.2,
+        legend_name=f"{st.session_state['energy_type']} Energy Production (Kwh)",
+        nan_fill_color="purple",  # Color for regions with no data
+        nan_fill_opacity=0.4,
+    ).add_to(m)
 
-        m.render() # to trigger the script
-        m.get_root().script.render().replace("topright", "bottomleft")
+    m.render() # to trigger the script
+    m.get_root().script.render().replace("topright", "bottomleft")
 
-    # Add base GeoJSON layer with default styling (no highlighting)
-    base_geojson = folium.GeoJson(
-        geojson_data,
+# Add base GeoJSON layer with default styling (no highlighting)
+base_geojson = folium.GeoJson(
+    geojson_data,
+    style_function=lambda feature: {
+        'fillColor': 'lightblue',
+        'color': '#e8862a',
+        'weight': 2,
+        'fillOpacity': 0,
+    },
+    tooltip=folium.GeoJsonTooltip(
+        fields=['ElSpotOmr'],
+        aliases=['Region:'],
+        localize=True
+    ),
+    name="Base Regions"  # Give it a name for layer control
+).add_to(m)
+
+# Add a separate overlay layer for the highlighted region
+if st.session_state.selected_region_feature is not None:
+    highlight_geojson = folium.GeoJson(
+        st.session_state.selected_region_feature,
         style_function=lambda feature: {
-            'fillColor': 'lightblue',
-            'color': '#e8862a',
-            'weight': 2,
-            'fillOpacity': 0,
+            'fillColor': 'orange',
+            'color': "#e82a2a", #rgba(0,0,0,0)
+            'weight': 3,  # Thicker border for emphasis
+            'fillOpacity': 0, 
+            'dashArray': '0'  # Ensure no dashes
         },
         tooltip=folium.GeoJsonTooltip(
             fields=['ElSpotOmr'],
             aliases=['Region:'],
             localize=True
         ),
-        name="Base Regions"  # Give it a name for layer control
+        name="Selected Region"
     ).add_to(m)
-    
-    # Add a separate overlay layer for the highlighted region
-    if st.session_state.selected_region_feature is not None:
-        highlight_geojson = folium.GeoJson(
-            st.session_state.selected_region_feature,
-            style_function=lambda feature: {
-                'fillColor': 'orange',
-                'color': "#e82a2a", #rgba(0,0,0,0)
-                'weight': 3,  # Thicker border for emphasis
-                'fillOpacity': 0, 
-                'dashArray': '0'  # Ensure no dashes
-            },
-            tooltip=folium.GeoJsonTooltip(
-                fields=['ElSpotOmr'],
-                aliases=['Region:'],
-                localize=True
-            ),
-            name="Selected Region"
-        ).add_to(m)
-    
 
-    
-    # Add marker only if a location has been clicked
-    if st.session_state.marker_location is not None:
-        # Use CircleMarker for precise positioning
-        folium.CircleMarker(
-            location=st.session_state.marker_location,
-            radius=8,
-            popup=f"Coordinates: {st.session_state.marker_location}",
-            color="red",
-            fillColor="red",
-            fillOpacity=0.7,
-            weight=2
-        ).add_to(m)
-    
 
-    # Add CSS to remove the black box highlight
-    m.get_root().header.add_child(folium.Element("""
-    <style>
-    /* Remove the black box highlight on click */
-    .leaflet-interactive.leaflet-touch-drag {
-        stroke-dasharray: none !important;
-        stroke-dashoffset: 0 !important;
-    }
-    
-    /* Remove focus outline without affecting stroke color */
-    .leaflet-interactive:focus {
-        outline: none !important;
-    }
-    </style>
-    """))
-    
-    # Store the GeoJSON data in session state for region detection
-    st.session_state.geojson_data = geojson_data
-    
-except FileNotFoundError:
-    st.error("GeoJSON file not found. Please make sure 'file.geojson' exists in the same directory.")
-    # Create map without GeoJSON if file not found
-    m = folium.Map(location=st.session_state.map_center, zoom_start=st.session_state.zoom)
-except Exception as e:
-    st.error(f"Error loading GeoJSON file: {e}")
-    m = folium.Map(location=st.session_state.map_center, zoom_start=st.session_state.zoom)
+
+# Add marker only if a location has been clicked
+if st.session_state.marker_location is not None:
+    # Use CircleMarker for precise positioning
+    folium.CircleMarker(
+        location=st.session_state.marker_location,
+        radius=8,
+        popup=f"Coordinates: {st.session_state.marker_location}",
+        color="red",
+        fillColor="red",
+        fillOpacity=0.7,
+        weight=2
+    ).add_to(m)
+
+
+# Add CSS to remove the black box highlight
+m.get_root().header.add_child(folium.Element("""
+<style>
+/* Remove the black box highlight on click */
+.leaflet-interactive.leaflet-touch-drag {
+    stroke-dasharray: none !important;
+    stroke-dashoffset: 0 !important;
+}
+
+/* Remove focus outline without affecting stroke color */
+.leaflet-interactive:focus {
+    outline: none !important;
+}
+</style>
+"""))
+
+# Store the GeoJSON data in session state for region detection
+st.session_state.geojson_data = geojson_data
+
+# except FileNotFoundError:
+#     st.error("GeoJSON file not found. Please make sure 'file.geojson' exists in the same directory.")
+#     # Create map without GeoJSON if file not found
+#     m = folium.Map(location=st.session_state.map_center, zoom_start=st.session_state.zoom)
+# except Exception as e:
+#     st.error(f"Error loading GeoJSON file: {e}")
+#     m = folium.Map(location=st.session_state.map_center, zoom_start=st.session_state.zoom)
 
 
 

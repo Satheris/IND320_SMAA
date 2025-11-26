@@ -161,6 +161,26 @@ def get_elhubdata(energy_type) -> pd.DataFrame:
     return df_elhub
 
 
+@st.cache_data(show_spinner=True)
+def read_geojson():
+    try:
+        # Load the GeoJSON file
+        with open(r'project/data/file.geojson', 'r', encoding='utf-8') as f:
+            geojson_data = json.load(f)
+
+        for features_list in geojson_data['features']:
+            splitted = features_list['properties']['ElSpotOmr'].split(' ')
+            features_list['properties']['ElSpotOmr'] = splitted[0]+splitted[1]
+        
+        return geojson_data
+
+    except FileNotFoundError:
+        st.error("GeoJSON file not found. Please make sure 'file.geojson' exists in the same directory.")
+    except Exception as e:
+        st.error(f"Error loading GeoJSON file: {e}")
+
+
+
 
 # ----------------------------------------------------------------
 # REPLACE st.sesstion_state
