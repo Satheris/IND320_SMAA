@@ -7,7 +7,8 @@ from utils.common import (generate_months,
                           month_number_converter,
                           openmeteo_download,
                           get_elhubdata,
-                          _set_new_area)
+                          _set_new_area,
+                          SWC_plot)
 
 
 # session_state.AREA to use across pages for data extraction
@@ -40,3 +41,4 @@ weather_variable = st.selectbox('Select weather variable', weather_variables)
 
 window_length = st.slider('Select window length', min_value=10, max_value=70, value=45, step=1)
 
+SWC_plot(weather_variable=weather_variable, energy_type=energy_type, window_length=window_length)
