@@ -180,7 +180,7 @@ st.session_state.geojson_data = geojson_data
 
 
 
-c1, c2 = st.columns(2, gap='medium')
+c1, c2 = st.columns([3, 2], gap='medium')
 
 
 with c1: 
