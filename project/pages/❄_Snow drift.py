@@ -27,7 +27,7 @@ if 'END_YEAR' not in st.session_state:
 # page configuration
 st.set_page_config(layout='wide')
 st.header('Snow Drift analysis')
-st.write(f'Snow drift direction diagram for location chosen on *map page*')
+st.write(f'Snow drift direction diagram for location chosen on *map page*.')
 
 
 
