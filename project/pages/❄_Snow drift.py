@@ -31,8 +31,15 @@ st.set_page_config(layout='wide')
 st.header('Snow Drift analysis')
 st.write(f'Snow drift direction diagram for location chosen on *map page*')
 
-start_year = st.number_input('Start year', min_value=2000, max_value=2023, value=st.session_state.START_YEAR, step=1, key='start_year', on_change=_set_new_start_year)
-end_year = st.number_input('End year', min_value=2001, max_value=2024, value=st.session_state.END_YEAR, step=1, key='end_year', on_change=_set_new_end_year)
+c1, c2 = st.columns(2)
+with c1:
+    start_year = st.number_input('Start year', min_value=2000, max_value=2023, 
+                                 value=st.session_state.START_YEAR, step=1, 
+                                 key='start_year', on_change=_set_new_start_year)
+with c2:
+    end_year = st.number_input('End year', min_value=2001, max_value=2024, 
+                               value=st.session_state.END_YEAR, step=1, 
+                               key='end_year', on_change=_set_new_end_year)
 
 try:
     snowdrift_plot(st.session_state.snow_data)
