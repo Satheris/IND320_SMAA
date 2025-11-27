@@ -214,19 +214,9 @@ def _set_new_end_date():
     st.session_state.END_DATE = st.session_state.end_date
 
 
-def _set_new_start_year():
-    st.session_state.START_YEAR = st.session_state.start_year
-    # _set_end_year_after_start()
-    _download_new_snow_data()
-
-
-def _set_end_year_after_start():
-    st.session_state.END_YEAR = st.session_state.START_YEAR + 1
-    _download_new_snow_data()
-
-
-def _set_new_end_year():
-    st.session_state.END_YEAR = st.session_state.end_year
+def _set_new_year_range():
+    st.session_state.START_YEAR = st.session_state.year_range[0]
+    st.session_state.END_YEAR = st.session_state.year_range[1]
     _download_new_snow_data()
 
 
