@@ -82,7 +82,7 @@ def openmeteo_download(year=2021) -> pd.DataFrame:
     return df
 
 
-@st.cache_data(show_spinner=True)
+# @st.cache_data(show_spinner=True)
 def openmeteo_download_snowdrift() -> pd.DataFrame:
     # Setup the Open-Meteo API client with cache and retry on error
     cache_session = requests_cache.CachedSession('.cache', expire_after = 3600)
@@ -131,7 +131,7 @@ def openmeteo_download_snowdrift() -> pd.DataFrame:
 
     df = pd.DataFrame(data = hourly_data)
 
-    return df    
+    return df
 
 
 @st.cache_resource
