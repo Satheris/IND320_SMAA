@@ -41,15 +41,28 @@ st.write(f'Snow drift direction diagram for location chosen on *map page*')
 #                                key='end_year', on_change=_set_new_end_year)
 
  
+# if st.session_state.marker_location:
+#     start_year, end_year = st.select_slider('Select year range for snow drift calculation',
+#                                         [i for i in range(2000, 2025, 1)],
+#                                         value=(st.session_state.START_YEAR, st.session_state.END_YEAR),
+#                                         key='year_range',
+#                                         on_change=_set_new_year_range)
+#     if start_year == end_year:
+#         st.error('Error: year range has to span at least two years.')
+#     else:
+#         snowdrift_plot()
+# else: 
+#     st.info('No location chosen on *map page*')
+
 if st.session_state.marker_location:
-    start_year, end_year = st.select_slider('Select year range for snow drift calculation',
-                                        [i for i in range(2000, 2025, 1)],
-                                        value=(st.session_state.START_YEAR, st.session_state.END_YEAR),
-                                        key='year_range',
-                                        on_change=_set_new_year_range)
-    if start_year == end_year:
-        st.error('Error: year range has to span at least two years.')
-    else:
+    try:
+        start_year, end_year = st.select_slider('Select year range for snow drift calculation',
+                                            [i for i in range(2000, 2025, 1)],
+                                            value=(st.session_state.START_YEAR, st.session_state.END_YEAR),
+                                            key='year_range',
+                                            on_change=_set_new_year_range)
         snowdrift_plot()
+    except:
+        st.error('Error: year range has to span at least two years.')
 else: 
     st.info('No location chosen on *map page*')
