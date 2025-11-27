@@ -216,7 +216,7 @@ def _set_new_end_date():
 
 def _set_new_start_year():
     st.session_state.START_YEAR = st.session_state.start_year
-    _set_end_year_after_start()
+    _set_end_year_after_start
 
 
 
