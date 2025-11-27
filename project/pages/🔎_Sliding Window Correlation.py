@@ -22,7 +22,7 @@ if 'consumption_data' not in st.session_state:
     st.session_state.consumption_data = get_elhubdata('consumption')
 
 if 'lag' not in st.session_state:
-    st.session_state.lag = 0
+    st.session_state.lag = 100
 
 
 
@@ -41,6 +41,7 @@ with c2:
     weather_variables = list(st.session_state.weather_data.columns)
     weather_variables.remove('time')
     weather_variable = st.selectbox('Select weather variable:', weather_variables)
+
 
 with c3:
     window_length = st.slider('Select window length (in days):', min_value=10, max_value=70, value=45, step=1)
