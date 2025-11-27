@@ -42,6 +42,6 @@ with c2:
                                key='end_year', on_change=_set_new_end_year)
 
 try:
-    snowdrift_plot(st.session_state.snow_data)
+    snowdrift_plot()
 except: 
     st.info('No location chosen on *map page*')
