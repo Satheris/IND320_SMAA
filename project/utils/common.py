@@ -477,7 +477,7 @@ def SWC_plot(weather_variable, energy_type, window_length):
     # Add SWC trace
     fig.add_trace(
         go.Scatter(
-            x=energyKwh.index - st.session_state.lag,
+            x=energyKwh.index,
             y=Quantity_weather_SWC,
             mode='lines',
             name='SWC',
@@ -490,7 +490,7 @@ def SWC_plot(weather_variable, energy_type, window_length):
     fig.add_trace(
         go.Scatter(
             x=[energyKwh.index[center]],
-            y=[Quantity_weather_SWC.iloc[center + st.session_state.lag]],
+            y=[Quantity_weather_SWC.iloc[center]],
             mode='markers',
             name='Center Point',
             marker=dict(color='red', size=8)
