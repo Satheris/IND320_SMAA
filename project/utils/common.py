@@ -33,13 +33,13 @@ def read_data() -> pd.DataFrame:
 
 
 @st.cache_data(show_spinner=True)
-def openmeteo_download(area, year=2021) -> pd.DataFrame:
+def openmeteo_download(year=2021) -> pd.DataFrame:
     # Setup the Open-Meteo API client with cache and retry on error
     cache_session = requests_cache.CachedSession('.cache', expire_after = 3600)
     retry_session = retry(cache_session, retries = 5, backoff_factor = 0.2)
     openmeteo = openmeteo_requests.Client(session = retry_session)
 
-    longitude, latitude = area_to_geoplacement(area)
+    longitude, latitude = area_to_geoplacement(st.session_state.AREA)
 
     # Make sure all required weather variables are listed here
     # The order of variables in hourly or daily is important to assign them correctly below
@@ -191,7 +191,7 @@ def _set_new_area() -> None:
 
 
 def _download_new_area() -> None:
-    st.session_state.data = openmeteo_download(area=st.session_state.AREA)
+    st.session_state.weather_data = openmeteo_download()
 
 
 def _set_new_group() -> None:
@@ -216,19 +216,16 @@ def _set_new_end_date():
 
 def _set_new_start_year():
     st.session_state.START_YEAR = st.session_state.start_year
-    _set_end_year_after_start
-
 
 
 def _set_end_year_after_start():
     st.session_state.END_YEAR = st.session_state.START_YEAR + 1
-    st.session_state.snow_data = openmeteo_download_snowdrift
-
+    # st.session_state.snow_data = openmeteo_download_snowdrift
 
 
 def _set_new_end_year():
     st.session_state.END_YEAR = st.session_state.end_year
-    st.session_state.snow_data = openmeteo_download_snowdrift
+    # st.session_state.snow_data = openmeteo_download_snowdrift
 
 
 
