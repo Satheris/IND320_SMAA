@@ -90,7 +90,7 @@ if st.session_state.marker_location:
                                 value=(st.session_state.START_YEAR, st.session_state.END_YEAR),
                                 key='year_range',
                                 on_change=_set_new_year_range)
-    if st.session_state.snow_data:
+    if st.session_state.snow_data is not None:
         snowdrift_plot()
 
 else:
