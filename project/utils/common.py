@@ -403,9 +403,9 @@ def SWC_plot(weather_variable, energy_type, window_length):
 
     # Create slider for center point
     if window_length % 2 == 0:
-        max_center = len(energyKwh) - window_length//2 
+        max_center = len(energyKwh) - window_length//2 - st.session_state.lag
     else:
-        max_center = len(energyKwh) - window_length//2 - 1
+        max_center = len(energyKwh) - window_length//2 - 1 - st.session_state.lag
     center = st.slider(
         "Select center point:",
         min_value=window_length//2,
@@ -477,7 +477,7 @@ def SWC_plot(weather_variable, energy_type, window_length):
     # Add SWC trace
     fig.add_trace(
         go.Scatter(
-            x=energyKwh.index,
+            x=energyKwh.index - st.session_state.lag,
             y=Quantity_weather_SWC,
             mode='lines',
             name='SWC',
