@@ -41,7 +41,7 @@ st.write(f'Snow drift direction diagram for location chosen on *map page*')
 #                                key='end_year', on_change=_set_new_end_year)
 
  
-if 'marker_location' in st.session_state:
+if st.session_state.marker_location == None:
     start_year, end_year = st.select_slider('Select year range for snow drift calculation',
                                         [i for i in range(2000, 2025, 1)],
                                         value=(st.session_state.START_YEAR, st.session_state.END_YEAR),
