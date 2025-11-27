@@ -83,7 +83,7 @@ with c3:
 try: 
     # selected exogenous variables 
     exog = st.pills('Exogenous variables', 
-                    sorted(st.session_state[energy_type+'_data'][energy_type+'Group'].unique().tolist()).remove(st.session_state.GROUP),
+                    sorted(st.session_state[energy_type+'_data'][energy_type+'Group'].unique().tolist().remove(st.session_state.GROUP)),
                     selection_mode='multi',
                     default=None)
 except:
