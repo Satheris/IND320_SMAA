@@ -393,8 +393,8 @@ def SWC_plot(weather_variable, energy_type, window_length):
     daily_weather = agg_weather.groupby(pd.Grouper(key='time', freq='D')).agg({weather_variable:'sum'}).reset_index()
     weather_series = daily_weather[weather_variable]
 
-    lagged_weather = weather_series.copy()
-    lagged_weather.index += st.session_state.lag
+    # lagged_weather = weather_series.copy()
+    # lagged_weather.index += st.session_state.lag
 
 
     # Calculate rolling correlation
