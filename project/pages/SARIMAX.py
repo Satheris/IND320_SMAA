@@ -8,6 +8,7 @@ from statsmodels.tsa.statespace.sarimax import SARIMAX
 # Importing self defined functions
 from utils.common import (get_elhubdata,
                           _set_new_group,
+                          _set_new_energy_type
                           )
 
 
@@ -19,6 +20,11 @@ if 'production_data' not in st.session_state:
 if 'consumption_data' not in st.session_state:
     st.session_state.consumption_data = get_elhubdata('consumption')
 
+if 'ENERGY_TYPE' not in st.session_state:
+    st.session_state.ENERGY_TYPE = None
+if 'GROUP' not in st.session_state:
+    st.session_state.GROUP = None
+
 
 
 # page configuration
@@ -29,7 +35,7 @@ st.write(f"")
 c1, c2 = st.columns([1, 2])
 with c1:
     energy_type = st.pills('Select energy type for prediction', ['production', 'consumption'], selection_mode='single', 
-                            default='production')
+                            default='production', key='energy_type', on_change=_set_new_energy_type)
 with c2:
     if energy_type:
         groups = sorted(st.session_state[energy_type+'_data'][energy_type+'Group'].unique().tolist())
