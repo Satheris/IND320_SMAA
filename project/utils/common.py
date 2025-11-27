@@ -140,8 +140,8 @@ def init_connection() -> pymongo.MongoClient:
     return pymongo.MongoClient(st.secrets['mongo']['uri'])
 
 
-# Uses st.cache_data to only rerun when the query changes or after 10 min.
-@st.cache_data(ttl=1800)
+# Uses st.cache_data to only rerun when the query changes or after 30 min.
+@st.cache_data(ttl=1800, show_spinner=True)
 def get_elhubdata(energy_type) -> pd.DataFrame:
     client = init_connection()
     db = client['project']
@@ -183,7 +183,7 @@ def read_geojson():
 
 
 # ----------------------------------------------------------------
-# REPLACE st.sesstion_state
+# UPDATE st.sesstion_state
 # ----------------------------------------------------------------
 
 def _set_new_area() -> None:
@@ -517,53 +517,6 @@ def SWC_plot(weather_variable, energy_type, window_length):
 # MAP HELPERS
 # ----------------------------------------------------------------
 
-def map_outline(df=None):
-    with open(r'project/data/file.geojson') as file:
-        priceAreas = json.load(file)
-
-    if df == None:
-        # making dummy df with area identifiers
-        area_ids = [feature['properties']['OBJECTID'] for feature in priceAreas['features']]
-        area_names = [feature['properties']['ElSpotOmr'] for feature in priceAreas['features']]
-        df = pd.DataFrame({'area_id': area_ids, 
-                        'dummy_value': [1]*len(area_ids),
-                        'area_names': area_names})
-
-    # Create the map
-    fig = px.choropleth_map(
-        df,
-        geojson=priceAreas,
-        locations='area_id',
-        featureidkey="properties.OBJECTID",
-        color='dummy_value',
-        color_continuous_scale=[(0, "rgba(0,0,0,0)"), (1, "rgba(0,0,0,0)")],  # Transparent colors
-        map_style="open-street-map",
-        zoom=3.5,
-        center={"lat": 65.0, "lon": 16.0},
-        labels={'dummy_value': ''},
-        hover_data={'area_names':True}
-        )
-
-    # Customize outlines
-    fig.update_traces(
-        marker_line_width=2,
-        marker_line_color="#e8862a",
-        )
-    
-    fig.update_traces(
-        selected=dict(marker=dict(opacity=0.7)), #color="#2ca02c", 
-        unselected=dict(marker=dict(opacity=0))
-    )
-    
-    fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0},
-                      coloraxis_showscale=False,  # Explicitly hide color scale in layout
-                      height=575,
-                      width=450
-                      )
-
-    return fig
-
-
 # Function to check if a point is inside a polygon
 def point_in_polygon(point, polygon):
     # Simple point-in-polygon check
@@ -643,6 +596,10 @@ def make_choropleth_subset() -> pd.DataFrame:
     df_agg = df_group.groupby('priceArea')['quantityKwh'].mean().reset_index()
 
     return df_agg
+
+
+def make_sarimax_subset():
+    df = st.session_state[st.session_state['ENERGY_TYPE']+'_data']
 
 
 
