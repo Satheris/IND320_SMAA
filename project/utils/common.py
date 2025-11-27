@@ -464,7 +464,7 @@ def SWC_plot(weather_variable, energy_type, window_length):
     fig.add_trace(
         go.Scatter(
             x=weather_series.index,
-            y=lagged_weather.iloc[window_start+st.session_state.lag:window_end+st.session_state.lag],
+            y=lagged_weather.iloc[window_start:window_end],
             mode='lines',
             name=f'{weather_variable} Window',
             line=dict(color='red', width=2)
