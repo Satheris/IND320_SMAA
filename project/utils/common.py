@@ -8,7 +8,6 @@ import json
 
 import plotly.express as px
 import plotly.graph_objects as go
-import matplotlib.pyplot as plt
 from plotly.subplots import make_subplots
 
 import openmeteo_requests
@@ -598,8 +597,12 @@ def make_choropleth_subset() -> pd.DataFrame:
     return df_agg
 
 
-def make_sarimax_subset():
+def make_sarimax_subset() -> pd.DataFrame:
     df = st.session_state[st.session_state['ENERGY_TYPE']+'_data']
+
+    df_daily = df.groupby([st.session_state['ENERGY_TYPE']+'Group', pd.Grouper(key='startTime', freq='D')]).agg({'quantityKwh': 'sum'}).reset_index()
+
+    return df_daily
 
 
 
