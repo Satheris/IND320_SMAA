@@ -48,8 +48,8 @@ start_year, end_year = st.select_slider('Select year range for snow drift calcul
                                         )
 if start_year == end_year:
     st.error('Error: year range has to span at least two years.')
-
-try:
-    snowdrift_plot()
-except: 
-    st.info('No location chosen on *map page*')
+else: 
+    try:
+        snowdrift_plot()
+    except: 
+        st.info('No location chosen on *map page*')
