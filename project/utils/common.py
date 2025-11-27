@@ -32,7 +32,7 @@ def read_data() -> pd.DataFrame:
     return data
 
 
-@st.cache_data(show_spinner=True)
+# @st.cache_data(show_spinner=True)
 def openmeteo_download(year=2021) -> pd.DataFrame:
     # Setup the Open-Meteo API client with cache and retry on error
     cache_session = requests_cache.CachedSession('.cache', expire_after = 3600)
@@ -403,9 +403,9 @@ def SWC_plot(weather_variable, energy_type, window_length):
 
     # Create slider for center point
     if window_length % 2 == 0:
-        max_center = len(energyKwh) - window_length//2 + st.session_state.lag*2
+        max_center = len(energyKwh) - window_length//2 
     else:
-        max_center = len(energyKwh) - window_length//2 - 1 + st.session_state.lag*2
+        max_center = len(energyKwh) - window_length//2 - 1
     center = st.slider(
         "Select center point:",
         min_value=window_length//2,
