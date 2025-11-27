@@ -78,11 +78,14 @@ train_end_date = st.date_input('End date for training the model',
 # forecast horizon
 st.number_input('Forecast horizon in days', min_value=1, max_value=21, value=7, step=1)
 
-# selected exogenous variables 
-exog = st.pills('Exogenous variables', 
-                sorted(st.session_state[energy_type+'_data'][energy_type+'Group'].unique().tolist()).remove(st.session_state.GROUP),
-                selection_mode='multi',
-                default=None)
+try: 
+    # selected exogenous variables 
+    exog = st.pills('Exogenous variables', 
+                    sorted(st.session_state[energy_type+'_data'][energy_type+'Group'].unique().tolist()).remove(st.session_state.GROUP),
+                    selection_mode='multi',
+                    default=None)
+except:
+    st.error('Error: no energy type has been selected.')
 
 
 df_sarimax = make_sarimax_subset()
