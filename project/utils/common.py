@@ -83,13 +83,13 @@ def openmeteo_download(area, year=2021) -> pd.DataFrame:
 
 
 @st.cache_data(show_spinner=True)
-def openmeteo_download_snowdrift(location, startYear=2021, endYear=2022) -> pd.DataFrame:
+def openmeteo_download_snowdrift() -> pd.DataFrame:
     # Setup the Open-Meteo API client with cache and retry on error
     cache_session = requests_cache.CachedSession('.cache', expire_after = 3600)
     retry_session = retry(cache_session, retries = 5, backoff_factor = 0.2)
     openmeteo = openmeteo_requests.Client(session = retry_session)
 
-    latitude, longitude = location
+    latitude, longitude = st.session_state.marker_location
 
     # Make sure all required weather variables are listed here
     # The order of variables in hourly or daily is important to assign them correctly below
@@ -97,8 +97,8 @@ def openmeteo_download_snowdrift(location, startYear=2021, endYear=2022) -> pd.D
     params = {
         "latitude": latitude,
         "longitude": longitude,
-        "start_date": f"{startYear}-07-01",
-        "end_date": f"{endYear}-06-30",
+        "start_date": f"{st.session_state.START_YEAR}-07-01",
+        "end_date": f"{st.session_state.END_YEAR}-06-30",
         "hourly": ["temperature_2m", "wind_direction_10m", "wind_speed_10m", "wind_gusts_10m", "precipitation"],
         "models": "era5",
         "timezone": "Europe/Berlin",
@@ -212,6 +212,24 @@ def _set_new_start_date():
 
 def _set_new_end_date():
     st.session_state.END_DATE = st.session_state.end_date
+
+
+def _set_new_start_year():
+    st.session_state.START_YEAR = st.session_state.start_year
+    _set_end_year_after_start()
+
+
+
+def _set_end_year_after_start():
+    st.session_state.END_YEAR = st.session_state.START_YEAR + 1
+    st.session_state.snow_data = openmeteo_download_snowdrift()
+
+
+
+def _set_new_end_year():
+    st.session_state.END_YEAR = st.session_state.end_year
+    st.session_state.snow_data = openmeteo_download_snowdrift()
+
 
 
 
@@ -599,6 +617,8 @@ def make_choropleth_subset() -> pd.DataFrame:
 
 def make_sarimax_subset() -> pd.DataFrame:
     df = st.session_state[st.session_state['ENERGY_TYPE']+'_data']
+    
+    df['startTime'] = pd.to_datetime(df['startTime'])
 
     df_daily = df.groupby([st.session_state['ENERGY_TYPE']+'Group', pd.Grouper(key='startTime', freq='D')]).agg({'quantityKwh': 'sum'}).reset_index()
 

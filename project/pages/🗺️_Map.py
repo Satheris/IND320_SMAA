@@ -55,6 +55,11 @@ if 'max_date' not in st.session_state:
 if 'END_DATE' not in st.session_state:
     st.session_state.END_DATE = datetime.date(2021, 1, 5)
 
+if 'START_YEAR' not in st.session_state:
+    st.session_state.START_YEAR = 2021
+if 'END_YEAR' not in st.session_state:
+    st.session_state.END_YEAR = 2022
+
 
 
 
@@ -64,16 +69,6 @@ st.header('Map')
 st.write(f"Map covering Norway's electrical price areas. Click a location for snow drift calculation on *snow drift page*.")
 
 
-# Load and add GeoJSON regions
-# try:
-#     # Load the GeoJSON file
-#     with open(r'project/data/file.geojson', 'r', encoding='utf-8') as f:
-#         geojson_data = json.load(f)
-
-#     for features_list in geojson_data['features']:
-#         splitted = features_list['properties']['ElSpotOmr'].split(' ')
-#         features_list['properties']['ElSpotOmr'] = splitted[0]+splitted[1]
-    
 geojson_data = read_geojson()
 
 # Create the base map
@@ -170,14 +165,6 @@ m.get_root().header.add_child(folium.Element("""
 # Store the GeoJSON data in session state for region detection
 st.session_state.geojson_data = geojson_data
 
-# except FileNotFoundError:
-#     st.error("GeoJSON file not found. Please make sure 'file.geojson' exists in the same directory.")
-#     # Create map without GeoJSON if file not found
-#     m = folium.Map(location=st.session_state.map_center, zoom_start=st.session_state.zoom)
-# except Exception as e:
-#     st.error(f"Error loading GeoJSON file: {e}")
-#     m = folium.Map(location=st.session_state.map_center, zoom_start=st.session_state.zoom)
-
 
 
 c1, c2 = st.columns([3, 2], gap='medium')
@@ -195,7 +182,7 @@ if map_data.get('last_clicked'):
     lat, lng = map_data['last_clicked']['lat'], map_data['last_clicked']['lng']
     st.session_state.marker_location = [lat, lng]
 
-    st.session_state.snow_data = openmeteo_download_snowdrift(st.session_state.marker_location)
+    st.session_state.snow_data = openmeteo_download_snowdrift()
 
 
     # Find which region contains the clicked point

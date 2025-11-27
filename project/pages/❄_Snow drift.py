@@ -2,7 +2,10 @@
 import streamlit as st
 
 # Importing self defined functions
-from utils.common import (openmeteo_download_snowdrift)
+from utils.common import (openmeteo_download_snowdrift,
+                          _set_new_end_year,
+                          _set_new_start_year
+                          )
 from utils.snowdrift import snowdrift_plot
 
 
@@ -16,13 +19,22 @@ if 'marker_location' not in st.session_state:
 if 'snow_data' not in st.session_state:
     st.session_state.snow_data = None
 
+if 'START_YEAR' not in st.session_state:
+    st.session_state.START_YEAR = 2021
+if 'END_YEAR' not in st.session_state:
+    st.session_state.END_YEAR = 2022
+
+
 
 # page configuration
 st.set_page_config(layout='wide')
 st.header('Snow Drift analysis')
 st.write(f'Snow drift direction diagram for location chosen on *map page*')
 
-try: 
+start_year = st.number_input('Start year', min_value=2000, max_value=2023, value=st.session_state.START_YEAR, step=1, key='start_year', on_change=_set_new_start_year)
+end_year = st.number_input('End year', min_value=2001, max_value=2024, value=st.session_state.END_YEAR, step=1, key='end_year', on_change=_set_new_end_year)
+
+try:
     snowdrift_plot(st.session_state.snow_data)
 except: 
     st.info('No location chosen on *map page*')
