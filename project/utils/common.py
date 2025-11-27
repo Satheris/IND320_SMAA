@@ -394,7 +394,7 @@ def SWC_plot(weather_variable, energy_type, window_length):
     weather_series = daily_weather[weather_variable]
 
     lagged_weather = weather_series.copy()
-    lagged_weather.index += st.session_state.lag
+    lagged_weather.index -= st.session_state.lag
 
 
     # Calculate rolling correlation
@@ -463,8 +463,8 @@ def SWC_plot(weather_variable, energy_type, window_length):
     # Highlight window for weather variable
     fig.add_trace(
         go.Scatter(
-            x=lagged_weather.index[window_start:window_end],
-            y=lagged_weather.iloc[window_start:window_end],
+            x=lagged_weather.index[window_start+st.session_state.lag:window_end+st.session_state.lag],
+            y=lagged_weather.iloc[window_start+st.session_state.lag:window_end+st.session_state.lag],
             mode='lines',
             name=f'{weather_variable} Window',
             line=dict(color='red', width=2)
