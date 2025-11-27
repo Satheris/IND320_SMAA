@@ -33,7 +33,7 @@ st.subheader('SARIMAX parameters')
 # p, d, q, P, D, Q, s
 c1, c2, c3 = st.columns(3)
 with c1:
-    st.number_input('p', 0, 10, value=1, step=1, horisontal=True)
+    st.number_input('p', 0, 10, value=1, step=1)
 with c2:
     st.number_input('d', 0, 2, value=0, step=1)
 with c3:
