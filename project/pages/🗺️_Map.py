@@ -185,7 +185,7 @@ c1, c2 = st.columns(2, gap='medium')
 
 with c1: 
     # Render the map and capture interactions
-    map_data = st_folium(m, width=450, height=575, key='norway_map')
+    map_data = st_folium(m, height=575, key='norway_map', use_container_width=True) # , width=450
     # st.plotly_chart(map_outline(), key='location', on_select='rerun')
 
 
