@@ -21,6 +21,9 @@ if 'production_data' not in st.session_state:
 if 'consumption_data' not in st.session_state:
     st.session_state.consumption_data = get_elhubdata('consumption')
 
+if 'lag' not in st.session_state:
+    st.session_state.lag = 10
+
 
 
 # page configuration
