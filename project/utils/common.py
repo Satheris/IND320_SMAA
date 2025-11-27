@@ -224,6 +224,7 @@ def _download_new_snow_data():
     try: 
         st.session_state.snow_data = openmeteo_download_snowdrift()
     except:
+        # setting data to None to catch the error in Snow drift script
         st.session_state.snow_data = None
         st.error('Error: year range has to span at least two years.')
 
