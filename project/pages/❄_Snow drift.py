@@ -3,8 +3,6 @@ import streamlit as st
 
 # Importing self defined functions
 from utils.common import (openmeteo_download_snowdrift,
-                          _set_new_end_year,
-                          _set_new_start_year,
                           _set_new_year_range
                           )
 from utils.snowdrift import snowdrift_plot
