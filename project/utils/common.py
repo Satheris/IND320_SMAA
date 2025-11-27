@@ -394,7 +394,7 @@ def SWC_plot(weather_variable, energy_type, window_length):
     weather_series = daily_weather[weather_variable]
 
     lagged_weather = weather_series.copy()
-    lagged_weather.index -= st.session_state.lag
+    lagged_weather.index += st.session_state.lag
 
 
     # Calculate rolling correlation
