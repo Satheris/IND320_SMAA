@@ -283,6 +283,7 @@ def compute_fence_height(Qt, fence_type):
 
 def snowdrift_plot():
     df = st.session_state.snow_data
+    
     # Convert the 'time' column to datetime.
     df['time'] = pd.to_datetime(df['time'])
     
