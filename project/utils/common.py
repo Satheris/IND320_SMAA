@@ -602,6 +602,8 @@ def make_sarimax_subset() -> pd.DataFrame:
 
     df_daily = df.groupby([st.session_state['ENERGY_TYPE']+'Group', pd.Grouper(key='startTime', freq='D')]).agg({'quantityKwh': 'sum'}).reset_index()
 
+    df_daily.index = df_daily['startTime']
+
     return df_daily
 
 
