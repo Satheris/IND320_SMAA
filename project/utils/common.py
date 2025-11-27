@@ -398,7 +398,7 @@ def SWC_plot(weather_variable, energy_type, window_length):
 
 
     # Calculate rolling correlation
-    Quantity_weather_SWC = energyKwh.rolling(window_length, center=True).corr(lagged_weather)
+    Quantity_weather_SWC = lagged_weather.rolling(window_length, center=True).corr(energyKwh)
 
 
     # Create slider for center point
