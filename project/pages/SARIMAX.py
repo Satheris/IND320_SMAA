@@ -82,8 +82,10 @@ with c3:
 
 try: 
     # selected exogenous variables 
+    groups_list = sorted(st.session_state[energy_type+'_data'][energy_type+'Group'].unique().tolist())
+    groups_list.remove(st.session_state.GROUP)
     exog = st.pills('Exogenous variables', 
-                    sorted(st.session_state[energy_type+'_data'][energy_type+'Group'].unique().tolist().remove(st.session_state.GROUP)),
+                    groups_list,
                     selection_mode='multi',
                     default=None)
 except:
