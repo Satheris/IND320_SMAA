@@ -216,17 +216,22 @@ def _set_new_end_date():
 
 def _set_new_start_year():
     st.session_state.START_YEAR = st.session_state.start_year
+    # _set_end_year_after_start()
+    _download_new_snow_data()
 
 
 def _set_end_year_after_start():
     st.session_state.END_YEAR = st.session_state.START_YEAR + 1
-    # st.session_state.snow_data = openmeteo_download_snowdrift
+    _download_new_snow_data()
 
 
 def _set_new_end_year():
     st.session_state.END_YEAR = st.session_state.end_year
-    # st.session_state.snow_data = openmeteo_download_snowdrift
+    _download_new_snow_data()
 
+
+def _download_new_snow_data():
+    st.session_state.snow_data = openmeteo_download_snowdrift()
 
 
 
