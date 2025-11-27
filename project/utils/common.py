@@ -398,14 +398,14 @@ def SWC_plot(weather_variable, energy_type, window_length):
 
 
     # Calculate rolling correlation
-    Quantity_weather_SWC = energyKwh.rolling(window_length, center=True).corr(lagged_weather)
+    Quantity_weather_SWC = energyKwh.rolling(window_length, center=True).corr(weather_series)
 
 
     # Create slider for center point
     if window_length % 2 == 0:
-        max_center = len(energyKwh) - window_length//2 - st.session_state.lag
+        max_center = len(energyKwh) - window_length//2
     else:
-        max_center = len(energyKwh) - window_length//2 - 1 - st.session_state.lag
+        max_center = len(energyKwh) - window_length//2 - 1
     center = st.slider(
         "Select center point:",
         min_value=window_length//2,
@@ -437,8 +437,8 @@ def SWC_plot(weather_variable, energy_type, window_length):
     # Highlight window for energy data
     window_start = center - window_length//2
     window_end = center + window_length//2
-    lagged_window_start = center - window_length//2 + st.session_state.lag
-    lagged_window_end = center + window_length//2 + st.session_state.lag
+    # lagged_window_start = center - window_length//2 + st.session_state.lag
+    # lagged_window_end = center + window_length//2 + st.session_state.lag
     fig.add_trace(
         go.Scatter(
             x=energyKwh.index[window_start:window_end],
@@ -465,8 +465,8 @@ def SWC_plot(weather_variable, energy_type, window_length):
     # Highlight window for weather variable
     fig.add_trace(
         go.Scatter(
-            x=weather_series.index[lagged_window_start:lagged_window_end],
-            y=lagged_weather.iloc[lagged_window_start:lagged_window_end],
+            x=weather_series.index[window_start:window_end],
+            y=weather_series.iloc[window_start:window_end],
             mode='lines',
             name=f'{weather_variable} Window',
             line=dict(color='red', width=2)
@@ -489,8 +489,8 @@ def SWC_plot(weather_variable, energy_type, window_length):
     # Add center point marker for SWC
     fig.add_trace(
         go.Scatter(
-            x=[energyKwh.index[center + st.session_state.lag]],
-            y=[Quantity_weather_SWC.iloc[center + st.session_state.lag]],
+            x=[energyKwh.index[center]],
+            y=[Quantity_weather_SWC.iloc[center]],
             mode='markers',
             name='Center Point',
             marker=dict(color='red', size=8)
