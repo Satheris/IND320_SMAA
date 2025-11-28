@@ -136,14 +136,14 @@ fig.add_trace(go.Scatter(
 # Add one-step-ahead forecast
 fig.add_trace(go.Scatter(
     x=predict.predicted_mean.loc[str(train_start_date):].index,
-    y=predict.predicted_mean.loc[str(train_start_date):],
+    y=predict.predicted_mean.loc[str(train_end_date):],
     mode='lines',
     line=dict(dash='dash', color='red'),
     name='One-step-ahead forecast'
 ))
 
 # Add one-step-ahead confidence interval
-ci = predict_ci.loc[str(train_start_date):]
+ci = predict_ci.loc[str(train_end_date):]
 fig.add_trace(go.Scatter(
     x=ci.index.tolist() + ci.index.tolist()[::-1],
     y=ci.iloc[:, 0].tolist() + ci.iloc[:, 1].tolist()[::-1],
@@ -151,7 +151,7 @@ fig.add_trace(go.Scatter(
     fillcolor='rgba(255,0,0,0.1)',
     line=dict(color='rgba(255,255,255,0)'),
     name='One-step CI',
-    showlegend=False
+    showlegend=True
 ))
 
 # Add dynamic forecast
@@ -172,7 +172,7 @@ fig.add_trace(go.Scatter(
     fillcolor='rgba(0,255,0,0.1)',
     line=dict(color='rgba(255,255,255,0)'),
     name='Dynamic CI',
-    showlegend=False
+    showlegend=True
 ))
 
 # Update layout
