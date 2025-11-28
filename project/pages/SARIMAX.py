@@ -104,7 +104,7 @@ res = mod.fit(disp=False)
 
 
 mod = SARIMAX(endog=df_sarimax['quantityKwh'][df_sarimax[st.session_state['ENERGY_TYPE']+'Group'] == st.session_state['GROUP']],
-              exog=df_sarimax['quantityKwh'][df_sarimax[st.session_state['ENERGY_TYPE']+'Group'] in exog],
+            #   exog=df_sarimax['quantityKwh'][df_sarimax[st.session_state['ENERGY_TYPE']+'Group'] in exog],
               trend='c',
               order=(p, d, q),
               seasonal_order=(P, D, Q, s)
