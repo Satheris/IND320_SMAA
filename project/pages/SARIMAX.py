@@ -1,8 +1,6 @@
 # necessary imports for this page
 import streamlit as st
 import datetime
-import folium
-from streamlit_folium import st_folium
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 import plotly.graph_objects as go
 
