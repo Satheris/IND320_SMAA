@@ -92,9 +92,9 @@ if str(train_start_date) < str(train_end_date):
                         selection_mode='multi',
                         default=None)
         
-        df_sarimax = make_sarimax_subset()
+        # df_sarimax = make_sarimax_subset()
 
-        SARIMAX_plot(df_sarimax, train_start_date, train_end_date, forecast_end_date, exog_vars)
+        # SARIMAX_plot(df_sarimax, train_start_date, train_end_date, forecast_end_date, exog_vars)
 
 
     except:
@@ -103,7 +103,9 @@ if str(train_start_date) < str(train_end_date):
 else:
     st.error('Error: End date must be after Start date.')
 
+df_sarimax = make_sarimax_subset()
 
+SARIMAX_plot(df_sarimax, train_start_date, train_end_date, forecast_end_date, exog_vars)
 
 
 # if len(exog_vars) == 0:
