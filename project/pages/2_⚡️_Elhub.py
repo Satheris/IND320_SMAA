@@ -73,7 +73,7 @@ with c1:
             textinfo='percent',
             hovertemplate='<b>%{label}</b><br>%{value} KWh<br>%{percent}')
 
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width='stretch')
         
     except Exception as e:
         st.error(f'Error creating chart: {str(e)}')
