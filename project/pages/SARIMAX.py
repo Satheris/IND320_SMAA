@@ -69,8 +69,8 @@ s = st.number_input('**s** (seasonal period length in days)', 0, 365, value=365,
 c1, c2, c3 = st.columns(3)
 with c1:
     train_start_date = st.date_input('Start date for training the model', 
-                                     min_value=datetime.date(2021, 1, 1), max_value=datetime.date(2021, 3, 1), 
-                                     value=datetime.date(2021, 1, 1))
+                                     min_value=datetime.date(2021, 1, 1), max_value=datetime.date(2021, 3, 1), value='2021-01-01')
+                                    #  value=datetime.date(2021, 1, 1))
 with c2:
     train_end_date = st.date_input('End date for training the model', 
                                    min_value=datetime.date(2021, 3, 1), max_value=datetime.date(2021, 12, 31), 
