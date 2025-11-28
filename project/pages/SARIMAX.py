@@ -141,24 +141,37 @@ df_sarimax = make_sarimax_subset()
 # res = mod.filter(res.params)
 
 
+if exog_vars.empty():
+    mod = SARIMAX(endog=df_sarimax[st.session_state['GROUP']].loc[str(train_start_date):str(train_end_date)],
+                trend='c',
+                order=(p, d, q),
+                seasonal_order=(P, D, Q, s)
+                )
+    res = mod.fit(disp=False)
 
-mod = SARIMAX(endog=df_sarimax[st.session_state['GROUP']].loc[str(train_start_date):str(train_end_date)],
-              exog=df_sarimax[exog_vars].loc[str(train_start_date):str(train_end_date)],
-              trend='c',
-              order=(p, d, q),
-              seasonal_order=(P, D, Q, s)
-              )
+    mod = SARIMAX(endog=df_sarimax[st.session_state['GROUP']],
+                trend='c',
+                order=(p, d, q),
+                seasonal_order=(P, D, Q, s)
+                )
+    res = mod.filter(res.params)
 
-res = mod.fit(disp=False)
+else:
+    mod = SARIMAX(endog=df_sarimax[st.session_state['GROUP']].loc[str(train_start_date):str(train_end_date)],
+                exog=df_sarimax[exog_vars].loc[str(train_start_date):str(train_end_date)],
+                trend='c',
+                order=(p, d, q),
+                seasonal_order=(P, D, Q, s)
+                )
+    res = mod.fit(disp=False)
 
-mod = SARIMAX(endog=df_sarimax[st.session_state['GROUP']],
-              exog=df_sarimax[exog_vars],
-              trend='c',
-              order=(p, d, q),
-              seasonal_order=(P, D, Q, s)
-              )
-
-res = mod.filter(res.params)
+    mod = SARIMAX(endog=df_sarimax[st.session_state['GROUP']],
+                exog=df_sarimax[exog_vars],
+                trend='c',
+                order=(p, d, q),
+                seasonal_order=(P, D, Q, s)
+                )
+    res = mod.filter(res.params)
 
 # In-sample one-step-ahead prediction wrapper function
 predict = res.get_prediction()
