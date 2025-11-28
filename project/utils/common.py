@@ -378,7 +378,7 @@ def LOF_stats_plot(df:pd.DataFrame, column, contamination=0.01, n_neighbors=20):
 
 def SWC_plot(weather_variable, energy_type, window_length):
     # Convert startTime to datetime if it's not already
-    agg_energy = pd.DataFrame(st.session_state[energy_type+'_data'])
+    agg_energy = pd.DataFrame(st.session_state[energy_type+'_data'].copy)
     agg_energy['startTime'] = pd.to_datetime(agg_energy['startTime'])
 
     # Aggregate to daily data
@@ -386,7 +386,7 @@ def SWC_plot(weather_variable, energy_type, window_length):
     energyKwh = daily_energy['quantityKwh']
 
     # Convert time to datetime if it's not already
-    agg_weather = pd.DataFrame(st.session_state['weather_data'])
+    agg_weather = pd.DataFrame(st.session_state['weather_data'].copy)
     agg_weather['time'] = pd.to_datetime(agg_weather['time'])
 
     # Aggregate to daily data 
@@ -529,6 +529,9 @@ def SWC_plot(weather_variable, energy_type, window_length):
         value=f"{Quantity_weather_SWC.iloc[center]:.3f}"
     )
 
+
+def SARIMAX_plot():
+    pass
 
 
 
