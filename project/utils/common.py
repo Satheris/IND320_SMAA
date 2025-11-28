@@ -620,7 +620,7 @@ def make_choropleth_subset() -> pd.DataFrame:
     return df_agg
 
 
-def make_sarimax_subset() -> pd.DataFrame:
+def make_sarimax_subset() -> pd.DataFrame: 
     df = st.session_state[st.session_state['ENERGY_TYPE']+'_data'].copy()
     
     df['startTime'] = pd.to_datetime(df['startTime'], utc=True)
