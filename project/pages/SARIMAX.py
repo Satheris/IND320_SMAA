@@ -91,15 +91,16 @@ try:
                     groups_list,
                     selection_mode='multi',
                     default=None)
-    df_sarimax = make_sarimax_subset()
+    
 
-    SARIMAX_plot(df_sarimax, train_start_date, train_end_date, forecast_end_date, exog_vars)
 
 except:
     st.error('Error: no energy type has been selected.')
 
 
+df_sarimax = make_sarimax_subset()
 
+SARIMAX_plot(df_sarimax, train_start_date, train_end_date, forecast_end_date, exog_vars)
 
 
 # if len(exog_vars) == 0:
