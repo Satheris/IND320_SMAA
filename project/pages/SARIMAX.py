@@ -169,13 +169,20 @@ predict_dy = res.get_prediction(dynamic=str(train_end_date))
 predict_dy_ci = predict_dy.conf_int()
 
 
+
+
+
+
 # Create the plotly figure
 fig = go.Figure()
 
+# Get the group column name
+group_col = st.session_state['GROUP']
+
 # Add observed data
 fig.add_trace(go.Scatter(
-    x=df_sarimax['quantityKwh'][df_sarimax[st.session_state['ENERGY_TYPE']+'Group'] == st.session_state['GROUP']].loc[str(train_start_date):].index,
-    y=df_sarimax['quantityKwh'][df_sarimax[st.session_state['ENERGY_TYPE']+'Group'] == st.session_state['GROUP']].loc[str(train_start_date):],
+    x=df_sarimax[group_col].loc[str(train_start_date):].index,
+    y=df_sarimax[group_col].loc[str(train_start_date):],
     mode='markers',
     name='Observed',
     marker=dict(symbol='circle')
@@ -234,3 +241,76 @@ fig.update_layout(
 
 # Display in Streamlit
 st.plotly_chart(fig, width='stretch')
+
+
+
+
+
+
+
+
+# # Create the plotly figure
+# fig = go.Figure()
+
+# # Add observed data
+# fig.add_trace(go.Scatter(
+#     x=df_sarimax['quantityKwh'][df_sarimax[st.session_state['ENERGY_TYPE']+'Group'] == st.session_state['GROUP']].loc[str(train_start_date):].index,
+#     y=df_sarimax['quantityKwh'][df_sarimax[st.session_state['ENERGY_TYPE']+'Group'] == st.session_state['GROUP']].loc[str(train_start_date):],
+#     mode='markers',
+#     name='Observed',
+#     marker=dict(symbol='circle')
+# ))
+
+# # Add one-step-ahead forecast
+# fig.add_trace(go.Scatter(
+#     x=predict.predicted_mean.loc[str(train_start_date):].index,
+#     y=predict.predicted_mean.loc[str(train_start_date):],
+#     mode='lines',
+#     line=dict(dash='dash', color='red'),
+#     name='One-step-ahead forecast'
+# ))
+
+# # Add one-step-ahead confidence interval
+# ci = predict_ci.loc[str(train_end_date):]
+# fig.add_trace(go.Scatter(
+#     x=ci.index.tolist() + ci.index.tolist()[::-1],
+#     y=ci.iloc[:, 0].tolist() + ci.iloc[:, 1].tolist()[::-1],
+#     fill='toself',
+#     fillcolor='rgba(255,0,0,0.1)',
+#     line=dict(color='rgba(255,255,255,0)'),
+#     name='One-step CI',
+#     showlegend=True
+# ))
+
+# # Add dynamic forecast
+# fig.add_trace(go.Scatter(
+#     x=predict_dy.predicted_mean.loc[str(train_start_date):].index,
+#     y=predict_dy.predicted_mean.loc[str(train_start_date):],
+#     mode='lines',
+#     line=dict(color='green'),
+#     name=f'Dynamic forecast ({train_end_date})'
+# ))
+
+# # Add dynamic forecast confidence interval
+# ci_dy = predict_dy_ci.loc[str(train_start_date):]
+# fig.add_trace(go.Scatter(
+#     x=ci_dy.index.tolist() + ci_dy.index.tolist()[::-1],
+#     y=ci_dy.iloc[:, 0].tolist() + ci_dy.iloc[:, 1].tolist()[::-1],
+#     fill='toself',
+#     fillcolor='rgba(0,255,0,0.1)',
+#     line=dict(color='rgba(255,255,255,0)'),
+#     name='Dynamic CI',
+#     showlegend=True
+# ))
+
+# # Update layout
+# fig.update_layout(
+#     title=f'{st.session_state.GROUP} forecast',
+#     xaxis_title='Date',
+#     yaxis_title=f'{st.session_state.GROUP} kWh',
+#     legend=dict(x=0.01, y=0.01),
+#     hovermode='x unified'
+# )
+
+# # Display in Streamlit
+# st.plotly_chart(fig, width='stretch')
