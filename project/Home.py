@@ -5,4 +5,4 @@ import pandas as pd
 
 st.set_page_config(layout="wide")
 
-st.header('This is my app!')
+st.header('IND320 - Data to Decision')
