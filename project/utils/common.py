@@ -541,7 +541,7 @@ def SARIMAX_plot(df_sarimax, train_start_date, train_end_date, forecast_end_date
                     order=(st.session_state.p, st.session_state.d, st.session_state.q),
                     seasonal_order=(st.session_state.P, st.session_state.D, st.session_state.Q, st.session_state.s)
                     )
-        res = mod.fit(disp=False)
+        res = mod.fit()
 
         mod = SARIMAX(endog=df_sarimax[st.session_state['GROUP']],
                     trend='c',
@@ -557,7 +557,7 @@ def SARIMAX_plot(df_sarimax, train_start_date, train_end_date, forecast_end_date
                     order=(st.session_state.p, st.session_state.d, st.session_state.q),
                     seasonal_order=(st.session_state.P, st.session_state.D, st.session_state.Q, st.session_state.s)
                     )
-        res = mod.fit(disp=False)
+        res = mod.fit()
 
         mod = SARIMAX(endog=df_sarimax[st.session_state['GROUP']],
                     exog=df_sarimax[exog_vars],
