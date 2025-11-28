@@ -188,7 +188,7 @@ fig.add_trace(go.Scatter(
     y=predict_dy.predicted_mean.loc[str(train_start_date):],
     mode='lines',
     line=dict(color='green'),
-    name='Dynamic forecast (2013)'
+    name=f'Dynamic forecast ({train_end_date})'
 ))
 
 # Add dynamic forecast confidence interval
