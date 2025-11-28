@@ -97,7 +97,7 @@ mod = SARIMAX(endog=df_sarimax['quantityKwh'][df_sarimax[st.session_state['ENERG
             #   exog=df_sarimax['quantityKwh'][df_sarimax[st.session_state['ENERGY_TYPE']+'Group'] in exog].loc[train_start_date:train_end_date],
             #   exog=df_sarimax.loc[df_sarimax[st.session_state['ENERGY_TYPE']+'Group'].isin(exog),  [st.session_state['ENERGY_TYPE']+'Group', 'quantityKwh']],
                 exog = df_sarimax.loc[(df_sarimax.index >= str(train_start_date)) & 
-                                      (df_sarimax.index <= str(train_end_date)) & 
+                                      (df_sarimax.index < str(train_end_date)) & 
                                       (df_sarimax[st.session_state['ENERGY_TYPE']+'Group'].isin(exog)),
                                       [st.session_state['ENERGY_TYPE']+'Group', 'quantityKwh']
                                       ],
@@ -111,6 +111,11 @@ res = mod.fit(disp=False)
 
 mod = SARIMAX(endog=df_sarimax['quantityKwh'][df_sarimax[st.session_state['ENERGY_TYPE']+'Group'] == st.session_state['GROUP']],
             #   exog=df_sarimax['quantityKwh'][df_sarimax[st.session_state['ENERGY_TYPE']+'Group'] in exog],
+                exog = df_sarimax.loc[#(df_sarimax.index >= str(train_start_date)) & 
+                                      #(df_sarimax.index < str(train_end_date)) & 
+                                      (df_sarimax[st.session_state['ENERGY_TYPE']+'Group'].isin(exog)),
+                                      [st.session_state['ENERGY_TYPE']+'Group', 'quantityKwh']
+                                      ],
               trend='c',
               order=(p, d, q),
               seasonal_order=(P, D, Q, s)
