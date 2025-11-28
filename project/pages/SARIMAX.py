@@ -77,7 +77,10 @@ with c2:
                                    value=datetime.date(2021, 7, 1))
 
 with c3:
-    st.number_input('Forecast horizon in days', min_value=1, max_value=21, value=7, step=1)
+    forecast_horizon = st.number_input('Forecast horizon in days', min_value=1, max_value=21, value=7, step=1)
+
+forecast_end_date = train_end_date + datetime.timedelta(days=forecast_horizon)
+
 
 try: 
     # selected exogenous variables 
@@ -93,52 +96,6 @@ except:
 
 df_sarimax = make_sarimax_subset()
 
-# exog_df = (
-#     df_sarimax[
-#         # (df_sarimax.index >= train_start_date) & 
-#         # (df_sarimax.index <= train_end_date) & 
-#         (df_sarimax['productionGroup'].isin(exog_vars))
-#     ]
-#     .pivot_table(
-#         index='startTime', 
-#         columns='productionGroup', 
-#         values='quantityKwh',
-#         aggfunc='sum'
-#     )
-#     [exog_vars]  # Select only exog columns
-# )
-
-# mod = SARIMAX(endog=df_sarimax['quantityKwh'][df_sarimax[st.session_state['ENERGY_TYPE']+'Group'] == st.session_state['GROUP']].loc[str(train_start_date):str(train_end_date)],
-#             #   exog=df_sarimax['quantityKwh'][df_sarimax[st.session_state['ENERGY_TYPE']+'Group'] in exog].loc[train_start_date:train_end_date],
-#             #   exog=df_sarimax.loc[df_sarimax[st.session_state['ENERGY_TYPE']+'Group'].isin(exog),  [st.session_state['ENERGY_TYPE']+'Group', 'quantityKwh']],
-#                 # exog = df_sarimax.loc[(df_sarimax.index >= str(train_start_date)) & 
-#                 #                       (df_sarimax.index < str(train_end_date)) & 
-#                 #                       (df_sarimax[st.session_state['ENERGY_TYPE']+'Group'].isin(exog)),
-#                 #                       [st.session_state['ENERGY_TYPE']+'Group', 'quantityKwh']
-#                 #                       ],
-#                 exog=exog_df.loc[str(train_start_date):str(train_end_date)],
-#               trend='c',
-#               order=(p, d, q),
-#               seasonal_order=(P, D, Q, s)
-#               )
-
-# res = mod.fit(disp=False)
-
-
-# mod = SARIMAX(endog=df_sarimax['quantityKwh'][df_sarimax[st.session_state['ENERGY_TYPE']+'Group'] == st.session_state['GROUP']],
-#             #   exog=df_sarimax['quantityKwh'][df_sarimax[st.session_state['ENERGY_TYPE']+'Group'] in exog],
-#                 # exog = df_sarimax.loc[#(df_sarimax.index >= str(train_start_date)) & 
-#                 #                       #(df_sarimax.index < str(train_end_date)) & 
-#                 #                       (df_sarimax[st.session_state['ENERGY_TYPE']+'Group'].isin(exog)),
-#                 #                       [st.session_state['ENERGY_TYPE']+'Group', 'quantityKwh']
-#                 #                       ],
-#                 exog=exog_df,
-#               trend='c',
-#               order=(p, d, q),
-#               seasonal_order=(P, D, Q, s)
-#               )
-
-# res = mod.filter(res.params)
 
 
 if len(exog_vars) == 0:
@@ -194,8 +151,8 @@ group_col = st.session_state['GROUP']
 
 # Add observed data
 fig.add_trace(go.Scatter(
-    x=df_sarimax[group_col].loc[str(train_start_date):].index,
-    y=df_sarimax[group_col].loc[str(train_start_date):],
+    x=df_sarimax[group_col].loc[str(train_start_date):str(forecast_end_date)].index,
+    y=df_sarimax[group_col].loc[str(train_start_date):str(forecast_end_date)],
     mode='markers',
     name='Observed',
     marker=dict(symbol='circle')
@@ -203,15 +160,15 @@ fig.add_trace(go.Scatter(
 
 # Add one-step-ahead forecast
 fig.add_trace(go.Scatter(
-    x=predict.predicted_mean.loc[str(train_start_date):].index,
-    y=predict.predicted_mean.loc[str(train_start_date):],
+    x=predict.predicted_mean.loc[str(train_start_date):str(forecast_end_date)].index,
+    y=predict.predicted_mean.loc[str(train_start_date):str(forecast_end_date)],
     mode='lines',
     line=dict(dash='dash', color='red'),
     name='One-step-ahead forecast'
 ))
 
 # Add one-step-ahead confidence interval
-ci = predict_ci.loc[str(train_end_date):]
+ci = predict_ci.loc[str(train_end_date):str(forecast_end_date)]
 fig.add_trace(go.Scatter(
     x=ci.index.tolist() + ci.index.tolist()[::-1],
     y=ci.iloc[:, 0].tolist() + ci.iloc[:, 1].tolist()[::-1],
@@ -224,15 +181,15 @@ fig.add_trace(go.Scatter(
 
 # Add dynamic forecast
 fig.add_trace(go.Scatter(
-    x=predict_dy.predicted_mean.loc[str(train_start_date):].index,
-    y=predict_dy.predicted_mean.loc[str(train_start_date):],
+    x=predict_dy.predicted_mean.loc[str(train_start_date):str(forecast_end_date)].index,
+    y=predict_dy.predicted_mean.loc[str(train_start_date):str(forecast_end_date)],
     mode='lines',
     line=dict(color='green'),
     name=f'Dynamic forecast ({train_end_date})'
 ))
 
 # Add dynamic forecast confidence interval
-ci_dy = predict_dy_ci.loc[str(train_start_date):]
+ci_dy = predict_dy_ci.loc[str(train_start_date):str(forecast_end_date)]
 fig.add_trace(go.Scatter(
     x=ci_dy.index.tolist() + ci_dy.index.tolist()[::-1],
     y=ci_dy.iloc[:, 0].tolist() + ci_dy.iloc[:, 1].tolist()[::-1],
