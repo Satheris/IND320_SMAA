@@ -8,7 +8,8 @@ import plotly.graph_objects as go
 from utils.common import (get_elhubdata,
                           _set_new_group,
                           _set_new_energy_type,
-                          make_sarimax_subset
+                          make_sarimax_subset,
+                          SARIMAX_plot
                           )
 
 
@@ -50,20 +51,20 @@ with c2:
 st.subheader('SARIMAX parameters')
 c1, c2, c3 = st.columns(3)
 with c1:
-    p = st.number_input('**p** (autoregressive order)', 0, 10, value=1, step=1)
+    p = st.number_input('**p** (autoregressive order)', 0, 10, value=1, step=1, key='p')
 with c2:
-    d = st.number_input('**d** (degree of local differencing)', 0, 2, value=0, step=1)
+    d = st.number_input('**d** (degree of local differencing)', 0, 2, value=0, step=1, key='d')
 with c3:
-    q = st.number_input('**q** (moving average order)', 0, 10, value=0, step=1)
+    q = st.number_input('**q** (moving average order)', 0, 10, value=0, step=1, key='q')
 
 with c1:
-    P = st.number_input('**P** (seasonal autoregressive order)', 0, 10, value=0, step=1)
+    P = st.number_input('**P** (seasonal autoregressive order)', 0, 10, value=0, step=1, key='P')
 with c2:
-    D = st.number_input('**D** (degree of seasonal differencing)', 0, 2, value=0, step=1)
+    D = st.number_input('**D** (degree of seasonal differencing)', 0, 2, value=0, step=1, key='D')
 with c3:
-    Q = st.number_input('**Q** (seasonal moving average order)', 0, 10, value=0, step=1)
+    Q = st.number_input('**Q** (seasonal moving average order)', 0, 10, value=0, step=1, key='Q')
 
-s = st.number_input('**s** (seasonal period length in days)', 0, 365, value=365, step=1)
+s = st.number_input('**s** (seasonal period length in days)', 0, 365, value=365, step=1, key='s')
 
 
 c1, c2, c3 = st.columns(3)
@@ -90,127 +91,130 @@ try:
                     groups_list,
                     selection_mode='multi',
                     default=None)
+    df_sarimax = make_sarimax_subset()
+
+    SARIMAX_plot(df_sarimax, train_start_date, train_end_date, forecast_end_date, exog_vars)
+
 except:
     st.error('Error: no energy type has been selected.')
 
 
-df_sarimax = make_sarimax_subset()
 
 
 
-if len(exog_vars) == 0:
-    mod = SARIMAX(endog=df_sarimax[st.session_state['GROUP']].loc[str(train_start_date):str(train_end_date)],
-                trend='c',
-                order=(p, d, q),
-                seasonal_order=(P, D, Q, s)
-                )
-    res = mod.fit(disp=False)
+# if len(exog_vars) == 0:
+#     mod = SARIMAX(endog=df_sarimax[st.session_state['GROUP']].loc[str(train_start_date):str(train_end_date)],
+#                 trend='c',
+#                 order=(p, d, q),
+#                 seasonal_order=(P, D, Q, s)
+#                 )
+#     res = mod.fit(disp=False)
 
-    mod = SARIMAX(endog=df_sarimax[st.session_state['GROUP']],
-                trend='c',
-                order=(p, d, q),
-                seasonal_order=(P, D, Q, s)
-                )
-    res = mod.filter(res.params)
+#     mod = SARIMAX(endog=df_sarimax[st.session_state['GROUP']],
+#                 trend='c',
+#                 order=(p, d, q),
+#                 seasonal_order=(P, D, Q, s)
+#                 )
+#     res = mod.filter(res.params)
 
-else:
-    mod = SARIMAX(endog=df_sarimax[st.session_state['GROUP']].loc[str(train_start_date):str(train_end_date)],
-                exog=df_sarimax[exog_vars].loc[str(train_start_date):str(train_end_date)],
-                trend='c',
-                order=(p, d, q),
-                seasonal_order=(P, D, Q, s)
-                )
-    res = mod.fit(disp=False)
+# else:
+#     mod = SARIMAX(endog=df_sarimax[st.session_state['GROUP']].loc[str(train_start_date):str(train_end_date)],
+#                 exog=df_sarimax[exog_vars].loc[str(train_start_date):str(train_end_date)],
+#                 trend='c',
+#                 order=(p, d, q),
+#                 seasonal_order=(P, D, Q, s)
+#                 )
+#     res = mod.fit(disp=False)
 
-    mod = SARIMAX(endog=df_sarimax[st.session_state['GROUP']],
-                exog=df_sarimax[exog_vars],
-                trend='c',
-                order=(p, d, q),
-                seasonal_order=(P, D, Q, s)
-                )
-    res = mod.filter(res.params)
+#     mod = SARIMAX(endog=df_sarimax[st.session_state['GROUP']],
+#                 exog=df_sarimax[exog_vars],
+#                 trend='c',
+#                 order=(p, d, q),
+#                 seasonal_order=(P, D, Q, s)
+#                 )
+#     res = mod.filter(res.params)
 
-# In-sample one-step-ahead prediction wrapper function
-predict = res.get_prediction()
-predict_ci = predict.conf_int()
+# # In-sample one-step-ahead prediction wrapper function
+# predict = res.get_prediction()
+# predict_ci = predict.conf_int()
 
-# Dynamic predictions starting from chosen train_end_date
-predict_dy = res.get_prediction(dynamic=str(train_end_date))
-predict_dy_ci = predict_dy.conf_int()
-
-
+# # Dynamic predictions starting from chosen train_end_date
+# predict_dy = res.get_prediction(dynamic=str(train_end_date))
+# predict_dy_ci = predict_dy.conf_int()
 
 
 
 
-# Create the plotly figure
-fig = go.Figure()
 
-# Get the group column name
-group_col = st.session_state['GROUP']
 
-# Add observed data
-fig.add_trace(go.Scatter(
-    x=df_sarimax[group_col].loc[str(train_start_date):str(forecast_end_date)].index,
-    y=df_sarimax[group_col].loc[str(train_start_date):str(forecast_end_date)],
-    mode='markers',
-    name='Observed',
-    marker=dict(symbol='circle')
-))
+# # Create the plotly figure
+# fig = go.Figure()
 
-# Add one-step-ahead forecast
-fig.add_trace(go.Scatter(
-    x=predict.predicted_mean.loc[str(train_start_date):str(forecast_end_date)].index,
-    y=predict.predicted_mean.loc[str(train_start_date):str(forecast_end_date)],
-    mode='lines',
-    line=dict(dash='dash', color='red'),
-    name='One-step-ahead forecast'
-))
+# # Get the group column name
+# group_col = st.session_state['GROUP']
 
-# Add one-step-ahead confidence interval
-ci = predict_ci.loc[str(train_end_date):str(forecast_end_date)]
-fig.add_trace(go.Scatter(
-    x=ci.index.tolist() + ci.index.tolist()[::-1],
-    y=ci.iloc[:, 0].tolist() + ci.iloc[:, 1].tolist()[::-1],
-    fill='toself',
-    fillcolor='rgba(255,0,0,0.1)',
-    line=dict(color='rgba(255,255,255,0)'),
-    name='One-step CI',
-    showlegend=True
-))
+# # Add observed data
+# fig.add_trace(go.Scatter(
+#     x=df_sarimax[group_col].loc[str(train_start_date):str(forecast_end_date)].index,
+#     y=df_sarimax[group_col].loc[str(train_start_date):str(forecast_end_date)],
+#     mode='markers',
+#     name='Observed',
+#     marker=dict(symbol='circle')
+# ))
 
-# Add dynamic forecast
-fig.add_trace(go.Scatter(
-    x=predict_dy.predicted_mean.loc[str(train_start_date):str(forecast_end_date)].index,
-    y=predict_dy.predicted_mean.loc[str(train_start_date):str(forecast_end_date)],
-    mode='lines',
-    line=dict(color='green'),
-    name=f'Dynamic forecast ({train_end_date})'
-))
+# # Add one-step-ahead forecast
+# fig.add_trace(go.Scatter(
+#     x=predict.predicted_mean.loc[str(train_start_date):str(forecast_end_date)].index,
+#     y=predict.predicted_mean.loc[str(train_start_date):str(forecast_end_date)],
+#     mode='lines',
+#     line=dict(dash='dash', color='red'),
+#     name='One-step-ahead forecast'
+# ))
 
-# Add dynamic forecast confidence interval
-ci_dy = predict_dy_ci.loc[str(train_start_date):str(forecast_end_date)]
-fig.add_trace(go.Scatter(
-    x=ci_dy.index.tolist() + ci_dy.index.tolist()[::-1],
-    y=ci_dy.iloc[:, 0].tolist() + ci_dy.iloc[:, 1].tolist()[::-1],
-    fill='toself',
-    fillcolor='rgba(0,255,0,0.1)',
-    line=dict(color='rgba(255,255,255,0)'),
-    name='Dynamic CI',
-    showlegend=True
-))
+# # Add one-step-ahead confidence interval
+# ci = predict_ci.loc[str(train_end_date):str(forecast_end_date)]
+# fig.add_trace(go.Scatter(
+#     x=ci.index.tolist() + ci.index.tolist()[::-1],
+#     y=ci.iloc[:, 0].tolist() + ci.iloc[:, 1].tolist()[::-1],
+#     fill='toself',
+#     fillcolor='rgba(255,0,0,0.1)',
+#     line=dict(color='rgba(255,255,255,0)'),
+#     name='One-step CI',
+#     showlegend=True
+# ))
 
-# Update layout
-fig.update_layout(
-    title=f'{st.session_state.GROUP} forecast',
-    xaxis_title='Date',
-    yaxis_title=f'{st.session_state.GROUP} kWh',
-    legend=dict(x=0.01, y=0.01),
-    hovermode='x unified'
-)
+# # Add dynamic forecast
+# fig.add_trace(go.Scatter(
+#     x=predict_dy.predicted_mean.loc[str(train_start_date):str(forecast_end_date)].index,
+#     y=predict_dy.predicted_mean.loc[str(train_start_date):str(forecast_end_date)],
+#     mode='lines',
+#     line=dict(color='green'),
+#     name=f'Dynamic forecast ({train_end_date})'
+# ))
 
-# Display in Streamlit
-st.plotly_chart(fig, width='stretch')
+# # Add dynamic forecast confidence interval
+# ci_dy = predict_dy_ci.loc[str(train_start_date):str(forecast_end_date)]
+# fig.add_trace(go.Scatter(
+#     x=ci_dy.index.tolist() + ci_dy.index.tolist()[::-1],
+#     y=ci_dy.iloc[:, 0].tolist() + ci_dy.iloc[:, 1].tolist()[::-1],
+#     fill='toself',
+#     fillcolor='rgba(0,255,0,0.1)',
+#     line=dict(color='rgba(255,255,255,0)'),
+#     name='Dynamic CI',
+#     showlegend=True
+# ))
+
+# # Update layout
+# fig.update_layout(
+#     title=f'{st.session_state.GROUP} forecast',
+#     xaxis_title='Date',
+#     yaxis_title=f'{st.session_state.GROUP} kWh',
+#     legend=dict(x=0.01, y=0.01),
+#     hovermode='x unified'
+# )
+
+# # Display in Streamlit
+# st.plotly_chart(fig, width='stretch')
 
 
 
