@@ -19,6 +19,8 @@ from scipy.stats import median_abs_deviation
 from scipy.signal import stft
 from statsmodels.tsa.seasonal import STL
 from sklearn.neighbors import LocalOutlierFactor
+from statsmodels.tsa.statespace.sarimax import SARIMAX
+
 
 
 # ----------------------------------------------------------------
@@ -532,8 +534,115 @@ def SWC_plot(weather_variable, energy_type, window_length):
     )
 
 
-def SARIMAX_plot():
-    pass
+def SARIMAX_plot(df_sarimax, train_start_date, train_end_date, forecast_end_date, exog_vars):
+    if len(exog_vars) == 0:
+        mod = SARIMAX(endog=df_sarimax[st.session_state['GROUP']].loc[str(train_start_date):str(train_end_date)],
+                    trend='c',
+                    order=(st.session_state.p, st.session_state.d, st.session_state.q),
+                    seasonal_order=(st.session_state.P, st.session_state.D, st.session_state.Q, st.session_state.s)
+                    )
+        res = mod.fit(disp=False)
+
+        mod = SARIMAX(endog=df_sarimax[st.session_state['GROUP']],
+                    trend='c',
+                    order=(st.session_state.p, st.session_state.d, st.session_state.q),
+                    seasonal_order=(st.session_state.P, st.session_state.D, st.session_state.Q, st.session_state.s)
+                    )
+        res = mod.filter(res.params)
+
+    else:
+        mod = SARIMAX(endog=df_sarimax[st.session_state['GROUP']].loc[str(train_start_date):str(train_end_date)],
+                    exog=df_sarimax[exog_vars].loc[str(train_start_date):str(train_end_date)],
+                    trend='c',
+                    order=(st.session_state.p, st.session_state.d, st.session_state.q),
+                    seasonal_order=(st.session_state.P, st.session_state.D, st.session_state.Q, st.session_state.s)
+                    )
+        res = mod.fit(disp=False)
+
+        mod = SARIMAX(endog=df_sarimax[st.session_state['GROUP']],
+                    exog=df_sarimax[exog_vars],
+                    trend='c',
+                    order=(st.session_state.p, st.session_state.d, st.session_state.q),
+                    seasonal_order=(st.session_state.P, st.session_state.D, st.session_state.Q, st.session_state.s)
+                    )
+        res = mod.filter(res.params)
+
+    # In-sample one-step-ahead prediction wrapper function
+    predict = res.get_prediction()
+    predict_ci = predict.conf_int()
+
+    # Dynamic predictions starting from chosen train_end_date
+    predict_dy = res.get_prediction(dynamic=str(train_end_date))
+    predict_dy_ci = predict_dy.conf_int()
+
+    # Create the plotly figure
+    fig = go.Figure()
+
+    # Get the group column name
+    group_col = st.session_state['GROUP']
+
+    # Add observed data
+    fig.add_trace(go.Scatter(
+        x=df_sarimax[group_col].loc[str(train_start_date):str(forecast_end_date)].index,
+        y=df_sarimax[group_col].loc[str(train_start_date):str(forecast_end_date)],
+        mode='markers',
+        name='Observed',
+        marker=dict(symbol='circle')
+    ))
+
+    # Add one-step-ahead forecast
+    fig.add_trace(go.Scatter(
+        x=predict.predicted_mean.loc[str(train_start_date):str(forecast_end_date)].index,
+        y=predict.predicted_mean.loc[str(train_start_date):str(forecast_end_date)],
+        mode='lines',
+        line=dict(dash='dash', color='red'),
+        name='One-step-ahead forecast'
+    ))
+
+    # Add one-step-ahead confidence interval
+    ci = predict_ci.loc[str(train_end_date):str(forecast_end_date)]
+    fig.add_trace(go.Scatter(
+        x=ci.index.tolist() + ci.index.tolist()[::-1],
+        y=ci.iloc[:, 0].tolist() + ci.iloc[:, 1].tolist()[::-1],
+        fill='toself',
+        fillcolor='rgba(255,0,0,0.1)',
+        line=dict(color='rgba(255,255,255,0)'),
+        name='One-step CI',
+        showlegend=True
+    ))
+
+    # Add dynamic forecast
+    fig.add_trace(go.Scatter(
+        x=predict_dy.predicted_mean.loc[str(train_start_date):str(forecast_end_date)].index,
+        y=predict_dy.predicted_mean.loc[str(train_start_date):str(forecast_end_date)],
+        mode='lines',
+        line=dict(color='green'),
+        name=f'Dynamic forecast ({train_end_date})'
+    ))
+
+    # Add dynamic forecast confidence interval
+    ci_dy = predict_dy_ci.loc[str(train_start_date):str(forecast_end_date)]
+    fig.add_trace(go.Scatter(
+        x=ci_dy.index.tolist() + ci_dy.index.tolist()[::-1],
+        y=ci_dy.iloc[:, 0].tolist() + ci_dy.iloc[:, 1].tolist()[::-1],
+        fill='toself',
+        fillcolor='rgba(0,255,0,0.1)',
+        line=dict(color='rgba(255,255,255,0)'),
+        name='Dynamic CI',
+        showlegend=True
+    ))
+
+    # Update layout
+    fig.update_layout(
+        title=f'{st.session_state.GROUP} forecast',
+        xaxis_title='Date',
+        yaxis_title=f'{st.session_state.GROUP} kWh',
+        legend=dict(x=0.01, y=0.01),
+        hovermode='x unified'
+    )
+
+    # Display in Streamlit
+    st.plotly_chart(fig, width='stretch')
 
 
 
