@@ -147,7 +147,7 @@ def get_elhubdata(energy_type) -> pd.DataFrame:
     client = init_connection()
     db = client['project']
     collection = db['elhub_' + energy_type]
-    items = collection.find()#{'startTime': {'$gt': '2021-01-01', '$lt': '2022-01-01'}})
+    items = collection.find({'startTime': {'$gt': '2021-01-01', '$lt': '2022-01-01'}})
     items = list(items)
 
     # Converting data to dataframe and doing type conversion
