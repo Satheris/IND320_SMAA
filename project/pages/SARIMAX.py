@@ -141,7 +141,7 @@ df_sarimax = make_sarimax_subset()
 # res = mod.filter(res.params)
 
 
-if exog_vars.empty():
+if len(exog_vars) == 0:
     mod = SARIMAX(endog=df_sarimax[st.session_state['GROUP']].loc[str(train_start_date):str(train_end_date)],
                 trend='c',
                 order=(p, d, q),
