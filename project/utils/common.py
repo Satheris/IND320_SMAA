@@ -136,7 +136,9 @@ def openmeteo_download_snowdrift() -> pd.DataFrame:
 
 @st.cache_resource
 def init_connection() -> pymongo.MongoClient:
-    return pymongo.MongoClient(st.secrets['mongo']['uri'])
+    return pymongo.MongoClient(st.secrets['mongo']['uri'], 
+                               serverSelectionTimeoutMS=60000,  # 60 seconds
+                               connectTimeoutMS=60000)
 
 
 # Uses st.cache_data to only rerun when the query changes or after 30 min.
