@@ -149,7 +149,7 @@ def get_elhubdata(energy_type) -> pd.DataFrame:
     client = init_connection()
     db = client['project']
     collection = db['elhub_' + energy_type]
-    items = collection.find({'startTime': {'$gt': '2021-01-01', '$lt': '2022-01-01'}})
+    items = collection.find()#{'startTime': {'$gt': '2021-01-01', '$lt': '2022-01-01'}})
     items = list(items)
 
     # Converting data to dataframe and doing type conversion
@@ -165,7 +165,7 @@ def get_elhubdata(energy_type) -> pd.DataFrame:
 
 
 @st.cache_data(show_spinner=True)
-def read_geojson():
+def read_geojson() -> json:
     try:
         # Load the GeoJSON file
         with open(r'project/data/file.geojson', 'r', encoding='utf-8') as f:
@@ -210,21 +210,21 @@ def _set_new_energy_type() -> None:
         st.session_state.GROUP = 'cabin'
 
 
-def _set_new_start_date():
+def _set_new_start_date() -> None:
     st.session_state.START_DATE = st.session_state.start_date
 
 
-def _set_new_end_date():
+def _set_new_end_date() -> None:
     st.session_state.END_DATE = st.session_state.end_date
 
 
-def _set_new_year_range(): 
+def _set_new_year_range() -> None: 
     st.session_state.START_YEAR = st.session_state.year_range[0]
     st.session_state.END_YEAR = st.session_state.year_range[1]
     _download_new_snow_data()
 
 
-def _download_new_snow_data():
+def _download_new_snow_data() -> None:
     try: 
         st.session_state.snow_data = openmeteo_download_snowdrift()
     except:

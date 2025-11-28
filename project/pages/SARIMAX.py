@@ -70,37 +70,40 @@ s = st.number_input('**s** (seasonal period length in days)', 0, 365, value=365,
 c1, c2, c3 = st.columns(3)
 with c1:
     train_start_date = st.date_input('Start date for training the model', 
-                                     min_value=datetime.date(2021, 1, 1), max_value=datetime.date(2021, 3, 1), value='2021-01-01')
-                                    #  value=datetime.date(2021, 1, 1))
+                                     min_value=datetime.date(2021, 1, 1), max_value=datetime.date(2022, 12, 31),
+                                     value=datetime.date(2021, 1, 1))
 with c2:
     train_end_date = st.date_input('End date for training the model', 
-                                   min_value=datetime.date(2021, 3, 1), max_value=datetime.date(2021, 12, 31), 
-                                   value=datetime.date(2021, 7, 1))
+                                   min_value=datetime.date(2022, 1, 1), max_value=datetime.date(2024, 12, 31), 
+                                   value=datetime.date(2022, 1, 1))
 
 with c3:
-    forecast_horizon = st.number_input('Forecast horizon in days', min_value=1, max_value=21, value=7, step=1)
+    forecast_horizon = st.number_input('Forecast horizon in days', min_value=1, max_value=(365*2), value=365, step=1)
 
 forecast_end_date = train_end_date + datetime.timedelta(days=forecast_horizon)
 
+if str(train_start_date) < str(train_end_date):
+    try: 
+        # selected exogenous variables 
+        groups_list = sorted(st.session_state[energy_type+'_data'][energy_type+'Group'].unique().tolist())
+        groups_list.remove(st.session_state.GROUP)
+        exog_vars = st.pills('Exogenous variables', 
+                        groups_list,
+                        selection_mode='multi',
+                        default=None)
+        
+        df_sarimax = make_sarimax_subset()
 
-try: 
-    # selected exogenous variables 
-    groups_list = sorted(st.session_state[energy_type+'_data'][energy_type+'Group'].unique().tolist())
-    groups_list.remove(st.session_state.GROUP)
-    exog_vars = st.pills('Exogenous variables', 
-                    groups_list,
-                    selection_mode='multi',
-                    default=None)
-    
+        SARIMAX_plot(df_sarimax, train_start_date, train_end_date, forecast_end_date, exog_vars)
 
 
-except:
-    st.error('Error: no energy type has been selected.')
+    except:
+        st.error('Error: no energy type has been selected.')
+
+else:
+    st.error('Error: End date must be after Start date.')
 
 
-df_sarimax = make_sarimax_subset()
-
-SARIMAX_plot(df_sarimax, train_start_date, train_end_date, forecast_end_date, exog_vars)
 
 
 # if len(exog_vars) == 0:
