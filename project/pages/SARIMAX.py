@@ -136,7 +136,7 @@ fig.add_trace(go.Scatter(
 # Add one-step-ahead forecast
 fig.add_trace(go.Scatter(
     x=predict.predicted_mean.loc[str(train_start_date):].index,
-    y=predict.predicted_mean.loc[str(train_end_date):],
+    y=predict.predicted_mean.loc[str(train_start_date):],
     mode='lines',
     line=dict(dash='dash', color='red'),
     name='One-step-ahead forecast'
