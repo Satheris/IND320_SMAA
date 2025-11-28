@@ -622,22 +622,47 @@ def make_choropleth_subset() -> pd.DataFrame:
     return df_agg
 
 
+# def make_sarimax_subset() -> pd.DataFrame: 
+#     df = st.session_state[st.session_state['ENERGY_TYPE']+'_data']
+    
+#     df['startTime'] = pd.to_datetime(df['startTime'], utc=True)
+
+#     # Add 1 hour and convert to naive datetime (remove timezone)
+#     df['startTime'] = (df['startTime'] + pd.Timedelta(hours=1)).dt.tz_localize(None)
+
+#     df_daily = df.groupby([st.session_state['ENERGY_TYPE']+'Group', pd.Grouper(key='startTime', freq='D')]).agg({'quantityKwh': 'sum'}).reset_index()
+
+#     df_daily = df_daily.set_index('startTime')
+
+#     # Ensure we only have date part (no time component)
+#     df_daily.index = df_daily.index.normalize()
+
+#     return df_daily
+
 def make_sarimax_subset() -> pd.DataFrame: 
-    df = st.session_state[st.session_state['ENERGY_TYPE']+'_data']#.copy()
+    df = st.session_state[st.session_state['ENERGY_TYPE']+'_data']
     
     df['startTime'] = pd.to_datetime(df['startTime'], utc=True)
 
     # Add 1 hour and convert to naive datetime (remove timezone)
     df['startTime'] = (df['startTime'] + pd.Timedelta(hours=1)).dt.tz_localize(None)
 
+    # Group by daily frequency
     df_daily = df.groupby([st.session_state['ENERGY_TYPE']+'Group', pd.Grouper(key='startTime', freq='D')]).agg({'quantityKwh': 'sum'}).reset_index()
 
-    df_daily = df_daily.set_index('startTime')
+    # Pivot the data to wide format with productionGroup as columns
+    df_wide = df_daily.pivot_table(
+        index='startTime', 
+        columns=st.session_state['ENERGY_TYPE']+'Group', 
+        values='quantityKwh',
+        aggfunc='sum',
+        fill_value=0
+    )
 
     # Ensure we only have date part (no time component)
-    df_daily.index = df_daily.index.normalize()
+    df_wide.index = df_wide.index.normalize()
 
-    return df_daily
+    return df_wide
 
 
 
