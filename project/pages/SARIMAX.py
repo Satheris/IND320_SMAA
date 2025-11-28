@@ -58,11 +58,11 @@ with c3:
     q = st.number_input('**q** (moving average order)', 0, 10, value=0, step=1, key='q')
 
 with c1:
-    P = st.number_input('**P** (seasonal autoregressive order)', 0, 10, value=0, step=1, key='P')
+    P = st.number_input('**P** (seasonal autoregressive order)', 0, 10, value=0, step=1, key='P', disabled=True)
 with c2:
-    D = st.number_input('**D** (degree of seasonal differencing)', 0, 2, value=0, step=1, key='D')
+    D = st.number_input('**D** (degree of seasonal differencing)', 0, 2, value=0, step=1, key='D', disabled=True)
 with c3:
-    Q = st.number_input('**Q** (seasonal moving average order)', 0, 10, value=0, step=1, key='Q')
+    Q = st.number_input('**Q** (seasonal moving average order)', 0, 10, value=0, step=1, key='Q', disabled=True)
 
 s = st.number_input('**s** (seasonal period length in days)', 0, 365, value=365, step=1, key='s')
 
