@@ -29,7 +29,7 @@ if 'lag' not in st.session_state:
 # page configuration
 st.set_page_config(layout='wide')
 st.header('Sliding Window Correlation')
-st.write('Correlation analysis between weather and energy production or consumption. *Lag* optional.')
+st.write('Correlation analysis between weather and energy production or consumption.') #  *Lag* optional.
 
 
 c1, c2, c3 = st.columns([1, 2, 2], gap='medium')
