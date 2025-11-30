@@ -25,7 +25,7 @@ if 'production_data' not in st.session_state:
 # page configuration
 st.set_page_config(layout='wide')
 st.header('Decomposition')
-st.write(f'Decomposition analyses of Elhub data from electrical price area {st.session_state.AREA}')
+st.write(f'Decomposition analyses of Elhub production data from electrical price area {st.session_state.AREA}')
 
 
 # storing data on this page for further use
