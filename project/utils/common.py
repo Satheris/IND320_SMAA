@@ -35,7 +35,7 @@ def read_data() -> pd.DataFrame:
 
 
 @st.cache_data(show_spinner=True)
-def openmeteo_download(year=2021) -> pd.DataFrame:
+def openmeteo_download(startYear=2021, endYear=2024) -> pd.DataFrame:
     # Setup the Open-Meteo API client with cache and retry on error
     cache_session = requests_cache.CachedSession('.cache', expire_after = 3600)
     retry_session = retry(cache_session, retries = 5, backoff_factor = 0.2)
@@ -49,8 +49,8 @@ def openmeteo_download(year=2021) -> pd.DataFrame:
     params = {
         "latitude": latitude,
         "longitude": longitude,
-        "start_date": f"{year}-01-01",
-        "end_date": f"{year}-12-31",
+        "start_date": f"{startYear}-01-01",
+        "end_date": f"{endYear}-12-31",
         "hourly": ["temperature_2m", "wind_direction_10m", "wind_speed_10m", "wind_gusts_10m", "precipitation"],
         "models": "era5",
         "timezone": "Europe/Berlin",
