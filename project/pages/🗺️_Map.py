@@ -198,7 +198,7 @@ if map_data.get('last_clicked'):
         st.session_state.zoom = map_data['zoom']
     
     # Use Streamlit's rerun to update the map immediately
-    st.rerun()
+    # st.rerun()
 
 
 with c2:
@@ -223,6 +223,7 @@ with c2:
 
     
     st.subheader('Selections for choropleth layer')
+    st.write(f'Mean energy group values per price area')
 
 
     energy_type = st.pills('Select energy type', ['production', 'consumption'], selection_mode='single', 
