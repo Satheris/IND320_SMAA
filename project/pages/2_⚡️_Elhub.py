@@ -92,6 +92,7 @@ with c2:
     # Reducing dataset
     df_elhub_month = df_elhub[(df_elhub['priceArea'] == area) & 
                   (df_elhub['month'] == month_number_converter(month)) &
+                  (df_elhub['year'] == 2021) &
                   (df_elhub['productionGroup'].isin(prodgroups))]
     df_elhub_month = df_elhub_month.sort_values(by='productionGroup').sort_values(by='startTime').reset_index()
 
