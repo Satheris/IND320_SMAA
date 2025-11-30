@@ -198,7 +198,7 @@ if map_data.get('last_clicked'):
         st.session_state.zoom = map_data['zoom']
     
     # Use Streamlit's rerun to update the map immediately
-    # st.rerun()
+    st.rerun()
 
 
 with c2:
