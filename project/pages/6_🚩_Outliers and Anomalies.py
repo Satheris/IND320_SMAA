@@ -12,7 +12,7 @@ if 'AREA' not in st.session_state:
     st.session_state.AREA = 'NO1'
 # assigning session_state.weather_data if not in cache
 if 'weather_data' not in st.session_state:
-    st.session_state.weather_data = openmeteo_download(area=st.session_state.AREA)
+    st.session_state.weather_data = openmeteo_download()
 
 
 # storing data on this page for further use
