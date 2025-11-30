@@ -30,7 +30,7 @@ st.set_page_config(layout='wide')
 st.header('Elhub')
 
 
-df_elhub = st.session_state.production_data
+df_elhub = st.session_state.production_data.copy()
 
 
 # Initializing columns
